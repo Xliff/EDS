@@ -628,11 +628,11 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   multi method generate_instances_sync (
-    Int() $start,
-    Int() $end,
-    ECalRecurInstanceCb $cb,
-    gpointer $cb_data,
-    GCancellable $cancellable
+    Int()        $start,
+    Int()        $end,
+                 &cb,
+    gpointer     $cb_data      = gpointer,
+    GCancellable :$cancellable
   ) {
     samewith(
       $start,
@@ -650,6 +650,7 @@ class Evolution::Calendar is Evolution::Client {
     gpointer       $cb_data = gpointer
   ) {
     my time_t ($s, $e) = ($start, $end);
+
     e_cal_client_generate_instances_sync(
       $!ecal,
       $s,
@@ -913,31 +914,235 @@ class Evolution::Calendar is Evolution::Client {
 
   method get_default_timezone (:$raw = False) {
     #icaltimezone
-    e_cal_client_get_default_timezone($!ecal);
+    my $tz = e_cal_client_get_default_timezone($!ecal);
+
+    $tz ??
+      ( $raw ?? $tz !! ICal::Timezone.new($tz) )
+      !!
+      Nil;
   }
 
-  method get_free_busy (time_t $start, time_t $end, GSList $users, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_get_free_busy($!ecal, $start, $end, $users, $cancellable, $callback, $user_data);
+  method get_free_busy (
+    Int()          $start,
+    Int()          $end,
+                   @users,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable,
+  ) {
+    samewith(
+      $start,
+      $end,
+      GLib::GSList.new(@users),
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  method get_free_busy (
+    Int()          $start,
+    Int()          $end,
+    GSList()       $users,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data    = gpointer
+  ) {
+    my time_t ($s, $e) = ($start, $end);
+
+    e_cal_client_get_free_busy(
+      $!ecal,
+      $s,
+      $e,
+      $users,
+      $cancellable,
+      &callback,
+      $user_data
+    );
   }
 
-  method get_free_busy_finish (GAsyncResult $result, GSList $out_freebusy, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_free_busy_finish($!ecal, $result, $out_freebusy, $error);
+  proto method get_free_busy_finish (|)
+  { * }
+
+  multi method get_free_busy_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error   = gerror,
+                            :$glist  = False,
+                            :$raw    = False
+  ) {
+    (my $ofb = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith($result, $ofb, $error, :all, :$glist, :$raw);
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_free_busy_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GSList]] $out_freebusy,
+    CArray[Pointer[GError]] $error         = gerror
+                            :$all          = False,
+                            :$glist        = False,
+                            :$raw          = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_free_busy_finish(
+      $!ecal,
+      $result,
+      $out_freebusy,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $callback;
+
+    my $ofb = ;
+    (
+      $rv,
+      returnGList(
+        ppr($out_freebusy),
+        $glist,
+        $raw,
+        ECalComponent
+        Evolution::Calendar::Component
+      )
+    );
   }
 
-  method get_free_busy_sync (time_t $start, time_t $end, GSList $users, GSList $out_freebusy, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_free_busy_sync($!ecal, $start, $end, $users, $out_freebusy, $cancellable, $error);
+  proto method get_free_busy_sync (|)
+  { * }
+
+  method get_free_busy_sync (
+    Int()                   $start,
+    Int()                   $end,
+                            @users,
+    CArray[Pointer[GError]] $error         = gerror,
+    GCancellable()          :$cancellable  = GCancellable,
+                            :$all          = False,
+                            :$glist        = False,
+                            :$raw          = False
+  ) {
+    (my $ofb = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samdwith(
+      $start,
+      $end,
+      GLib::GSList.new(@users),
+      $ofb,
+      $cancellable,
+      $error
+      :all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  method get_free_busy_sync (
+    Int()                   $start,
+    Int()                   $end,
+    GSList()                $users,
+    CArray[Pointer[GSList]] $out_freebusy,
+    GCancellable()          $cancellable   = GCancellable,
+    CArray[Pointer[GError]] $error         = gerror,
+                            :$all          = False,
+                            :$glist        = False,
+                            :$raw          = False
+  ) {
+    my time_t ($s, $e) = ($start, $end);
+
+    clear_error;
+    my $rv = e_cal_client_get_free_busy_sync(
+      $!ecal,
+      $start,
+      $end,
+      $users,
+      $out_freebusy,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    my $ofb = ppr($out_freebusy);
+    (
+      $rv,
+      returnGList(
+        $ofb,
+        $glist,
+        $raw,
+        ECalComponent,
+        Evolution::Calendar::Component
+      )
+    );
   }
 
   method get_local_attachment_store {
     e_cal_client_get_local_attachment_store($!ecal);
   }
 
-  method get_object (Str $uid, Str $rid, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
+  # ...
+
+  proto method get_object (|)
+  { * }
+
+  multi method get_object (
+    Str()        $uid,
+    Str()        $rid,
+                 &callback,
+    gpointer     $user_data    = gpointer,
+    GCancellable :$cancellable = GCancellable
+  ) {
+    samewith(
+      $uid,
+      $rid,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method get_object (
+    Str()        $uid,
+    Str()        $rid,
+    GCancellable $cancellable,
+                 &callback,
+    gpointer     $user_data    = gpointer
+  ) {
     e_cal_client_get_object($!ecal, $uid, $rid, $cancellable, $callback, $user_data);
   }
 
-  method get_object_finish (GAsyncResult $result, ICalComponent $out_icalcomp, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_object_finish($!ecal, $result, $out_icalcomp, $error);
+  proto method get_object_finish (|)
+  { * }
+
+  multi method get_object_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error         = gerror
+  ) {
+    my $oi = ICalComponent.new;
+    my $rv = samewith($result, $oi, $error, :all);
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_object_finish (
+    GAsyncResult()          $result,
+    ICalComponent()         $out_icalcomp,
+    CArray[Pointer[GError]] $error         = gerror,
+                            :$all          = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_object_finish(
+      $!ecal,
+      $result,
+      $out_icalcomp,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      $raw ?? $out_icalcomp !! ICal::Component.new($out_icalcomp)
+    );
   }
 
   method get_object_list (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
@@ -981,7 +1186,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   method get_source_type {
-    e_cal_client_get_source_type($!ecal);
+    ECalClientSourceTypeEnum( e_cal_client_get_source_type($!ecal) );
   }
 
   method get_timezone (Str $tzid, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
