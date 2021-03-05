@@ -1,4 +1,4 @@
-use v6.c;
+suuse v6.c;
 
 use NativeCall;
 
@@ -1764,16 +1764,133 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_view (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_get_view($!ecal, $sexp, $cancellable, $callback, $user_data);
+  proto method get_view (|)
+  { * }
+  
+  multi method get_view (
+    Str()          $sexp, 
+                   &callback, 
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $sexp, 
+      $cancellable, 
+      &callback, 
+      $user_data
+    );
+  }
+  multi method get_view (
+    Str()          $sexp, 
+    GCancellable() $cancellable, 
+                   &callback, 
+    gpointer       $user_data    = gpointer
+  ) {
+    e_cal_client_get_view(
+      $!ecal, 
+      $sexp, 
+      $cancellable, 
+      $callback, 
+      $user_data
+    );
   }
 
-  method get_view_finish (GAsyncResult $result, ECalClientView $out_view, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_view_finish($!ecal, $result, $out_view, $error);
+  proto method get_view_finish (|)
+  { * }
+  
+  multi method get_view_finish (
+    GAsyncResult()                  $result, 
+    CArray[Pointer[GError]]         $error   = gerror
+                                    :$raw    = False
+  ) {
+    (my $ov = CArray[Pointer[ECalClientView]].new)[0] = Pointer[ECalClientView];
+    
+    my $rv = samewith($result, $ov, $error, :$all, :$raw);
+    
+    $rv[0] ?? $rv[1] !! Nil;
+    
+  }    
+
+  multi method get_view_finish (
+    GAsyncResult()                  $result, 
+    CArray[Pointer[ECalClientView]] $out_view, 
+    CArray[Pointer[GError]]         $error     = gerror,
+                                    :$all      = False,
+                                    :$raw      = False
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_get_view_finish(
+      $!ecal, 
+      $result, 
+      $out_view, 
+      $error
+    );
+    set_error($error);
+    
+    return $rv unless $all;
+    
+    my $ov = ppr($out_view);
+    (
+      $rv,
+      $ov ??
+        ( $raw ?? $ov !! Evolution::Calendar::View.new($ov) )
+        !!
+        Nil
+    );
   }
 
-  method get_view_sync (Str $sexp, ECalClientView $out_view, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_view_sync($!ecal, $sexp, $out_view, $cancellable, $error);
+  proto method get_view_sync (|)
+  { * }
+  
+  multi method get_view_sync (
+    Str()                           $sexp, 
+    CArray[Pointer[GError]]         $error        = gerror,
+    GCancellable()                  :$cancellable = GCancellable, 
+                                    :$all         = False,
+                                    :$raw         = False
+  ) {
+    (my $ov = CArray[Pointer[ECalClientView]].new) = Pointer[ECalClientView];
+    
+    my $rv = samewith(
+      $sexp,
+      $ov,
+      $cancellable,
+      $error,
+      :all,
+      :$raw
+    );
+    
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+
+  multi method get_view_sync (
+    Str()                           $sexp, 
+    CArray[Pointer[ECalClientView]] $out_view, 
+    GCancellable()                  $cancellable = GCancellable, 
+    CArray[Pointer[GError]]         $error       = gerror,
+                                    :$all        = False,
+                                    :$raw        = False
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_get_view_sync(
+      $!ecal, 
+      $sexp, 
+      $out_view, 
+      $cancellable, 
+      $error
+    );
+    set_error($error);
+    
+    return $rv unless $all;
+    
+    my $ov = ppr($out_view);
+    (
+      $rv,
+      $ov ??
+        ( $raw ?? $ov !! Evolution::Calendar::View.new($ov) )
+        !!
+        Nil
+    );
   }
 
   method modify_object (ICalComponent $icalcomp, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
