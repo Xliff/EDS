@@ -1080,8 +1080,6 @@ class Evolution::Calendar is Evolution::Client {
     e_cal_client_get_local_attachment_store($!ecal);
   }
 
-  # ...
-
   proto method get_object (|)
   { * }
 
@@ -1107,7 +1105,14 @@ class Evolution::Calendar is Evolution::Client {
                  &callback,
     gpointer     $user_data    = gpointer
   ) {
-    e_cal_client_get_object($!ecal, $uid, $rid, $cancellable, $callback, $user_data);
+    e_cal_client_get_object(
+      $!ecal, 
+      $uid, 
+      $rid, 
+      $cancellable, 
+      $callback, 
+      $user_data
+    );
   }
 
   proto method get_object_finish (|)
@@ -1145,9 +1150,38 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_object_list (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_get_object_list($!ecal, $sexp, $cancellable, $callback, $user_data);
+  proto method get_object_list (|)
+  { * }
+  
+  multi method get_object_list (
+    Str()          $sexp, 
+                   &callback, 
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $sexp,
+      $cancellable,
+      &callback,
+      $user_data 
+    );
   }
+  multi method get_object_list (
+    Str()          $sexp, 
+    GCancellable() $cancellable, 
+                   &callback, 
+    gpointer       $user_data = gpointer
+  ) {
+    e_cal_client_get_object_list(
+      $!ecal, 
+      $sexp, 
+      $cancellable, 
+      $callback, 
+      $user_data
+    );
+  }
+  
+  # ...
 
   method get_object_list_as_comps (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
     e_cal_client_get_object_list_as_comps($!ecal, $sexp, $cancellable, $callback, $user_data);
