@@ -1212,91 +1212,641 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_view (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
+
+  proto method get_view (|)
+  { * }
+
+  multi method get_view (
+    Str()          $sexp,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $sexp,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method get_view (
+    Str()          $sexp,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data    = gpointer
+  ) {
     e_cal_client_get_view($!ecal, $sexp, $cancellable, $callback, $user_data);
   }
 
-  method get_view_finish (GAsyncResult $result, ECalClientView $out_view, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_view_finish($!ecal, $result, $out_view, $error);
+  proto method get_view_finish (|)
+  { * }
+
+  multi method get_view_finish (
+    GAsyncResult()                  $result,
+    CArray[Pointer[GError]]         $error     = gerror
+  ) {
+    (my $ov = CArray[Pointer[ECalClientView]].new)[0] = Pointer[ECalClientView];
+
+    my $rv = samewith($result, $ov, $error);
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_view_finish (
+    GAsyncResult()                  $result,
+    CArray[Pointer[ECalClientView]] $out_view,
+    CArray[Pointer[GError]]         $error     = gerror
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_get_view_finish(
+      $!ecal,
+      $result,
+      $out_view,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    my $ov = ppr($out_view);
+    (
+      $rv,
+      $ov ??
+        ( $raw ?? $ov !! Evolution::Calendar::ClientView.new($ov) )
+        !!
+        Nil
+     )
   }
 
-  method get_view_sync (Str $sexp, ECalClientView $out_view, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_view_sync($!ecal, $sexp, $out_view, $cancellable, $error);
+  multi method get_view_sync (
+    Str()                           $sexp,
+    CArray[Pointer[GError]]         $error        = gerror
+    GCancellable()                  :$cancellable = GCancellable
+  ) {
+    (my $ov = CArray[Pointer[ECalClientView]].new)[0] = Pointer[ECalClientView];
+
+    my $rv = samewith($sexp, $ov, $cancellable, $error);
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_view_sync (
+    Str()                           $sexp,
+    CArray[Pointer[ECalClientView]] $out_view,
+    GCancellable()                  $cancellable,
+    CArray[Pointer[GError]]         $error
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_get_view_sync(
+      $!ecal,
+      $sexp,
+      $out_view,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    my $ov = ppr($out_view);
+    (
+      $rv,
+      $ov ??
+        ( $raw ?? $ov !! Evolution::Calendar::ClientView.new($ov) )
+        !!
+        Nil
+     )
   }
 
-  method modify_object (ICalComponent $icalcomp, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_modify_object($!ecal, $icalcomp, $mod, $opflags, $cancellable, $callback, $user_data);
+  proto method modify_object (|)
+
+  multi method modify_object (
+    ICalComponent() $icalcomp,
+    Int()           $mod,
+    Int()           $opflags,
+                    &callback,
+    gpointer        $user_data    = gpointer,
+    GCancellable()  :$cancellable
+  ) {
+    samewith(
+      $icalcomp,
+      $m,
+      $o,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method modify_object (
+    ICalComponent() $icalcomp,
+    Int()           $mod,
+    Int()           $opflags,
+    GCancellable()  $cancellable,
+                    &callback,
+    gpointer        $user_data    = gpointer
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    e_cal_client_modify_object(
+      $!ecal,
+      $icalcomp,
+      $m,
+      $o,
+      $cancellable,
+      &callback,
+      $user_data
+    );
   }
 
-  method modify_object_finish (GAsyncResult $result, CArray[Pointer[GError]] $error) {
-    e_cal_client_modify_object_finish($!ecal, $result, $error);
+  method modify_object_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error   = gerror
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_modify_object_finish($!ecal, $result, $error);
+    set_error($error);
+    $rv;
   }
 
-  method modify_object_sync (ICalComponent $icalcomp, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_modify_object_sync($!ecal, $icalcomp, $mod, $opflags, $cancellable, $error);
+  method modify_object_sync (
+    ICalComponent()         $icalcomp,
+    Int()                   $mod,
+    Int()                   $opflags,
+    GCancellable()          $cancellable = GCancellable,
+    CArray[Pointer[GError]] $error       = gerror
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    clear_error;
+    my $rv = so e_cal_client_modify_object_sync(
+      $!ecal,
+      $icalcomp,
+      $m,
+      $o,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+    $rv;
   }
 
-  method modify_objects (GSList $icalcomps, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_modify_objects($!ecal, $icalcomps, $mod, $opflags, $cancellable, $callback, $user_data);
+  proto method modify_objects (|)
+  { * }
+
+  multi method modify_objects (
+    GSList()       $icalcomps,
+    Int()          $mod,
+    Int()          $opflags,
+                   &callback,
+    gpointer       $user_data    = gpointer
+    GCancellable() :$cancellable = GCancellable,
+  ) {
+    samewith(
+      $icalcomps,
+      $m,
+      $o,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method modify_objects (
+    GSList()       $icalcomps,
+    Int()          $mod,
+    Int()          $opflags,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data    = gpointer
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    e_cal_client_modify_objects(
+      $!ecal,
+      $icalcomps,
+      $m,
+      $o,
+      $cancellable,
+      &callback,
+      $user_data
+    );
   }
 
-  method modify_objects_finish (GAsyncResult $result, CArray[Pointer[GError]] $error) {
-    e_cal_client_modify_objects_finish($!ecal, $result, $error);
+  method modify_objects_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error   = gerror
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_modify_objects_finish($!ecal, $result, $error);
+    set_error($error);
+    $rv;
   }
 
-  method modify_objects_sync (GSList $icalcomps, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_modify_objects_sync($!ecal, $icalcomps, $mod, $opflags, $cancellable, $error);
+  method modify_objects_sync (
+    GSList()                $icalcomps,
+    Int()                   $mod,
+    Int()                   $opflags,
+    GCancellable()          $cancellable = GCancellable,
+    CArray[Pointer[GError]] $error       = gpointer
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    e_cal_client_modify_objects_sync(
+      $!ecal,
+      $icalcomps,
+      $mod,
+      $o,
+      $cancellable,
+      $error
+    );
   }
 
-  method receive_objects (ICalComponent $icalcomp, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_receive_objects($!ecal, $icalcomp, $opflags, $cancellable, $callback, $user_data);
+  proto method receive_objects (|)
+  { * }
+
+  method receive_objects (
+    ICalComponent() $icalcomp,
+    Int()           $opflags,
+    GCancellable    $cancellable,
+                    &callback,
+    gpointer        $user_data    = gpointer
+  ) {
+    samewith(
+      $icalcomp,
+      $opflags,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  method receive_objects (
+    ICalComponent() $icalcomp,
+    Int()           $opflags,
+    GCancellable    $cancellable,
+                    &callback,
+    gpointer        $user_data    = gpointer
+  ) {
+    my guint32 $o = $opflags;
+
+    e_cal_client_receive_objects(
+      $!ecal,
+      $icalcomp,
+      $o,
+      $cancellable,
+      &callback,
+      $user_data
+    );
   }
 
-  method receive_objects_finish (GAsyncResult $result, CArray[Pointer[GError]] $error) {
-    e_cal_client_receive_objects_finish($!ecal, $result, $error);
+  method receive_objects_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error   = gerror
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_receive_objects_finish($!ecal, $result, $error);
+    set_error($error);
+    $rv;
   }
 
-  method receive_objects_sync (ICalComponent $icalcomp, guint32 $opflags, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_receive_objects_sync($!ecal, $icalcomp, $opflags, $cancellable, $error);
+  multi method receive_objects_sync (
+    ICalComponent()         $icalcomp,
+    Int()                   $opflags,
+    GCancellable()          $cancellable = GCancellable,
+    CArray[Pointer[GError]] $error       = gerror
+  ) {
+    my guint32 $o = $opflags;
+
+    clear_error;
+    my $rv = so e_cal_client_receive_objects_sync(
+      $!ecal,
+      $icalcomp,
+      $o,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+    $rv;
   }
 
-  method remove_object (Str $uid, Str $rid, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_remove_object($!ecal, $uid, $rid, $mod, $opflags, $cancellable, $callback, $user_data);
+  proto method remove_object (|)
+  { * }
+
+  multi method remove_object (
+    Str()          $uid,
+    Str()          $rid,
+    Int()          $mod,
+    Int()          $opflags,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable,
+  ) {
+    samewith(
+      $uid,
+      $rid,
+      $mod,
+      $opflags,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method remove_object (
+    Str()          $uid,
+    Str()          $rid,
+    Int()          $mod,
+    Int()          $opflags,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data   = gpointer
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    e_cal_client_remove_object(
+      $!ecal,
+      $uid,
+      $rid,
+      $m,
+      $o,
+      $cancellable,
+      $callback,
+      $user_data
+    );
   }
 
-  method remove_object_finish (GAsyncResult $result, CArray[Pointer[GError]] $error) {
-    e_cal_client_remove_object_finish($!ecal, $result, $error);
+  method remove_object_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error   = gerror
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_remove_object_finish($!ecal, $result, $error);
+    set_error($error);
+    $rv;
   }
 
-  method remove_object_sync (Str $uid, Str $rid, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_remove_object_sync($!ecal, $uid, $rid, $mod, $opflags, $cancellable, $error);
+  method remove_object_sync (
+    Str()                   $uid,
+    Str()                   $rid,
+    Int()                   $mod,
+    Int()                   $opflags,
+    GCancellable()          $cancellable = GCancellable,
+    CArray[Pointer[GError]] $error       = gerror
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    clear_error;
+    my $rv = so e_cal_client_remove_object_sync(
+      $!ecal,
+      $uid,
+      $rid,
+      $m,
+      $o,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+    $rv;
   }
 
-  method remove_objects (GSList $ids, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_remove_objects($!ecal, $ids, $mod, $opflags, $cancellable, $callback, $user_data);
+  proto method remove_objects (|)
+  { * }
+
+  multi method remove_objects (
+    GSList()       $ids,
+    Int()          $mod,
+    Int()          $opflags,
+                   &callback,
+    gpointer       $user_data    = gpointer
+    GCancellable() :$cancellable = GCancellable,
+  ) {
+    samewith(
+      $ids,
+      $mod,
+      $opflags,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method remove_objects (
+    GSList()       $ids,
+    Int()          $mod,
+    Int()          $opflags,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data   = gpointer
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    e_cal_client_remove_objects(
+      $!ecal,
+      $ids,
+      $m,
+      $o,
+      $cancellable,
+      $callback,
+      $user_data
+    );
   }
 
-  method remove_objects_finish (GAsyncResult $result, CArray[Pointer[GError]] $error) {
-    e_cal_client_remove_objects_finish($!ecal, $result, $error);
+  method remove_objects_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_remove_objects_finish($!ecal, $result, $error);
+    set_error($error);
+    $rv;
   }
 
-  method remove_objects_sync (GSList $ids, ECalObjModType $mod, guint32 $opflags, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_remove_objects_sync($!ecal, $ids, $mod, $opflags, $cancellable, $error);
+  method remove_objects_sync (
+    GSList()        $ids,
+    Int()           $mod,
+    Int()           $opflags,
+    GCancellable()  $cancellable   = GCancellable,
+    CArray[Pointer[GError]] $error = gerror
+  ) {
+    my ECalObjModType $m = $mod;
+    my guint32        $o = $opflags;
+
+    e_cal_client_remove_objects_sync(
+      $!ecal,
+      $ids,
+      $m,
+      $o,
+      $cancellable,
+      $error
+    );
   }
 
-  method send_objects (ICalComponent $icalcomp, guint32 $opflags, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_send_objects($!ecal, $icalcomp, $opflags, $cancellable, $callback, $user_data);
+  proto method send_objects (|)
+  { * }
+
+  multi method send_objects (
+    ICalComponent()  $icalcomp,
+    Int()            $opflags,
+                     &callback,
+    gpointer         $user_data    = gpointer,
+    GCancellable()   :$cancellable = GCancellable
+  ) {
+    samewith(
+      $icalcomp,
+      $opflags,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method send_objects (
+    ICalComponent()  $icalcomp,
+    Int()            $opflags,
+    GCancellable()   $cancellable,
+                     &callback,
+    gpointer         $user_data   = gpointer
+  ) {
+    my guint32 $o = $opflags;
+
+    e_cal_client_send_objects(
+      $!ecal,
+      $icalcomp,
+      $opflags,
+      $cancellable,
+      &callback,
+      $user_data
+    );
   }
 
-  method send_objects_finish (GAsyncResult $result, GSList $out_users, ICalComponent $out_modified_icalcomp, CArray[Pointer[GError]] $error) {
-    e_cal_client_send_objects_finish($!ecal, $result, $out_users, $out_modified_icalcomp, $error);
+  proto method send_objects_finish (|)
+  { * }
+
+  method send_objects_finish (
+    GAsyncResult()                 $result,
+    CArray[Pointer[GError]]        $error,
+                                   :gslist(:$glist)        = False,
+                                   :$raw                   = False
+  ) {
+    my $ou  = GSList.new;
+
+    (my $omi = CAray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent]];
+
+    my $rv = samewith(
+      $result,
+      $ou,
+      $omi,
+      $error,
+      :$glist
+      :all
+      :$raw
+    );
+
+    $rv[0] ?? $rv.skip(1) !! Nil;
+  }
+  method send_objects_finish (
+    GAsyncResult()                 $result,
+    GSList()                       $out_users,
+    CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
+    CArray[Pointer[GError]]        $error,
+                                   :gslist(:$glist)        = False
+                                   :$all                   = False,
+                                   :$raw                   = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_send_objects_finish(
+      $!ecal,
+      $result,
+      $out_users,
+      $out_modified_icalcomp,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    my $omi = ppr($out_modified_icalcomp);
+    (
+      $rv,
+      returnGList(
+        $out_users,
+        $glist,
+        $raw
+      ),
+      $omi ??
+         ( $raw ?? $omi !! ICalendar::Component.new($omi) )
+         !!
+         Nil
+     )
   }
 
-  method send_objects_sync (ICalComponent $icalcomp, guint32 $opflags, GSList $out_users, ICalComponent $out_modified_icalcomp, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_send_objects_sync($!ecal, $icalcomp, $opflags, $out_users, $out_modified_icalcomp, $cancellable, $error);
+  proto method send_objects_sync (|)
+
+  multi method send_objects_sync (
+    ICalComponent()                $icalcomp,
+    Int()                          $opflags,
+    CArray[Pointer[GError]]        $error                  = gerror,
+    GCancellable()                 :$cancellable           = GCancellable,
+                                   :gslist(:$glist)        = False,
+                                   :$raw                   = False
+  ) {
+    (my $ou  = CArray[Pointer[GSList]].new)[0]        = Pointer[GSList];
+    (my $omi = CArray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent];
+
+    my $rv = samewith(
+      $icalcomp,
+      $opflags,
+      $out_users,
+      $out_modified_icalcomp,
+      $cancellable,
+      $error
+      :all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv.skip(1) !! Nil;
+  }
+  multi method send_objects_sync (
+    ICalComponent()                $icalcomp,
+    Int()                          $opflags,
+    CArray[Pointer[GSList]]        $out_users,
+    CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
+    GCancellable()                 $cancellable            = GCancellable,
+    CArray[Pointer[GError]]        $error                  = gerror,
+                                   :$all                   = False,
+                                   :gslist(:$glist)        = False,
+                                   :$raw                   = False
+
+  ) {
+    my guint32 $o = $opflags;
+
+    clear_error;
+    my $rv = so e_cal_client_send_objects_sync(
+      $!ecal,
+      $icalcomp,
+      $o,
+      $out_users,
+      $out_modified_icalcomp,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    my ($ou, $omi) = ppr($out_users, $out_modified_icalcomp);
+    (
+      $rv,
+      returnGList($ou, $glist, $raw),
+      $omi ??
+        ( $raw ?? $omi !! ICalendar::Component.new($omi) )
+        !!
+        Nil
+    )
   }
 
-  method set_default_timezone (ICalTimezone $zone) {
+  method set_default_timezone (ICalTimezone() $zone) {
     e_cal_client_set_default_timezone($!ecal, $zone);
   }
 
