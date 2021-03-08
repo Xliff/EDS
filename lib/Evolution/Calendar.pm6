@@ -1,4 +1,4 @@
-use v6.c;
+Ssuuse v6.c;
 
 use NativeCall;
 
@@ -1080,8 +1080,6 @@ class Evolution::Calendar is Evolution::Client {
     e_cal_client_get_local_attachment_store($!ecal);
   }
 
-  # ...
-
   proto method get_object (|)
   { * }
 
@@ -1107,7 +1105,14 @@ class Evolution::Calendar is Evolution::Client {
                  &callback,
     gpointer     $user_data    = gpointer
   ) {
-    e_cal_client_get_object($!ecal, $uid, $rid, $cancellable, $callback, $user_data);
+    e_cal_client_get_object(
+      $!ecal,
+      $uid,
+      $rid,
+      $cancellable,
+      $callback,
+      $user_data
+    );
   }
 
   proto method get_object_finish (|)
@@ -1145,60 +1150,607 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_object_list (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_get_object_list($!ecal, $sexp, $cancellable, $callback, $user_data);
+  proto method get_object_list (|)
+  { * }
+
+  multi method get_object_list (
+    Str()          $sexp,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $sexp,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method get_object_list (
+    Str()          $sexp,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data = gpointer
+  ) {
+    e_cal_client_get_object_list(
+      $!ecal,
+      $sexp,
+      $cancellable,
+      $callback,
+      $user_data
+    );
   }
 
-  method get_object_list_as_comps (Str $sexp, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_get_object_list_as_comps($!ecal, $sexp, $cancellable, $callback, $user_data);
+  # ...
+
+  proto method get_object_list_as_comps (|)
+  { * }
+
+  multi method get_object_list_as_comps (
+    Str()          $sexp,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $sexp,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method get_object_list_as_comps (
+    Str()          $sexp,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data    = gpointer
+  ) {
+    e_cal_client_get_object_list_as_comps(
+      $!ecal,
+      $sexp,
+      $cancellable,
+      $callback,
+      $user_data
+    );
   }
 
-  method get_object_list_as_comps_finish (GAsyncResult $result, GSList $out_ecalcomps, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_object_list_as_comps_finish($!ecal, $result, $out_ecalcomps, $error);
+  proto method get_object_list_as_comps_finish (|)
+  { * }
+
+  multi method get_object_list_as_comps_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    (my $oe = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith($result, $oe, $error, :all, :$glist, :$raw);
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_object_list_as_comps_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GSList]] $out_ecalcomps,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_object_list_as_comps_finish(
+      $!ecal,
+      $result,
+      $out_ecalcomps,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      returnGList(
+        ppr($out_ecalcomps),
+        $glist,
+        $raw,
+        ECalComponent,
+        Evolution::Calendar::Component
+      )
+    );
   }
 
-  method get_object_list_as_comps_sync (Str $sexp, GSList $out_ecalcomps, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_object_list_as_comps_sync($!ecal, $sexp, $out_ecalcomps, $cancellable, $error);
+  proto method get_object_list_as_comps_sync (|)
+  { * }
+
+  multi method get_object_list_as_comps_sync (
+    Str()                   $sexp,
+    CArray[Pointer[GError]] $error          = gerror
+    GCancellable()          :$cancellable   = GCancellable,
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    (my $oe = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith(
+      $sexp,
+      $oe,
+      $cancellable
+      $error
+      :all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_object_list_as_comps_sync (
+    Str()                   $sexp,
+    CArray[Pointer[GSList]] $out_ecalcomps,
+    GCancellable()          $cancellable    = GCancellable,
+    CArray[Pointer[GError]] $error          = gerror
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_object_list_as_comps_sync(
+      $!ecal,
+      $sexp,
+      $out_ecalcomps,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      returnGList(
+        ppr($out_ecalcomps),
+        $glist,
+        $raw,
+        ECalComponent,
+        Evolution::Calendar::Component
+      )
+    );
   }
 
-  method get_object_list_finish (GAsyncResult $result, GSList $out_icalcomps, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_object_list_finish($!ecal, $result, $out_icalcomps, $error);
+  proto method get_object_list_finish (|)
+  { * }
+
+  multi method get_object_list_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    (my $oe = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith(
+      $result,
+      $oe,
+      $error
+      :all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_object_list_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GSList]] $out_icalcomps,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_object_list_finish(
+      $!ecal,
+      $result,
+      $out_icalcomps,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      returnGList(
+        ppr($out_ecalcomps),
+        $glist,
+        $raw,
+        ICalComponent,
+        ICal::Component
+      )
+    );
   }
 
-  method get_object_list_sync (Str $sexp, GSList $out_icalcomps, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_object_list_sync($!ecal, $sexp, $out_icalcomps, $cancellable, $error);
+  proto method get_object_list_sync (|)
+  { * }
+
+  multi method get_object_list_sync (
+    Str()                   $sexp,
+    CArray[Pointer[GError]] $error          = gerror,
+    GCancellable ()         :$cancellable   = GCancellable,
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    (my $oe = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith(
+      $sexp,
+      $oi,
+      $cancellable
+      $error
+      :$all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_object_list_sync (
+    Str()                   $sexp,
+    CArray[Pointer[GSList]] $out_icalcomps,
+    GCancellable ()         $cancellable    = GCancellable,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_object_list_sync(
+      $!ecal,
+      $sexp,
+      $out_icalcomps,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      returnGList(
+        ppr($out_icalcomps),
+        $glist,
+        $raw,
+        ICalComponent,
+        ICal::Component
+      )
+    );
   }
 
-  method get_object_sync (Str $uid, Str $rid, ICalComponent $out_icalcomp, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_object_sync($!ecal, $uid, $rid, $out_icalcomp, $cancellable, $error);
+  proto method get_object_sync (|)
+  { * }
+
+  multi method get_object_sync (
+    Str()                          $uid,
+    Str()                          $rid,
+    CArray[Pointer[GError]]        $error         = gerror
+    GCancellable()                 :$cancellable  = GCancellable,
+                                   :$raw          = False
+  ) {
+    (my $oi = CArray[Pointer[ICalComponent]])[0] = Pointer[ICalComponent];
+
+    my $rv = samewith(
+      $uid,
+      $rid,
+      $oi,
+      $cancellable
+      $error
+      :all
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_object_sync (
+    Str()                          $uid,
+    Str()                          $rid,
+    CArray[Pointer[ICalComponent]] $out_icalcomp,
+    GCancellable()                 $cancellable   = GCancellable,
+    CArray[Pointer[GError]]        $error         = gerror
+                                   :$all          = False
+                                   :$raw          = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_object_sync(
+      $!ecal,
+      $uid,
+      $rid,
+      $out_icalcomp,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    my $oi = ppr($out_icalcomp);
+    (
+      $rv,
+      $oi ??
+        ( $raw ?? $oi !! ICal::Component.new($oi) )
+        !!
+        Nil
+    );
   }
 
-  method get_objects_for_uid (Str $uid, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
-    e_cal_client_get_objects_for_uid($!ecal, $uid, $cancellable, $callback, $user_data);
+  proto method get_objects_for_uid (|)
+  { * }
+  multi method get_objects_for_uid (
+    Str()          $uid,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $uid,
+      $cancellable,
+      &callback,
+      $user_data
+    )
+  }
+  multi method get_objects_for_uid (
+    Str()          $uid,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data    = gpointer
+  ) {
+    e_cal_client_get_objects_for_uid(
+      $!ecal,
+      $uid,
+      $cancellable,
+      $callback,
+      $user_data
+    );
   }
 
-  method get_objects_for_uid_finish (GAsyncResult $result, GSList $out_ecalcomps, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_objects_for_uid_finish($!ecal, $result, $out_ecalcomps, $error);
+  proto method get_objects_for_uid_finish (|)
+  { * }
+
+  multi method get_objects_for_uid_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    (my $oe = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith(
+      $result,
+      $oe,
+      $error
+      :all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  method get_objects_for_uid_finish (
+    GAsyncResult()          $result,
+    CArray[Pointer[GSList]] $out_ecalcomps,
+    CArray[Pointer[GError]] $error          = gerror,
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False,
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_objects_for_uid_finish(
+      $!ecal,
+      $result,
+      $out_ecalcomps,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      returnGList(
+        ppr($out_ecalcomps),
+        $glist,
+        $raw,
+        ECalComponent,
+        Evolution::Calendar::Component
+      )
+    );
   }
 
-  method get_objects_for_uid_sync (Str $uid, GSList $out_ecalcomps, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_objects_for_uid_sync($!ecal, $uid, $out_ecalcomps, $cancellable, $error);
+  proto method get_objects_for_uid_sync (|)
+  { * }
+
+  multi method get_objects_for_uid_sync (
+    Str()                   $uid,
+    CArray[Pointer[GError]] $error          = gerror
+    GCancellable            :$cancellable   = GCancellable,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    (my $oe = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
+
+    my $rv = samewith(
+      $uid,
+      $oe,
+      $cancellable,
+      $error,
+      :all
+      :$glist
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+
+  multi method get_objects_for_uid_sync (
+    Str()                   $uid,
+    CArray[GSList]]         $out_ecalcomps,
+    GCancellable()          $cancellable    = GCancellable,
+    CArray[Pointer[GError]] $error          = gerror
+                            :$all           = False,
+                            :$glist         = False,
+                            :$raw           = False
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_get_objects_for_uid_sync(
+      $!ecal,
+      $uid,
+      $out_ecalcomps,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      returnGList(
+        ppr($out_ecalcomps),
+        $glist,
+        $raw,
+        ECalComponent,
+        Evolution::Calendar::Component
+      )
+    );
   }
 
   method get_source_type {
     ECalClientSourceTypeEnum( e_cal_client_get_source_type($!ecal) );
   }
 
-  method get_timezone (Str $tzid, GCancellable $cancellable, GAsyncReadyCallback $callback, gpointer $user_data) {
+  proto method get_timezone (|)
+  { * }
+
+  multi method get_timezone (
+    Str()          $tzid,
+                   &callback,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
+  ) {
+    samewith(
+      $tzid,
+      $cancellable,
+      &callback,
+      $user_data
+    );
+  }
+  multi method get_timezone (
+    Str()          $tzid,
+    GCancellable() $cancellable,
+                   &callback,
+    gpointer       $user_data    = gpointer
+  ) {
     e_cal_client_get_timezone($!ecal, $tzid, $cancellable, $callback, $user_data);
   }
 
-  method get_timezone_finish (GAsyncResult $result, ICalTimezone $out_zone, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_timezone_finish($!ecal, $result, $out_zone, $error);
+  proto method get_timezone_finish (|)
+  { * }
+
+  method get_timezone_finish (
+    GAsyncResult()                $result,
+    CArray[Pointer[GError]]       $error   = gerror,
+                                  :$raw    = False
+  ) {
+    (my $oz = CArray[Pointer[ICalTimezone]].new)[0] = Pointer[ICalTimezone];
+
+    my $rv = samewith(
+      $result,
+      $out_zone,
+      $error,
+      :all,
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  method get_timezone_finish (
+    GAsyncResult()                $result,
+    CArray[Pointer[ICalTimezone]] $out_zone,
+    CArray[Pointer[GError]]       $error     = gerror,
+                                  :$all      = False,
+                                  :$raw      = False
+  ) {
+    clear_error;
+    my $rv = so e_cal_client_get_timezone_finish(
+      $!ecal,
+      $result,
+      $out_zone,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      $oi ??
+        ( $raw ?? $oi !! ICal::Timezone.new($oi) )
+        !!
+        Nil
+    );
   }
 
-  method get_timezone_sync (Str $tzid, ICalTimezone $out_zone, GCancellable $cancellable, CArray[Pointer[GError]] $error) {
-    e_cal_client_get_timezone_sync($!ecal, $tzid, $out_zone, $cancellable, $error);
+  proto method get_timezone_sync (|)
+  { * }
+
+  multi method get_timezone_sync (
+    Str()                         $tzid,
+    CArray[Pointer[GError]]       $error        = gerror,
+    GCancellable()                :$cancellable = GCancellable,
+                                  :$raw         = False
+  ) {
+    (my $oz = CArray[Pointer[ICalTimezone]].new)[0] = Pointer[ICalTimezone];
+
+    my $rv = samewith(
+      $tzid,
+      $out_zone,
+      $cancellable,
+      $error,
+      :all,
+      :$raw
+    );
+
+    $rv[0] ?? $rv[1] !! Nil;
+  }
+  multi method get_timezone_sync (
+    Str()                         $tzid,
+    CArray[Pointer[ICalTimezone]] $out_zone,
+    GCancellable()                $cancellable  = GCancellable,
+    CArray[Pointer[GError]]       $error        = gerror,
+                                  :$all         = False,
+                                  :$raw         = False
+  ) {
+    clear_error;
+    my $rv = e_cal_client_get_timezone_sync(
+      $!ecal,
+      $tzid,
+      $out_zone,
+      $cancellable,
+      $error
+    );
+    set_error($error);
+
+    return $rv unless $all;
+
+    (
+      $rv,
+      $oi ??
+        ( $raw ?? $oi !! ICal::Timezone.new($oi) )
+        !!
+        Nil
+    );
   }
 
   method get_type {
