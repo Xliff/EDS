@@ -50,7 +50,7 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   multi method add_timezone (
-    ICalTimezone() $zone,
+    icaltimezone() $zone,
                    &callback,
     gpointer       $user_data    = gpointer,
     GCancellable() :$cancellable = GCancellable
@@ -58,7 +58,7 @@ class Evolution::Calendar is Evolution::Client {
     samewith($zone. $cancellable, &callback, $user_data);
   }
   multi method add_timezone (
-    ICalTimezone() $zone,
+    icaltimezone() $zone,
     GCancellable() $cancellable,
                    &callback,
     gpointer       $user_data    = gpointer
@@ -77,7 +77,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   method add_timezone_sync (
-    ICalTimezone()          $zone,
+    icaltimezone()          $zone,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
   ) {
@@ -179,7 +179,7 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   method create_object (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $opflags,
                     &callback,
     gpointer        $user_data    = gpointer,
@@ -194,7 +194,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   method create_object (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $opflags,
     GCancellable()  $cancellable,
                     &callback,
@@ -248,7 +248,7 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   multi method create_object_sync (
-    ICalComponent()         $icalcomp,
+    icalcomponent()         $icalcomp,
     Int()                   $opflags,
     CArray[Pointer[GError]] $error        = gerror,
     GCancellable            :$cancellable = GCancellable
@@ -267,7 +267,7 @@ class Evolution::Calendar is Evolution::Client {
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method create_object_sync (
-    ICalComponent           $icalcomp,
+    icalcomponent()         $icalcomp,
     Int()                   $opflags,
     CArray[Str]             $out_uid,
     GCancellable()          $cancellable  = GCancellable,
@@ -542,7 +542,7 @@ class Evolution::Calendar is Evolution::Client {
   proto method generate_instances_for_object (|)
 
   multi method generate_instances_for_object (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $start,
     Int()           $end,
                     &cb,
@@ -561,7 +561,7 @@ class Evolution::Calendar is Evolution::Client {
     )
   }
   multi method generate_instances_for_object (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $start,
     Int()           $end,
     GCancellable()  $cancellable,
@@ -587,7 +587,7 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   multi method generate_instances_for_object_sync (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $start,
     Int()           $end,
                     &cb,
@@ -604,7 +604,7 @@ class Evolution::Calendar is Evolution::Client {
     )
   }
   multi method generate_instances_for_object_sync (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $start,
     Int()           $end,
     GCancellable()  $cancellable,
@@ -802,7 +802,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_component_as_string (ICalComponent() $icalcomp) {
+  method get_component_as_string (icalcomponent() $icalcomp) {
     e_cal_client_get_component_as_string($!ecal, $icalcomp);
   }
 
@@ -836,14 +836,14 @@ class Evolution::Calendar is Evolution::Client {
     GAsyncResult()                 $result,
     CArray[Pointer[GError]]        $error         = gerror
   ) {
-    (my $oi = CArray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent];
+    (my $oi = CArray[Pointer[icalcomponent]].new)[0] = Pointer[icalcomponent];
     my $rv = samewith($result, $oi, $error);
 
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method get_default_object_finish (
     GAsyncResult()                 $result,
-    CArray[Pointer[ICalComponent]] $out_icalcomp,
+    CArray[Pointer[icalcomponent]] $out_icalcomp,
     CArray[Pointer[GError]]        $error         = gerror,
                                    :$all          = False,
                                    :$raw          = False
@@ -878,14 +878,14 @@ class Evolution::Calendar is Evolution::Client {
                                    :$all          = False,
                                    :$raw          = False
   ) {
-    (my $oi = CArray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent];
+    (my $oi = CArray[Pointer[icalcomponent]].new)[0] = Pointer[icalcomponent];
 
     my $rv = samewith($oi, $cancellable, $error, :all, :$raw);
 
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method get_default_object_sync (
-    CArray[Pointer[ICalComponent]] $out_icalcomp,
+    CArray[Pointer[icalcomponent]] $out_icalcomp,
     GCancellable()                 $cancellable   = GCancellable,
     CArray[Pointer[GError]]        $error         = gerror,
                                    :$all          = False,
@@ -1122,14 +1122,14 @@ class Evolution::Calendar is Evolution::Client {
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error         = gerror
   ) {
-    my $oi = ICalComponent.new;
+    my $oi = icalcomponent.new;
     my $rv = samewith($result, $oi, $error, :all);
 
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method get_object_finish (
     GAsyncResult()          $result,
-    ICalComponent()         $out_icalcomp,
+    icalcomponent()         $out_icalcomp,
     CArray[Pointer[GError]] $error         = gerror,
                             :$all          = False
   ) {
@@ -1365,7 +1365,7 @@ class Evolution::Calendar is Evolution::Client {
         ppr($out_ecalcomps),
         $glist,
         $raw,
-        ICalComponent,
+        icalcomponent,
         ICal::Component
       )
     );
@@ -1423,7 +1423,7 @@ class Evolution::Calendar is Evolution::Client {
         ppr($out_icalcomps),
         $glist,
         $raw,
-        ICalComponent,
+        icalcomponent,
         ICal::Component
       )
     );
@@ -1439,7 +1439,7 @@ class Evolution::Calendar is Evolution::Client {
     GCancellable()                 :$cancellable  = GCancellable,
                                    :$raw          = False
   ) {
-    (my $oi = CArray[Pointer[ICalComponent]])[0] = Pointer[ICalComponent];
+    (my $oi = CArray[Pointer[icalcomponent]])[0] = Pointer[icalcomponent];
 
     my $rv = samewith(
       $uid,
@@ -1456,7 +1456,7 @@ class Evolution::Calendar is Evolution::Client {
   multi method get_object_sync (
     Str()                          $uid,
     Str()                          $rid,
-    CArray[Pointer[ICalComponent]] $out_icalcomp,
+    CArray[Pointer[icalcomponent]] $out_icalcomp,
     GCancellable()                 $cancellable   = GCancellable,
     CArray[Pointer[GError]]        $error         = gerror
                                    :$all          = False
@@ -1871,7 +1871,7 @@ class Evolution::Calendar is Evolution::Client {
   proto method modify_object (|)
 
   multi method modify_object (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $mod,
     Int()           $opflags,
                     &callback,
@@ -1888,7 +1888,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   multi method modify_object (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $mod,
     Int()           $opflags,
     GCancellable()  $cancellable,
@@ -1920,7 +1920,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   method modify_object_sync (
-    ICalComponent()         $icalcomp,
+    icalcomponent()         $icalcomp,
     Int()                   $mod,
     Int()                   $opflags,
     GCancellable()          $cancellable = GCancellable,
@@ -2018,7 +2018,7 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   method receive_objects (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $opflags,
     GCancellable    $cancellable,
                     &callback,
@@ -2033,7 +2033,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   method receive_objects (
-    ICalComponent() $icalcomp,
+    icalcomponent() $icalcomp,
     Int()           $opflags,
     GCancellable    $cancellable,
                     &callback,
@@ -2062,7 +2062,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   multi method receive_objects_sync (
-    ICalComponent()         $icalcomp,
+    icalcomponent()         $icalcomp,
     Int()                   $opflags,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
@@ -2238,7 +2238,7 @@ class Evolution::Calendar is Evolution::Client {
   { * }
 
   multi method send_objects (
-    ICalComponent()  $icalcomp,
+    icalcomponent()  $icalcomp,
     Int()            $opflags,
                      &callback,
     gpointer         $user_data    = gpointer,
@@ -2253,7 +2253,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   multi method send_objects (
-    ICalComponent()  $icalcomp,
+    icalcomponent()  $icalcomp,
     Int()            $opflags,
     GCancellable()   $cancellable,
                      &callback,
@@ -2282,7 +2282,7 @@ class Evolution::Calendar is Evolution::Client {
   ) {
     my $ou  = GSList.new;
 
-    (my $omi = CAray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent]];
+    (my $omi = CAray[Pointer[icalcomponent]].new)[0] = Pointer[icalcomponent]];
 
     my $rv = samewith(
       $result,
@@ -2299,7 +2299,7 @@ class Evolution::Calendar is Evolution::Client {
   method send_objects_finish (
     GAsyncResult()                 $result,
     GSList()                       $out_users,
-    CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
+    CArray[Pointer[icalcomponent]] $out_modified_icalcomp,
     CArray[Pointer[GError]]        $error,
                                    :gslist(:$glist)        = False
                                    :$all                   = False,
@@ -2335,7 +2335,7 @@ class Evolution::Calendar is Evolution::Client {
   proto method send_objects_sync (|)
 
   multi method send_objects_sync (
-    ICalComponent()                $icalcomp,
+    icalcomponent()                $icalcomp,
     Int()                          $opflags,
     CArray[Pointer[GError]]        $error                  = gerror,
     GCancellable()                 :$cancellable           = GCancellable,
@@ -2343,7 +2343,7 @@ class Evolution::Calendar is Evolution::Client {
                                    :$raw                   = False
   ) {
     (my $ou  = CArray[Pointer[GSList]].new)[0]        = Pointer[GSList];
-    (my $omi = CArray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent];
+    (my $omi = CArray[Pointer[icalcomponent]].new)[0] = Pointer[icalcomponent];
 
     my $rv = samewith(
       $icalcomp,
@@ -2360,10 +2360,10 @@ class Evolution::Calendar is Evolution::Client {
     $rv[0] ?? $rv.skip(1) !! Nil;
   }
   multi method send_objects_sync (
-    ICalComponent()                $icalcomp,
+    icalcomponent()                $icalcomp,
     Int()                          $opflags,
     CArray[Pointer[GSList]]        $out_users,
-    CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
+    CArray[Pointer[icalcomponent]] $out_modified_icalcomp,
     GCancellable()                 $cancellable            = GCancellable,
     CArray[Pointer[GError]]        $error                  = gerror,
                                    :$all                   = False,
