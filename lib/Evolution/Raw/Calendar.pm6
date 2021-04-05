@@ -17,7 +17,7 @@ sub e_cal_client_add_timezone (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -27,7 +27,7 @@ sub e_cal_client_add_timezone_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -38,37 +38,37 @@ sub e_cal_client_add_timezone_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_check_one_alarm_only (ECalClient $client)
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_check_organizer_must_accept (ECalClient $client)
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_check_organizer_must_attend (ECalClient $client)
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_check_recurrences_no_master (ECalClient $client)
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_check_save_schedules (ECalClient $client)
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -80,7 +80,7 @@ sub e_cal_client_connect (
                        &callback (GObject, GAsyncResult, gpointer),
   gpointer             $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -89,7 +89,7 @@ sub e_cal_client_connect_finish (
   CArray[Pointer[GError]] $error
 )
   returns EClient
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -101,7 +101,7 @@ sub e_cal_client_connect_sync (
   CArray[Pointer[GError]] $error
 )
   returns EClient
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -113,7 +113,7 @@ sub e_cal_client_create_object (
                 &callback (GObject, GAsyncResult, gpointer),
   gpointer      $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -124,7 +124,7 @@ sub e_cal_client_create_object_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -137,7 +137,7 @@ sub e_cal_client_create_object_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -149,7 +149,7 @@ sub e_cal_client_create_objects (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -160,7 +160,7 @@ sub e_cal_client_create_objects_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -173,7 +173,7 @@ sub e_cal_client_create_objects_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -187,7 +187,7 @@ sub e_cal_client_discard_alarm (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -197,7 +197,7 @@ sub e_cal_client_discard_alarm_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -211,25 +211,25 @@ sub e_cal_client_discard_alarm_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_error_create (ECalClientError $code, Str $custom_msg)
   returns GError
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 # sub e_cal_client_error_create_fmt (ECalClientError $code, Str $format, ...)
 #   returns GError
-#   is native(evolutiondataserver)
+#   is native(ecal)
 #   is export
 # { * }
 
 sub e_cal_client_error_to_string (ECalClientError $code)
   returns Str
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -242,7 +242,7 @@ sub e_cal_client_generate_instances (
   gpointer     $cb_data,
                &notify (gpointer)
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -256,7 +256,7 @@ sub e_cal_client_generate_instances_for_object (
   gpointer      $cb_data,
                 &notify (gpointer)
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -269,7 +269,7 @@ sub e_cal_client_generate_instances_for_object_sync (
                 &cb (ECalComponent, time_t, time_t, gpointer --> gboolean),
   gpointer      $cb_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -281,7 +281,7 @@ sub e_cal_client_generate_instances_sync (
                &cb (ECalComponent, time_t, time_t, gpointer --> gboolean),
   gpointer     $cb_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -293,7 +293,7 @@ sub e_cal_client_get_attachment_uris (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -304,7 +304,7 @@ sub e_cal_client_get_attachment_uris_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -317,7 +317,7 @@ sub e_cal_client_get_attachment_uris_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -326,7 +326,7 @@ sub e_cal_client_get_component_as_string (
   ICalComponent $icalcomp
 )
   returns Str
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -335,7 +335,7 @@ sub e_cal_client_get_default_object (ECalClient $client,
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -346,7 +346,7 @@ sub e_cal_client_get_default_object_finish (
   CArray[Pointer[GError]]        $error
   )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -357,13 +357,13 @@ sub e_cal_client_get_default_object_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_get_default_timezone (ECalClient $client)
   returns ICalTimezone
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -376,7 +376,7 @@ sub e_cal_client_get_free_busy (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -387,7 +387,7 @@ sub e_cal_client_get_free_busy_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -401,13 +401,13 @@ sub e_cal_client_get_free_busy_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_get_local_attachment_store (ECalClient $client)
   returns Str
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -419,7 +419,7 @@ sub e_cal_client_get_object (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver
+  is native(ecal
 )
   is export
 { * }
@@ -431,7 +431,7 @@ sub e_cal_client_get_object_finish (
   CArray[Pointer[GError]]        $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -442,7 +442,7 @@ sub e_cal_client_get_object_list (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -453,7 +453,7 @@ sub e_cal_client_get_object_list_as_comps (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -464,7 +464,7 @@ sub e_cal_client_get_object_list_as_comps_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -476,7 +476,7 @@ sub e_cal_client_get_object_list_as_comps_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -487,7 +487,7 @@ sub e_cal_client_get_object_list_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -499,7 +499,7 @@ sub e_cal_client_get_object_list_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -512,7 +512,7 @@ sub e_cal_client_get_object_sync (
   CArray[Pointer[GError]]        $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -523,7 +523,7 @@ sub e_cal_client_get_objects_for_uid (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -534,7 +534,7 @@ sub e_cal_client_get_objects_for_uid_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -546,13 +546,13 @@ sub e_cal_client_get_objects_for_uid_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_get_source_type (ECalClient $client)
   returns ECalClientSourceType
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -563,7 +563,7 @@ sub e_cal_client_get_timezone (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -574,7 +574,7 @@ sub e_cal_client_get_timezone_finish (
   CArray[Pointer[GError]]       $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -586,13 +586,13 @@ sub e_cal_client_get_timezone_sync (
   CArray[Pointer[GError]]       $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_get_type ()
   returns GType
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -603,7 +603,7 @@ sub e_cal_client_get_view (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -614,7 +614,7 @@ sub e_cal_client_get_view_finish (
   CArray[Pointer[GError]]         $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -626,7 +626,7 @@ sub e_cal_client_get_view_sync (
   CArray[Pointer[GError]]         $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -639,7 +639,7 @@ sub e_cal_client_modify_object (
                  &callback (GObject, GAsyncResult, gpointer),
   gpointer       $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -649,7 +649,7 @@ sub e_cal_client_modify_object_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -662,7 +662,7 @@ sub e_cal_client_modify_object_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -675,7 +675,7 @@ sub e_cal_client_modify_objects (
                  &callback (GObject, GAsyncResult, gpointer),
   gpointer       $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -685,7 +685,7 @@ sub e_cal_client_modify_objects_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -698,7 +698,7 @@ sub e_cal_client_modify_objects_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -710,7 +710,7 @@ sub e_cal_client_receive_objects (
                 &callback (GObject, GAsyncResult, gpointer),
   gpointer      $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -720,7 +720,7 @@ sub e_cal_client_receive_objects_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -732,7 +732,7 @@ sub e_cal_client_receive_objects_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -746,7 +746,7 @@ sub e_cal_client_remove_object (
                  &callback (GObject, GAsyncResult, gpointer),
   gpointer       $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -756,7 +756,7 @@ sub e_cal_client_remove_object_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -770,7 +770,7 @@ sub e_cal_client_remove_object_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -783,7 +783,7 @@ sub e_cal_client_remove_objects (
                  &callback (GObject, GAsyncResult, gpointer),
   gpointer       $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -793,7 +793,7 @@ sub e_cal_client_remove_objects_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -806,7 +806,7 @@ sub e_cal_client_remove_objects_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -818,7 +818,7 @@ sub e_cal_client_send_objects (
                 &callback (GObject, GAsyncResult, gpointer),
   gpointer      $user_data
 )
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -830,7 +830,7 @@ sub e_cal_client_send_objects_finish (
   CArray[Pointer[GError]]        $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
@@ -844,11 +844,11 @@ sub e_cal_client_send_objects_sync (
   CArray[Pointer[GError]]        $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
 
 sub e_cal_client_set_default_timezone (ECalClient $client, ICalTimezone $zone)
-  is native(evolutiondataserver)
+  is native(ecal)
   is export
 { * }
