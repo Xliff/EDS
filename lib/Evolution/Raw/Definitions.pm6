@@ -22,14 +22,14 @@ constant EListFreeFunc             is export := Pointer;
 
 constant ecal is export = 'ecal-2.0',v1;
 
-class EIterator     is repr<CPointer> is export does GLib::Roles::Pointers { }
+#class EIterator     is repr<CPointer> is export does GLib::Roles::Pointers { }
 
 class CamelMsgPort  is repr<CPointer> is export does GLib::Roles::Pointers { }
 
-class ESource       is repr<CPointer> is export does GLib::Roles::Pointers { }
-class EClient       is repr<CPointer> is export does GLib::Roles::Pointers { }
-class ECalClient    is repr<CPointer> is export does GLib::Roles::Pointers { }
-class ECalComponent is repr<CPointer> is export does GLib::Roles::Pointers { }
+#class ESource       is repr<CPointer> is export does GLib::Roles::Pointers { }
+#class EClient       is repr<CPointer> is export does GLib::Roles::Pointers { }
+#class ECalClient    is repr<CPointer> is export does GLib::Roles::Pointers { }
+#class ECalComponent is repr<CPointer> is export does GLib::Roles::Pointers { }
 
 constant CAMEL_FOLDER_TYPE_BIT         is export = 10;
 

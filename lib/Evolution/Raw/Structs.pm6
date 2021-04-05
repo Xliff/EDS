@@ -2,10 +2,14 @@ use v6.c;
 
 use NativeCall;
 
+use GLib::Compat::Definitions;
 use GLib::Raw::Definitions;
 use GLib::Raw::Object;
 use GLib::Raw::Structs;
+use GLib::Class::TypeModule;
 use GIO::Raw::Definitions;
+use SOUP::Raw::Definitions;
+use SOUP::Class::Auth;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 
@@ -652,8 +656,13 @@ class CamelVeeSummary is repr<CStruct> is export {
 	has Pointer $!priv  ;
 }
 
+class EClient is repr<CStruct> is export {
+	HAS GObject $.parent;
+	has Pointer $!priv  ;
+}
+
 class ECalClient is repr<CStruct> is export {
-	HAS EClient           $!parent;
+	HAS EClient $.parent;
 	has Pointer $!priv  ;
 }
 
@@ -684,11 +693,6 @@ class ECancellableMutex is repr<CStruct> is export {
 class ECancellableRecMutex is repr<CStruct> is export {
 	has ECancellableLocksBase $!base     ;
 	has GRecMutex             $!rec_mutex;
-}
-
-class EClient is repr<CStruct> is export {
-	HAS GObject        $!parent;
-	has Pointer $!priv  ;
 }
 
 class EClientErrorsList is repr<CStruct> is export {
@@ -816,9 +820,35 @@ class ESoupSession is repr<CStruct> is export {
 	has Pointer $!priv  ;
 }
 
+class ESourceExtension is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv;
+}
+
+class ESourceExtensionClass is repr<CStruct> is export {
+  HAS GObjectClass $.parent_class;
+  has Str          $!name;
+
+	method name is rw {
+		Proxy.new:
+			FETCH => -> $           { $!name },
+			STORE => -> $, Str() $n { $!name := $n }
+	}
+}
+
+
 class ESource is repr<CStruct> is export {
 	HAS GObject        $!parent;
 	has Pointer $!priv  ;
+}
+
+class ESourceBackend is repr<CStruct> is export {
+	HAS ESourceExtension      $!parent;
+	has Pointer $!priv  ;
+}
+
+class ESourceBackendClass is repr<CStruct> is export {
+	HAS ESourceExtensionClass $!parent_class;
 }
 
 class ESourceAddressBook is repr<CStruct> is export {
@@ -866,13 +896,13 @@ class ESourceAutoconfigClass is repr<CStruct> is export {
 	HAS ESourceExtensionClass $!parent_class;
 }
 
-class ESourceBackend is repr<CStruct> is export {
-	HAS ESourceExtension      $!parent;
+class ESourceSelectable is repr<CStruct> is export {
+	HAS ESourceBackend           $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESourceBackendClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+class ESourceSelectableClass is repr<CStruct> is export {
+	HAS ESourceBackendClass $!parent_class;
 }
 
 class ESourceCalendar is repr<CStruct> is export {
@@ -927,19 +957,9 @@ class ESourceCredentialsProviderImplPassword is repr<CStruct> is export {
 	has Pointer $!priv  ;
 }
 
-class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> is export {
-	HAS ESourceCredentialsProviderImplClass $!parent_class;
-}
-
-class ESourceExtension is repr<CStruct> is export {
-	HAS GObject                 $!parent;
-	has Pointer $!priv  ;
-}
-
-class ESourceExtensionClass is repr<CStruct> is export {
-	HAS GObjectClass $!parent_class;
-	has Str        $!name        ;
-}
+# class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> is export {
+# 	HAS ESourceCredentialsProviderImplClass $!parent_class;
+# }
 
 class ESourceGoa is repr<CStruct> is export {
 	HAS ESourceExtension  $!parent;
@@ -1122,15 +1142,6 @@ class ESourceSecurityClass is repr<CStruct> is export {
 	HAS ESourceExtensionClass $!parent_class;
 }
 
-class ESourceSelectable is repr<CStruct> is export {
-	HAS ESourceBackend           $!parent;
-	has Pointer $!priv  ;
-}
-
-class ESourceSelectableClass is repr<CStruct> is export {
-	HAS ESourceBackendClass $!parent_class;
-}
-
 class ESourceTaskList is repr<CStruct> is export {
 	HAS ESourceSelectable      $!parent;
 	has Pointer $!priv  ;
@@ -1254,7 +1265,7 @@ class camel_search_word is repr<CStruct> is export {
 class camel_search_words is repr<CStruct> is export {
 	has gint                $!len  ;
 	has camel_search_word_t $!type ;
-	has _camel_search_word  $!words;
+	has camel_search_word  $!words;
 }
 
 class encrypt is repr<CStruct> is export {
