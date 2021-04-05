@@ -1,17 +1,19 @@
 use v6.c;
 
+use NativeCall;
+
 use Evolution::Raw::Types;
 use Evolution::Raw::Client;
 
 use GLib::Error;
 use GLib::GList;
 use GLib::MainContext;
-use EVolution::Source;
+use Evolution::Source;
 
 use GLib::Roles::Object;
 
 our subset EClientAncestry is export of Mu
-  where EClient | GObject
+  where EClient | GObject;
 
 class Evolution::Client {
   also does GLib::Roles::Object;
@@ -190,8 +192,8 @@ class Evolution::Client {
   multi method open (
     Int()          $only_if_exists,
                    &callback,
-    gpointer       $user_data        = gpointer
-    GCancellable() :$cancellable,
+    gpointer       $user_data        = gpointer,
+    GCancellable() :$cancellable     = GCancellable
   )
     is DEPRECATED
   {
@@ -245,8 +247,8 @@ class Evolution::Client {
 
   multi method refresh (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
@@ -280,8 +282,8 @@ class Evolution::Client {
 
   multi method remove (
                  &callback,
-    gpointer     $user_data
-    GCancellable :$cancellable = GCancellable,
+    gpointer     $user_data,
+    GCancellable :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
@@ -310,7 +312,7 @@ class Evolution::Client {
     clear_error;
     my $rv = so e_client_remove_sync($!c, $cancellable, $error);
     set_error($rv);
-    $v;
+    $rv;
   }
 
   proto method retrieve_capabilities (|)
@@ -318,8 +320,8 @@ class Evolution::Client {
 
   multi method retrieve_capabilities (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $cancellable);
   }
@@ -341,14 +343,14 @@ class Evolution::Client {
     my $rv = samewith($result, $, $error, :all);
 
     $rv[0] ?? CStringArrayToArray( $rv[1] ) !! Nil;
-  }s
+  }
   multi method retrieve_capabilities_finish (
     GAsyncResult()          $result,
                             $capabilities is rw,
-    CArray[Pointer[GError]] $error
+    CArray[Pointer[GError]] $error,
                             :$all         =  False
   ) {
-    ($capabilities = CArray[Str].new)[0] Str unless $capabilities;
+    ($capabilities = CArray[Str].new)[0] = Str unless $capabilities;
 
     clear_error;
     my $rv = so e_client_retrieve_capabilities_finish(
@@ -359,7 +361,7 @@ class Evolution::Client {
     );
     set_error($error);
 
-    $all.not $rv !! ($rv, $capabilities);
+    $all.not ?? $rv !! ($rv, $capabilities);
   }
 
   proto method retrieve_capabilities_sync (|)
@@ -367,12 +369,12 @@ class Evolution::Client {
 
   multi method retrieve_capabilities_sync (
     CArray[Pointer[GError]] $error        = gerror,
-                            :$raw         = False
-    GCancellable()          :$cancellable = GCancellable,
+                            :$raw         = False,
+    GCancellable()          :$cancellable = GCancellable
   ) {
     (my $ca = CArray[Str].new)[0] = Str;
 
-    my $rv = samwith($ca, $cancellable, $error, :all);
+    my $rv = samewith($ca, $cancellable, $error, :all);
     return Nil unless $rv[0];
     $raw ?? $rv[1]
          !! CStringArrayToArray( $rv[1] );
@@ -401,8 +403,8 @@ class Evolution::Client {
 
   multi method retrieve_properties (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
@@ -419,7 +421,7 @@ class Evolution::Client {
     CArray[Pointer[GError]] $error   = gerror
   ) {
     clear_error;
-    my $rv = so e_client_retrieve_properties_finish($!c, $result, $error)
+    my $rv = so e_client_retrieve_properties_finish($!c, $result, $error);
     set_error($error);
     $rv;
   }
@@ -438,12 +440,12 @@ class Evolution::Client {
     Str()        $prop_name,
     Str()        $prop_value,
                  &callback,
-    gpointer     $user_data    = gpointer
-    GCancellable :$cancellable = GCancellable,
+    gpointer     $user_data    = gpointer,
+    GCancellable :$cancellable = GCancellable
   ) {
     samewith($prop_name, $prop_value, $cancellable, &callback, $user_data);
   }
-  method set_backend_property (
+  multi method set_backend_property (
     Str()          $prop_name,
     Str()          $prop_value,
     GCancellable() $cancellable,
@@ -473,7 +475,7 @@ class Evolution::Client {
   method set_backend_property_sync (
     Str()                   $prop_name,
     Str()                   $prop_value,
-    GCancellable()          $cancellable = GCancellale,
+    GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
   ) {
     clear_error;
@@ -492,10 +494,13 @@ class Evolution::Client {
     e_client_set_bus_name($!c, $bus_name);
   }
 
+  # cw: -XXX- Might be missing a multi, here.
   method unwrap_dbus_error (
     GError                  $dbus_error,
     CArray[Pointer[GError]] $out_error
-  ) {
+  )
+    is DEPRECATED
+  {
     e_client_unwrap_dbus_error($!c, $dbus_error, $out_error);
   }
 
@@ -609,21 +614,23 @@ class Evolution::Client::Util {
     samewith(
       $dbus_error,
       $ce,
-      GLib::Roles::TypedBuffer[GError].new(@known_errors).p
+      GLib::Roles::TypedBuffer[GError].new(@known_errors).p,
       @known_errors.elems,
       $known_errors_domain,
       $fail_when_none_matched
     );
   }
   multi method unwrap_dbus_error (
-    GError  $dbus_error,
-            $client_error            is rw  #= CArray[Pointer[GError], but not to be used as the global error!,
-    Pointer $known_errors,                  #= EClientList *
-    Int()   $known_errors_count,
-    GQuark  $known_errors_domain,
-    Int()   $fail_when_none_matched
-            :$all                    =  False
-  ) {
+    GError   $dbus_error,
+             $client_error            is rw,  #= CArray[Pointer[GError], but not to be used as the global error!,
+    gpointer $known_errors,                   #= EClientList *
+    Int()    $known_errors_count,
+    GQuark   $known_errors_domain,
+    Int()    $fail_when_none_matched,
+             :$all                    =  False
+  )
+    is DEPRECATED
+  {
     my guint    $ec = $known_errors_count;
     my gboolean $f  = $fail_when_none_matched.so.Int;
 
