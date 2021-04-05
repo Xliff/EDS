@@ -6,7 +6,7 @@ use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use ICal::Raw::Definitions;
 
-unit package Evolution::Raw::Component;
+unit package Evolution::Raw::Calendar::Component;
 
 ### /usr/include/evolution-data-server/libecal/e-cal-component.h
 
