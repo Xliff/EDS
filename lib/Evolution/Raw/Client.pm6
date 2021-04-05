@@ -326,7 +326,7 @@ sub e_client_set_bus_name (EClient $client, Str $bus_name)
 
 sub e_client_unwrap_dbus_error (
   EClient                 $client,
-  CArray[Pointer[GError]] $dbus_error,
+  GError                  $dbus_error,
   CArray[Pointer[GError]] $out_error
 )
   is native(eds)
@@ -374,7 +374,7 @@ sub e_client_util_strv_to_slist (Str $strv)
 { * }
 
 sub e_client_util_unwrap_dbus_error (
-  CArray[Pointer[GError]] $dbus_error,
+  GError                  $dbus_error,
   CArray[Pointer[GError]] $client_error,
   EClientErrorsList       $known_errors,
   guint                   $known_errors_count,
