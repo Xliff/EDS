@@ -1,14 +1,14 @@
 use v6.c;
 
 use GLib::Raw::Definitions;
-use Evolution::Raw::Defintions;
+use Evolution::Raw::Definitions;
 
 unit package Evolution::Raw::Enums;
 
 constant CAMEL_STORE_INFO_FOLDER_TYPE_BIT is export = 10;
 
-constant  is export := guint32;
-our enum Enum is export <
+constant EOAuth2ServiceNavigationPolicy is export := guint32;
+our enum EOAuth2ServiceNavigationPolicyEnum is export <
   E_OAUTH2_SERVICE_NAVIGATION_POLICY_DENY
   E_OAUTH2_SERVICE_NAVIGATION_POLICY_ALLOW
   E_OAUTH2_SERVICE_NAVIGATION_POLICY_ABORT
@@ -521,7 +521,7 @@ our enum CamelStoreInfoFlagsEnum is export (
   CAMEL_STORE_INFO_FOLDER_TYPE_TASKS    =>  9 +< CAMEL_STORE_INFO_FOLDER_TYPE_BIT,
   CAMEL_STORE_INFO_FOLDER_TYPE_ALL      => 10 +< CAMEL_STORE_INFO_FOLDER_TYPE_BIT,
   CAMEL_STORE_INFO_FOLDER_TYPE_ARCHIVE  => 11 +< CAMEL_STORE_INFO_FOLDER_TYPE_BIT,
-  CAMEL_STORE_INFO_FOLDER_TYPE_DRAFTS   => 12 +< CAMEL_STORE_4_BIT,
+  CAMEL_STORE_INFO_FOLDER_TYPE_DRAFTS   => 12 +< CAMEL_STORE_INFO_FOLDER_TYPE_BIT,
   CAMEL_STORE_INFO_FOLDER_READONLY      =>                                1 +< 16,
   CAMEL_STORE_INFO_FOLDER_WRITEONLY     =>                                1 +< 17,
   CAMEL_STORE_INFO_FOLDER_FLAGGED       =>                                1 +< 18,
@@ -901,6 +901,19 @@ our enum EWebDAVACLRestrictionsEnum is export (
   E_WEBDAV_ACL_RESTRICTION_REQUIRED_PRINCIPAL => 1 +< 3,
 );
 
+constant EWebDAVResourceSupports is export := guint32;
+our enum EWebDAVResourceSupportsEnum is export (
+  E_WEBDAV_RESOURCE_SUPPORTS_NONE         =>                                       0,
+  E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS     =>                                  1 +< 0,
+  E_WEBDAV_RESOURCE_SUPPORTS_EVENTS       =>                                  1 +< 1,
+  E_WEBDAV_RESOURCE_SUPPORTS_MEMOS        =>                                  1 +< 2,
+  E_WEBDAV_RESOURCE_SUPPORTS_TASKS        =>                                  1 +< 3,
+  E_WEBDAV_RESOURCE_SUPPORTS_FREEBUSY     =>                                  1 +< 4,
+  E_WEBDAV_RESOURCE_SUPPORTS_TIMEZONE     =>                                  1 +< 5,
+  E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES =>                                  1 +< 6,
+  E_WEBDAV_RESOURCE_SUPPORTS_LAST         =>                                  1 +< 6
+);
+
 constant EWebDAVDiscoverSupports is export := guint32;
 our enum EWebDAVDiscoverSupportsEnum is export (
   E_WEBDAV_DISCOVER_SUPPORTS_NONE                   =>                        E_WEBDAV_RESOURCE_SUPPORTS_NONE,
@@ -910,7 +923,7 @@ our enum EWebDAVDiscoverSupportsEnum is export (
   E_WEBDAV_DISCOVER_SUPPORTS_TASKS                  =>                       E_WEBDAV_RESOURCE_SUPPORTS_TASKS,
   E_WEBDAV_DISCOVER_SUPPORTS_WEBDAV_NOTES           =>                E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES,
   E_WEBDAV_DISCOVER_SUPPORTS_CALENDAR_AUTO_SCHEDULE =>                   E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1,
-  E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   => E_WEBDAV_DISCOVER_SUPPORTS_CALENDAR_AUTO_SCHEDULE +< 1,
+  E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   =>          ( E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1 ) +< 1,
 );
 
 constant EWebDAVLockScope is export := guint32;
@@ -961,19 +974,6 @@ our enum EWebDAVResourceKindEnum is export <
   E_WEBDAV_RESOURCE_KIND_SUBSCRIBED_ICALENDAR
   E_WEBDAV_RESOURCE_KIND_WEBDAV_NOTES
 >;
-
-constant EWebDAVResourceSupports is export := guint32;
-our enum EWebDAVResourceSupportsEnum is export (
-  E_WEBDAV_RESOURCE_SUPPORTS_NONE         =>                                       0,
-  E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS     =>                                  1 +< 0,
-  E_WEBDAV_RESOURCE_SUPPORTS_EVENTS       =>                                  1 +< 1,
-  E_WEBDAV_RESOURCE_SUPPORTS_MEMOS        =>                                  1 +< 2,
-  E_WEBDAV_RESOURCE_SUPPORTS_TASKS        =>                                  1 +< 3,
-  E_WEBDAV_RESOURCE_SUPPORTS_FREEBUSY     =>                                  1 +< 4,
-  E_WEBDAV_RESOURCE_SUPPORTS_TIMEZONE     =>                                  1 +< 5,
-  E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES =>                                  1 +< 6,
-  E_WEBDAV_RESOURCE_SUPPORTS_LAST         => E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES,
-);
 
 constant EXmlHashStatus is export := guint32;
 our enum EXmlHashStatusEnum is export <
