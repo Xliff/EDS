@@ -21,6 +21,7 @@ constant EListCopyFunc             is export := Pointer;
 constant EListFreeFunc             is export := Pointer;
 
 constant ecal is export = 'ecal-2.0',v1;
+constant eds  is export = 'edataserver-1.2',v25;
 
 #class EIterator     is repr<CPointer> is export does GLib::Roles::Pointers { }
 
@@ -30,6 +31,7 @@ class CamelMsgPort  is repr<CPointer> is export does GLib::Roles::Pointers { }
 #class EClient       is repr<CPointer> is export does GLib::Roles::Pointers { }
 #class ECalClient    is repr<CPointer> is export does GLib::Roles::Pointers { }
 #class ECalComponent is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ENamedParameters is repr<CPointer> is export does GLib::Roles::Pointers { }
 
 constant CAMEL_FOLDER_TYPE_BIT         is export = 10;
 
