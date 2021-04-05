@@ -2,9 +2,10 @@ use v6.c;
 
 use NativeCall;
 
+use ICal::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
-use ICal::Raw::Definitions;
+use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Calendar::Component;
 
