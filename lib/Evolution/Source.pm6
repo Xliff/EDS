@@ -1,16 +1,18 @@
 use v6.c;
 
-use EDS::Raw::Types;
-use EDS::Raw::Server;
+use NativeCall;
 
-use GIO::Roles::Initiable;
+use Evolution::Raw::Types;
+use Evolution::Raw::Source;
+
+use GLib::Roles::Object;
+use GIO::Roles::Initable;
 use GIO::Roles::ProxyResolver;
-use GIO::Roles::Object;
 
 our subset ESourceAncestry is export of Mu
   where ESource | GInitable | GProxyResolver | GObject;
 
-class EDS::Source {
+class Evolution::Source {
   also does GLib::Roles::Object;
   also does GIO::Roles::Initable;
   also does GIO::Roles::ProxyResolver;
@@ -32,7 +34,7 @@ class EDS::Source {
 
       when GInitable {
         $to-parent = cast(GObject, $_);
-        $!init = $_;
+        $!i = $_;
         cast(ESource, $_);
       }
 
@@ -55,10 +57,10 @@ class EDS::Source {
   method EDS::Raw::Definitions::Source
   { $!s }
 
-  method new (ESourceAncestry $source, :$ref = True) {
-    return Nil unless $source
+  multi method new (ESourceAncestry $source, :$ref = True) {
+    return Nil unless $source;
 
-    my $o = self.bless( :$source )
+    my $o = self.bless( :$source );
     $o.ref if $ref;
     $o;
   }
@@ -106,12 +108,12 @@ class EDS::Source {
                    &callback,
     gpointer       $user_data = gpointer
   ) {
-    e_source_delete_password($!s, $cancellable, $callback, $user_data);
+    e_source_delete_password($!s, $cancellable, &callback, $user_data);
   }
 
   method delete_password_finish (
     GAsyncResult()          $result,
-    CArray[Pointer[GError]] $error   = GError
+    CArray[Pointer[GError]] $error   = gerror
   ) {
     clear_error;
     my $rv = so e_source_delete_password_finish($!s, $result, $error);
@@ -142,7 +144,7 @@ class EDS::Source {
     Int()  $reason,
     Str()  $certificate_pem,
     Int()  $certificate_errors,
-    GError $op_error            = GError
+    GError $op_error            = gerror
   ) {
     e_source_emit_credentials_required(
       $!s,
@@ -166,8 +168,8 @@ class EDS::Source {
 
   multi method get_last_credentials_required_arguments (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
@@ -179,7 +181,7 @@ class EDS::Source {
     e_source_get_last_credentials_required_arguments(
       $!s,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -204,8 +206,7 @@ class EDS::Source {
                              $out_certificate_pem     is rw,
                              $out_certificate_errors  is rw,
                              $out_op_error            is rw,
-    CArray[Pointer[GError]]  $error                   =  gerror,
-
+    CArray[Pointer[GError]]  $error                   =  gerror
   ) {
     my GTlsCertificateFlags      $oc   = 0;
     my ESourceCredentialsReason  $or   = 0;
@@ -220,7 +221,7 @@ class EDS::Source {
       $result,
       $or,
       $ocp,
-      $ooce,
+      $oce,
       $ooe,
       $error
     );
@@ -238,6 +239,7 @@ class EDS::Source {
     )
   }
 
+  # cw: -XXX- Look into this, please. Are we missing a multi and some "is rw" params?
   method get_last_credentials_required_arguments_sync (
     Int()                    $out_reason,
     Str                      $out_certificate_pem,
@@ -246,10 +248,9 @@ class EDS::Source {
     GCancellable()           $cancellable             = GCancellable,
     CArray[Pointer[GError]]  $error                   = gerror
   ) {
-    my CArray[Str]              $ocp = CArray[Str].new
+    my CArray[Str]              $ocp = CArray[Str].new;
     my ESourceCredentialsReason $or  = CArray[Str].new;
     my GTlsCertificateFlags     $oce = 0;
-    my                          $oce = CArray[Pointer[GError]].new;
 
     ($or, $ocp, $oce) = (Str, Str, Pointer[GError]);
 
@@ -267,19 +268,19 @@ class EDS::Source {
   proto method get_oauth2_access_token (|)
   { * }
 
-  method get_oauth2_access_token (
+  multi method get_oauth2_access_token (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
-  method get_oauth2_access_token (
+  multi method get_oauth2_access_token (
     GCancellable() $cancellable,
                    &callback,
     gpointer       $user_data = gpointer
   ) {
-    e_source_get_oauth2_access_token($!s, $cancellable, $callback, $user_data);
+    e_source_get_oauth2_access_token($!s, $cancellable, &callback, $user_data);
   }
 
   proto method get_oauth2_access_token_finish (|)
@@ -287,9 +288,9 @@ class EDS::Source {
 
   multi method get_oauth2_access_token_finish (
     GAsyncResult()          $result,
-    CArray[Pointer[GError]] $error   = GError
+    CArray[Pointer[GError]] $error   = gerror
   ) {
-    samewith($result, $, $, $error);
+    my $rv = samewith($result, $, $, $error);
 
     $rv[0] ?? $rv.skip(1) !! Nil;
   }
@@ -297,7 +298,7 @@ class EDS::Source {
     GAsyncResult()          $result,
                             $out_access_token is rw,
                             $out_expires_in   is rw,
-    CArray[Pointer[GError]] $error = GError
+    CArray[Pointer[GError]] $error = gerror
   ) {
     my gint $oei = 0;
 
@@ -308,11 +309,11 @@ class EDS::Source {
       $!s,
       $result,
       $oat,
-      $oe,
+      $oei,
       $error
     );
     set_error($error);
-    ($out_access_token, $out_expires_in) = ( ppr($oat), $oe );
+    ($out_access_token, $out_expires_in) = ( ppr($oat), $oei );
     ($rv, $out_access_token, $out_expires_in);
   }
 
@@ -343,7 +344,7 @@ class EDS::Source {
       $oei,
       $error
     );
-    ($out_access_token, $out_expires_in) = ( ppr($oat), $oe );
+    ($out_access_token, $out_expires_in) = ( ppr($oat), $oei );
     ($rv, $out_access_token, $out_expires_in)
   }
 
@@ -483,11 +484,11 @@ class EDS::Source {
     Int()                   $reason,
     Str()                   $certificate_pem,
     Int()                   $certificate_errors,
-    CArray[Pointer[GError]] $error               = gerror
+    CArray[Pointer[GError]] $error               = gerror,
     CArray[Pointer[GError]] :op-error(
                               :$op_error
                             )                    = CArray[Pointer[GError]],
-    GCancellable            :$cancellable        = GCancellable,
+    GCancellable            :$cancellable        = GCancellable
   ) {
     samewith(
       $reason,
@@ -537,7 +538,7 @@ class EDS::Source {
                    &callback,
     gpointer       $user_data   = gpointer
   ) {
-    e_source_lookup_password($!s, $cancellable, $callback, $user_data);
+    e_source_lookup_password($!s, $cancellable, &callback, $user_data);
   }
 
 
@@ -554,14 +555,14 @@ class EDS::Source {
   }
   multi method lookup_password_finish (
     GAsyncResult            $result,
-                            $out_password is rw
+                            $out_password is rw,
     CArray[Pointer[GError]] $error,
                             :$all = False
   ) {
     (my $op = CArray[Str].new)[0] = Str;
 
     clear_error;
-    my $p = e_source_lookup_password_finish(
+    my $rv = e_source_lookup_password_finish(
       $!s,
       $result,
       $op,
@@ -577,17 +578,17 @@ class EDS::Source {
   { * }
 
   multi method lookup_password_sync (
-    CArray[Pointer[GError]] $error        = gerror
-    GCancellableO()         :$cancellable = GCancellable
+    CArray[Pointer[GError]] $error       = gerror,
+    GCancellable()         :$cancellable = GCancellable
   ) {
     my $rv = samewith($cancellable, $, $error);
 
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method lookup_password_sync (
-    GCancellableO()         $cancellable,
+    GCancellable()         $cancellable,
                             $out_password is rw,
-    CArray[Pointer[GError]] $error        =  gerror
+    CArray[Pointer[GError]] $error        =  gerror,
                             :$all         =  False
   ) {
     (my $op = CArray[Str].new)[0] = Str;
@@ -600,8 +601,8 @@ class EDS::Source {
     $all.not ?? $rv !! ($rv, $out_password);
   }
 
-  method parameter_to_key {
-    e_source_parameter_to_key($!s);
+  method parameter_to_key (Str() $param) {
+    e_source_parameter_to_key($param);
   }
 
   method ref_dbus_object (:$raw = False) {
@@ -619,7 +620,7 @@ class EDS::Source {
   multi method remote_create (
     ESource()      $scratch_source,
                    &callback,
-    gpointer       $user_data      = gpointer
+    gpointer       $user_data      = gpointer,
     GCancellable() :$cancellable   = GCancellable
   ) {
     samewith($scratch_source, $cancellable, &callback, $user_data);
@@ -634,7 +635,7 @@ class EDS::Source {
       $!s,
       $scratch_source,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -648,7 +649,7 @@ class EDS::Source {
 
   method remote_create_sync (
     ESource()               $scratch_source,
-    GCancellable()          $cancellable     = GCancellable
+    GCancellable()          $cancellable     = GCancellable,
     CArray[Pointer[GError]] $error           = gerror
   ) {
     e_source_remote_create_sync($!s, $scratch_source, $cancellable, $error);
@@ -691,8 +692,8 @@ class EDS::Source {
 
   multi method remove (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
@@ -701,7 +702,7 @@ class EDS::Source {
                    &callback,
     gpointer       $user_data    = gpointer
   ) {
-    e_source_remove($!s, $cancellable, $callback, $user_data);
+    e_source_remove($!s, $cancellable, &callback, $user_data);
   }
 
   method remove_finish (
@@ -737,7 +738,7 @@ class EDS::Source {
     Str()          $password,
     Int()          $permanently,
                    &callback,
-    gpointer       $user_data,   = gpointer
+    gpointer       $user_data    = gpointer,
     GCancellable() :$cancellable = GCancellable
   ) {
     samewith($password, $permanently, $cancellable, &callback, $user_data);
@@ -816,7 +817,7 @@ class EDS::Source {
     so e_source_unset_last_credentials_required_arguments(
       $!s,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -840,7 +841,7 @@ class EDS::Source {
     CArray[Pointer[GError]] $error       = gerror
   ) {
     so e_source_unset_last_credentials_required_arguments_sync(
-      !s,
+      $!s,
       $cancellable,
       $error
     );
@@ -848,8 +849,8 @@ class EDS::Source {
 
   multi method write (
                    &callback,
-    gpointer       $user_data    = gpointer
-    GCancellable() :$cancellable = GCancellable,
+    gpointer       $user_data    = gpointer,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith($cancellable, &callback, $user_data);
   }
@@ -858,7 +859,7 @@ class EDS::Source {
                    &callback,
     gpointer       $user_data    = gpointer
   ) {
-    e_source_write($!s, $cancellable, $callback, $user_data);
+    e_source_write($!s, $cancellable, &callback, $user_data);
   }
 
   method write_finish (
