@@ -3,6 +3,7 @@ use v6.c;
 use NativeCall;
 
 use Evolution::Raw::Definitions;
+use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Calendar::Component;
 
