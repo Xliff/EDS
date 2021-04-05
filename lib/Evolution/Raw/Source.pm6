@@ -1,16 +1,22 @@
 use v6.c;
 
+use NativeCall;
+
 use GLib::Raw::Definitions;
+use GLib::Raw::Object;
+use GLib::Raw::Structs;
 use GIO::Raw::Definitions;
 use GIO::Raw::Enums;
-use ESD::Raw::Definitions;
+use Evolution::Raw::Definitions;
+use Evolution::Raw::Enums;
+use Evolution::Raw::Structs;
 
-unit package ESD::Raw::Source;
+unit package Evolution::Raw::Source;
 
 ### /usr/include/evolution-data-server/libedataserver/e-source.h
 
 sub e_source_changed (ESource $source)
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -20,7 +26,7 @@ sub e_source_delete_password (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -30,7 +36,7 @@ sub e_source_delete_password_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -40,25 +46,25 @@ sub e_source_delete_password_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_dup_parent (ESource $source)
   returns Str
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_dup_secret_label (ESource $source)
   returns Str
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_dup_uid (ESource $source)
   returns Str
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -69,19 +75,19 @@ sub e_source_emit_credentials_required (
   GTlsCertificateFlags     $certificate_errors,
   CArray[Pointer[GError]]  $op_error
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_get_enabled (ESource $source)
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_get_extension (ESource $source, Str $extension_name)
   returns Pointer
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -91,7 +97,7 @@ sub e_source_get_last_credentials_required_arguments (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -105,7 +111,7 @@ sub e_source_get_last_credentials_required_arguments_finish (
   CArray[Pointer[GError]]  $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -119,7 +125,7 @@ sub e_source_get_last_credentials_required_arguments_sync (
   CArray[Pointer[GError]]  $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -129,7 +135,7 @@ sub e_source_get_oauth2_access_token (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -141,7 +147,7 @@ sub e_source_get_oauth2_access_token_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -153,37 +159,37 @@ sub e_source_get_oauth2_access_token_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_get_remote_creatable (ESource $source)
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_get_type ()
   returns GType
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_get_writable (ESource $source)
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_has_extension (ESource $source, Str $extension_name)
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_hash (ESource $source)
   returns guint
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -194,7 +200,7 @@ sub e_source_invoke_authenticate (
                    &callback (GObject, GAsyncResult, gpointer),
   gpointer         $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -204,7 +210,7 @@ sub e_source_invoke_authenticate_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -215,7 +221,7 @@ sub e_source_invoke_authenticate_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -229,7 +235,7 @@ sub e_source_invoke_credentials_required (
                            &callback (GObject, GAsyncResult, gpointer),
   gpointer                 $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -239,7 +245,7 @@ sub e_source_invoke_credentials_required_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -253,7 +259,7 @@ sub e_source_invoke_credentials_required_sync (
   CArray[Pointer[GError]]  $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -263,7 +269,7 @@ sub e_source_lookup_password (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -274,7 +280,7 @@ sub e_source_lookup_password_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -285,7 +291,7 @@ sub e_source_lookup_password_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -295,19 +301,19 @@ sub e_source_new_with_uid (
   CArray[Pointer[GError]] $error
 )
   returns ESource
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_parameter_to_key (Str $param_name)
   returns Str
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_ref_dbus_object (ESource $source)
   returns GDBusObject
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -315,10 +321,10 @@ sub e_source_remote_create (
   ESource      $source,
   ESource      $scratch_source,
   GCancellable $cancellable,
-               &callback(GObject, GAsyncResult, gpointer),
+               &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -328,7 +334,7 @@ sub e_source_remote_create_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -339,7 +345,7 @@ sub e_source_remote_create_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -349,7 +355,7 @@ sub e_source_remote_delete (
                &callback (GObject, GAsyncResult, gpointer),
                gpointer $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -359,7 +365,7 @@ sub e_source_remote_delete_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -369,7 +375,7 @@ sub e_source_remote_delete_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -379,7 +385,7 @@ sub e_source_remove (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -389,7 +395,7 @@ sub e_source_remove_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -399,7 +405,7 @@ sub e_source_remove_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -407,7 +413,7 @@ sub e_source_set_connection_status (
   ESource $source,
   ESourceConnectionStatus $connection_status
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -419,7 +425,7 @@ sub e_source_store_password (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -429,7 +435,7 @@ sub e_source_store_password_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -441,23 +447,23 @@ sub e_source_store_password_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_to_string (ESource $source, gsize $length)
   returns Str
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_unset_last_credentials_required_arguments (
   ESource      $source,
   GCancellable $cancellable,
-               &callback(GObject, GAsyncResult, gpointer),
+               &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -467,7 +473,7 @@ sub e_source_unset_last_credentials_required_arguments_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -477,7 +483,7 @@ sub e_source_unset_last_credentials_required_arguments_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -487,7 +493,7 @@ sub e_source_write (
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
 )
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -497,7 +503,7 @@ sub e_source_write_finish (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
@@ -507,17 +513,17 @@ sub e_source_write_sync (
   CArray[Pointer[GError]] $error
 )
   returns uint32
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_get_display_name (ESource $source)
   returns Str
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
 
 sub e_source_set_display_name (ESource $source, Str $display_name)
-  is native(evolutiondataserver)
+  is native(eds)
   is export
 { * }
