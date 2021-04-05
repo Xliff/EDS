@@ -39,9 +39,9 @@ class Evolution::Calendar::Componment {
   }
 
   method Evolution::Raw::Definitions::ECalComponent
-  { $!c }
+  { $!ecc }
 
-  method new (ECalComponentAncestry $client, :$ref = True) {
+  multi method new (ECalComponentAncestry $client, :$ref = True) {
     return Nil unless $client;
 
     my $o = self.bless( :$client );
