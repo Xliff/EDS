@@ -26,9 +26,9 @@ need GIO::Raw::Structs;
 need GIO::Raw::Subs;
 need GIO::DBus::Raw::Types;
 need GIO::Raw::Exports;
-need SOUP::Raw::Definitions
-need SOUP::Raw::Enums
-need SOUP::Raw::Subs
+need SOUP::Raw::Definitions;
+need SOUP::Raw::Enums;
+need SOUP::Raw::Subs;
 need Evolution::Raw::Definitions;
 need Evolution::Raw::Enums;
 need Evolution::Raw::Structs;
