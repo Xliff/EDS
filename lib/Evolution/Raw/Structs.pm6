@@ -836,9 +836,8 @@ class ESourceExtensionClass is repr<CStruct> is export {
 	}
 }
 
-
 class ESource is repr<CStruct> is export {
-	HAS GObject        $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
