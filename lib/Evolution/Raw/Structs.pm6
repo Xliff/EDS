@@ -787,6 +787,18 @@ class ENetworkMonitorClass is repr<CStruct> is export {
 	HAS GObjectClass $!parent_class;
 }
 
+class EOAuth2Services is repr<CStruct> is export {
+	HAS GObject $.parent;
+	has Pointer $!priv;
+}
+
+class EOAuth2ServicesClass is repr<CStruct> is export {
+  HAS GObjectClass $.parent_class;
+
+  # Padding for future expansion
+  HAS gpointer     @!reserved[10] is CArray;
+}
+
 class EProxy is repr<CStruct> is export {
 	HAS GObject       $!parent;
 	has Pointer $!priv  ;
