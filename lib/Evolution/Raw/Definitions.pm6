@@ -23,8 +23,23 @@ constant EListFreeFunc             is export := Pointer;
 constant ecal is export = 'ecal-2.0',v1;
 constant eds  is export = 'edataserver-1.2',v25;
 
-class CamelMsgPort  is repr<CPointer>    is export does GLib::Roles::Pointers { }
-class ENamedParameters is repr<CPointer> is export does GLib::Roles::Pointers { }
+class CamelMsgPort               is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentAlarm         is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentAlarmInstance is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentAlarmRepeat   is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentAlarms        is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentAlarmTrigger  is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentAttendee      is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentDateTime      is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentId            is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentOrganizer     is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentParameterBag  is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentPeriod        is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentPrivate       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentPropertyBag   is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentRange         is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECalComponentText          is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ENamedParameters           is repr<CPointer> is export does GLib::Roles::Pointers { }
 
 constant CAMEL_FOLDER_TYPE_BIT               is export = 10;
 
