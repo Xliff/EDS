@@ -159,8 +159,26 @@ class Evolution::Source {
     so e_source_get_enabled($!s);
   }
 
-  method get_extension (Str() $extension_name) {
-    e_source_get_extension($!s, $extension_name);
+  # cw: If there were any way for Raku to force the use of try, here would be
+  # one.
+  #| throws X::ClassNotFound
+  method get_extension (Str() $extension_name, :$typed = True, :$raw = False) {
+    my $e = e_source_get_extension($!s, $extension_name);
+
+    my \class = do if $typed.not {
+      ESource::Extension
+    } else {
+      # cw: Callers should always prep for failure, here!
+      ::(
+        "Evolution::Source::{ $extension_name.subst(' ', '')
+                                             .subst(/'(' <-[)]>+ ')'/, '') }"
+      );
+    }
+
+    $e ??
+      ( $raw ?? $e !! class.new($e, :!ref) )
+      !!
+      Nil
   }
 
   proto method get_last_credentials_required_arguments (|)
