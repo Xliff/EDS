@@ -37,3 +37,10 @@ class Evolution::Source::Selectable is Evolution::Source::Backend {
   }
 
 }
+
+# Barebones descendant wrappers
+class Evolution::Source::Calendar is Evolution::Source::Selectable { }
+
+class Evolution::Source::MemoList is Evolution::Source::Selectable { }
+
+class Evolution::Source::TaskList is Evolution::Source::Selectable { }
