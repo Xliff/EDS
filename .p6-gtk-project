@@ -1,0 +1,4 @@
+prefix=Evolution
+modules=Evolution::Raw::Types
+backups=backup,bitbucket,google-backup
+exec=edsexec
