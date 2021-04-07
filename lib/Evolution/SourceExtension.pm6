@@ -20,7 +20,7 @@ class Evolution::SourceExtension {
   method setESourceExtension (ESourceExtensionAncestry $_) {
     my $to-parent;
 
-    $!s = do {
+    $!ese = do {
       when ESourceExtension {
         $to-parent = cast(GObject, $_);
         $_;
@@ -46,7 +46,7 @@ class Evolution::SourceExtension {
   }
 
   method get_source (:$raw = False) {
-    my $s = e_source_extension_get_source($!e);
+    my $s = e_source_extension_get_source($!ese);
 
     $s ??
       ( $raw ?? $s !! Evolution::Source.new($s) )
@@ -61,15 +61,15 @@ class Evolution::SourceExtension {
   }
 
   method property_lock {
-    e_source_extension_property_lock($!e);
+    e_source_extension_property_lock($!ese);
   }
 
   method property_unlock {
-    e_source_extension_property_unlock($!e);
+    e_source_extension_property_unlock($!ese);
   }
 
   method ref_source (:$raw = False) {
-    my $s = e_source_extension_ref_source($!e);
+    my $s = e_source_extension_ref_source($!ese);
 
     $s ??
       ( $raw ?? $s !! Evolution::Source.new($s) )
