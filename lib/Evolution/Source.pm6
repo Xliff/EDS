@@ -54,7 +54,7 @@ class Evolution::Source {
     self.roleInit-ProxyResolver;
   }
 
-  method EDS::Raw::Definitions::Source
+  method EDS::Raw::Definitions::ESource
   { $!s }
 
   multi method new (ESourceAncestry $source, :$ref = True) {
