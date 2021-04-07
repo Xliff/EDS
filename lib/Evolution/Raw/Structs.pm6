@@ -899,8 +899,8 @@ class ESourceAutocompleteClass is repr<CStruct> is export {
 }
 
 class ESourceAutoconfig is repr<CStruct> is export {
-	HAS ESourceExtension         $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv;
 }
 
 class ESourceAutoconfigClass is repr<CStruct> is export {
@@ -908,8 +908,8 @@ class ESourceAutoconfigClass is repr<CStruct> is export {
 }
 
 class ESourceSelectable is repr<CStruct> is export {
-	HAS ESourceBackend           $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceBackend $!parent;
+	has Pointer        $!priv;
 }
 
 class ESourceSelectableClass is repr<CStruct> is export {
@@ -917,8 +917,8 @@ class ESourceSelectableClass is repr<CStruct> is export {
 }
 
 class ESourceCalendar is repr<CStruct> is export {
-	HAS ESourceSelectable      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceSelectable  $!parent;
+	has Pointer            $!priv;
 }
 
 class ESourceCalendarClass is repr<CStruct> is export {
