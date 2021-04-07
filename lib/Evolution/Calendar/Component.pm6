@@ -1,8 +1,8 @@
 use v6.c;
 
-use ICal::Raw::Types;
+use ICal::Raw::Definitions;
 use Evolution::Raw::Types;
-use Evolution::Calendar::Raw::Component;
+use Evolution::Raw::Calendar::Component;
 
 use GLib::GList;
 use ICal::Attach;
@@ -173,7 +173,7 @@ class Evolution::Calendar::Componment {
   method geo is rw {
     Proxy.new:
       FETCH => $                   { self.get_geo           },
-      STORE => $, icalgeotype() $v { self.set_geo($!att, v) }
+      STORE => $, icalgeotypetype() $v { self.set_geo($!att, v) }
   }
 
   method icalcomponent (:$raw = False) is rw {
@@ -552,7 +552,7 @@ class Evolution::Calendar::Componment {
   }
 
   method get_status {
-    ICalPropertyStatusEnum( e_cal_component_get_status($!ecc) );
+    icalproperty_statusEnum( e_cal_component_get_status($!ecc) );
   }
 
   method get_summary (:$raw = False) {
@@ -756,7 +756,7 @@ class Evolution::Calendar::Componment {
     e_cal_component_set_exrules($!ecc, $recur_list);
   }
 
-  method set_geo (icalgeotype() $geo) {
+  method set_geo (icalgeotypetype() $geo) {
     e_cal_component_set_geo($!ecc, $geo);
   }
 
@@ -819,7 +819,7 @@ class Evolution::Calendar::Componment {
   }
 
   method set_status (Int() $status) {
-    my ICalPropertyStatus $s = $status;
+    my icalproperty_status $s = $status;
 
     e_cal_component_set_status($!ecc, $s);
   }

@@ -2,7 +2,11 @@ use v6.c;
 
 use NativeCall;
 
+use GLib::Raw::Definitions;
+use GLib::Raw::Structs;
 use ICal::Raw::Definitions;
+use ICal::Raw::Enums;
+use ICal::Raw::Structs;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use Evolution::Raw::Structs;
@@ -93,7 +97,7 @@ sub e_cal_component_get_comments (ECalComponent $comp)
 { * }
 
 sub e_cal_component_get_completed (ECalComponent $comp)
-  returns ICalTime
+  returns icaltimetype
   is native(eds)
   is export
 { * }
@@ -105,7 +109,7 @@ sub e_cal_component_get_contacts (ECalComponent $comp)
 { * }
 
 sub e_cal_component_get_created (ECalComponent $comp)
-  returns ICalTime
+  returns icaltimetype
   is native(eds)
   is export
 { * }
@@ -123,7 +127,7 @@ sub e_cal_component_get_dtend (ECalComponent $comp)
 { * }
 
 sub e_cal_component_get_dtstamp (ECalComponent $comp)
-  returns ICalTime
+  returns icaltimetype
   is native(eds)
   is export
 { * }
@@ -159,7 +163,7 @@ sub e_cal_component_get_exrules (ECalComponent $comp)
 { * }
 
 sub e_cal_component_get_geo (ECalComponent $comp)
-  returns ICalGeo
+  returns icalgeotype
   is native(eds)
   is export
 { * }
@@ -177,7 +181,7 @@ sub e_cal_component_get_id (ECalComponent $comp)
 { * }
 
 sub e_cal_component_get_last_modified (ECalComponent $comp)
-  returns ICalTime
+  returns icaltimetype
   is native(eds)
   is export
 { * }
@@ -243,7 +247,7 @@ sub e_cal_component_get_sequence (ECalComponent $comp)
 { * }
 
 sub e_cal_component_get_status (ECalComponent $comp)
-  returns ICalPropertyStatus
+  returns icalproperty_status
   is native(eds)
   is export
 { * }
@@ -420,7 +424,7 @@ sub e_cal_component_set_comments (ECalComponent $comp, GSList $text_list)
   is export
 { * }
 
-sub e_cal_component_set_completed (ECalComponent $comp, ICalTime $tt)
+sub e_cal_component_set_completed (ECalComponent $comp, icaltimetype $tt)
   is native(eds)
   is export
 { * }
@@ -430,7 +434,7 @@ sub e_cal_component_set_contacts (ECalComponent $comp, GSList $text_list)
   is export
 { * }
 
-sub e_cal_component_set_created (ECalComponent $comp, ICalTime $tt)
+sub e_cal_component_set_created (ECalComponent $comp, icaltimetype $tt)
   is native(eds)
   is export
 { * }
@@ -445,7 +449,7 @@ sub e_cal_component_set_dtend (ECalComponent $comp, ECalComponentDateTime $dt)
   is export
 { * }
 
-sub e_cal_component_set_dtstamp (ECalComponent $comp, ICalTime $tt)
+sub e_cal_component_set_dtstamp (ECalComponent $comp, icaltimetype $tt)
   is native(eds)
   is export
 { * }
@@ -473,7 +477,7 @@ sub e_cal_component_set_exrules (ECalComponent $comp, GSList $recur_list)
   is export
 { * }
 
-sub e_cal_component_set_geo (ECalComponent $comp, ICalGeo $geo)
+sub e_cal_component_set_geo (ECalComponent $comp, icalgeotype $geo)
   is native(eds)
   is export
 { * }
@@ -487,7 +491,7 @@ sub e_cal_component_set_icalcomponent (
   is export
 { * }
 
-sub e_cal_component_set_last_modified (ECalComponent $comp, ICalTime $tt)
+sub e_cal_component_set_last_modified (ECalComponent $comp, icaltimetype $tt)
   is native(eds)
   is export
 { * }
@@ -548,7 +552,7 @@ sub e_cal_component_set_sequence (ECalComponent $comp, gint $sequence)
 
 sub e_cal_component_set_status (
   ECalComponent $comp,
-  ICalPropertyStatus $status
+  icalproperty_status $status
   )
   is native(eds)
   is export
