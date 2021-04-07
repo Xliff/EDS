@@ -64,6 +64,86 @@ class Evolution::Source::Backend is Evolution::SourceExtension {
 
 }
 
+our subset ESourceAddressBookAncestry is export of Mu
+  where ESourceAddressBook | ESourceBackendAncestry;
+
+class Evolution::Source::AddressBook is Evolution::Source::Backend {
+  has ESourceAddressBook $!esa;
+
+  submethod (:$address-book) {
+    self.setESourceAddressBook($address-book) if $address-book;
+  }
+
+  method setESourceAddressBook (ESourceAddressBookAncestry $_) {
+    my $to-parent;
+
+    $!esa = do {
+      when ESourceAddressBook {
+        $to-parent = cast(ESourceBackend, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(ESourceAddressBook, $_);
+      }
+    }
+    self.setESourceBackend($to-parent);
+  }
+
+  method Evolution::Raw::Definitions::ESourceAddressBook
+  { $!esa }
+
+  multi method new (ESourceAddressBookAncestry $address-book, :$ref = True) {
+    return Nil unless $address-book;
+
+    my $o = self.bless( :$address-book );
+    $o.ref if $ref;
+    $o;
+  }
+
+}
+
+our subset ESourceMailTransportAncestry is export of Mu
+  where ESourceMailTransport | ESourceBackendAncestry;
+
+class Evolution::Source::MailTransportAncestry is Evolution::Source::Backend {
+  has ESourceMailTransport $!emt;
+
+  submethod (:$mail-transport) {
+    self.setESourceMailTransport($mail-transport) if $mail-transport;
+  }
+
+  method setESourceMailTransport (ESourceMailTransportAncestry $_) {
+    my $to-parent;
+
+    $!emt = do {
+      when ESourceAddressBook {
+        $to-parent = cast(ESourceBackend, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(ESourceMailTransport, $_);
+      }
+    }
+    self.setESourceBackend($to-parent);
+  }
+
+  method Evolution::Raw::Definitions::ESourceMailTransport
+  { $!emt }
+
+  multi method new (ESourceMailTransportAncestry $mail-transport, :$ref = True) {
+    return Nil unless $mail-transport;
+
+    my $o = self.bless( :$mail-transport );
+    $o.ref if $ref;
+    $o;
+  }
+
+}
+
 ### /usr/include/evolution-data-server/libedataserver/e-source-backend.h
 
 sub e_source_backend_dup_backend_name (ESourceBackend $extension)
