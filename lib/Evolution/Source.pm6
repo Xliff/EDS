@@ -17,7 +17,7 @@ class Evolution::Source {
   also does GIO::Roles::Initable;
   also does GIO::Roles::ProxyResolver;
 
-  has ESource $!s;
+  has ESource $!s is implementor;
 
   submethod BUILD (:$source) {
     self.setESource($source) if $source;

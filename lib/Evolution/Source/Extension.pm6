@@ -1,17 +1,17 @@
 use v6.c;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::SourceExtension;
+use Evolution::Raw::Source::Extension;
 
 use GLib::Roles::Object;
 
 our subset ESourceExtensionAncestry is export of Mu
   where ESourceExtension | GObject;
 
-class Evolution::SourceExtension {
+class Evolution::Source::Extension {
   also does GLib::Roles::Object;
 
-  has ESourceExtension $!ese;
+  has ESourceExtension $!ese is implementor;
 
   submethod BUILD (:$extension) {
     self.setESourceExtension($extension) if $extension;

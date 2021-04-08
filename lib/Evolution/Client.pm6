@@ -18,7 +18,7 @@ our subset EClientAncestry is export of Mu
 class Evolution::Client {
   also does GLib::Roles::Object;
 
-  has EClient $!c;
+  has EClient $!c is implementor;
 
   submethod BUILD (:$client) {
     self.setEClient($client) if $client;

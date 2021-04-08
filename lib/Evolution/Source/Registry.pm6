@@ -20,7 +20,7 @@ class Evolution::Source::Registry {
   also does GIO::Roles::Initable;
   also does GIO::Roles::AsyncInitable;
 
-  has ESourceRegistry $!esr;
+  has ESourceRegistry $!esr is implementor;
 
   submethod BUILD (:$calendar) {
     self.setESourceRegistry($calendar) if $calendar;

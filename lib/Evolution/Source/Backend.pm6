@@ -4,13 +4,13 @@ use NativeCall;
 
 use Evolution::Raw::Types;
 
-use Evolution::SourceExtension;
+use Evolution::Source::Extension;
 
 our subset ESourceBackendAncestry is export of Mu
   where ESourceBackend | ESourceExtensionAncestry;
 
-class Evolution::Source::Backend is Evolution::SourceExtension {
-  has ESourceBackend $!esb;
+class Evolution::Source::Backend is Evolution::Source::Extension {
+  has ESourceBackend $!esb is implementor;
 
   submethod BUILD (:$backend) {
     self.setESourceBackend($backend) if $backend;
@@ -108,7 +108,7 @@ our subset ESourceMailTransportAncestry is export of Mu
   where ESourceMailTransport | ESourceBackendAncestry;
 
 class Evolution::Source::MailTransportAncestry is Evolution::Source::Backend {
-  has ESourceMailTransport $!emt;
+  has ESourceMailTransport $!emt is implementor;
 
   submethod (:$mail-transport) {
     self.setESourceMailTransport($mail-transport) if $mail-transport;
