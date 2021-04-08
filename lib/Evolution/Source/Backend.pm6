@@ -33,7 +33,7 @@ class Evolution::Source::Backend is Evolution::Source::Extension {
     self.setESourceExtension($to-parent);
   }
 
-  method EDS::Raw::Definitions::ESourceBackend
+  method Evolution::Raw::Definitions::ESourceBackend
   { $!esb }
 
   multi method new (ESourceBackendAncestry $backend, :$ref = True) {

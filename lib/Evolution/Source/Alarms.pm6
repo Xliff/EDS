@@ -34,7 +34,7 @@ class Evolution::Source::Alarms is Evolution::Source::Extension {
     self.setESourceExtension($to-parent);
   }
 
-  method EDS::Raw::Definitions::ESourceAlarms
+  method Evolution::Raw::Definitions::ESourceAlarms
   { $!esa }
 
   multi method new (ESourceAlarmsAncestry $alarms, :$ref = True) {

@@ -34,7 +34,7 @@ class Evolution::Source::Extension {
     self!setObject($to-parent);
   }
 
-  method EDS::Raw::Definitions::ESourceExtension
+  method Evolution::Raw::Definitions::ESourceExtension
   { $!ese }
 
   multi method new (ESourceExtensionAncestry $extension, :$ref = True) {

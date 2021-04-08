@@ -32,7 +32,7 @@ class Evolution::Source::Selectable is Evolution::Source::Backend {
     self.setESourceBackend($to-parent);
   }
 
-  method EDS::Raw::Definitions::ESourceSelectable
+  method Evolution::Raw::Definitions::ESourceSelectable
   { $!ess }
 
   multi method new (ESourceSelectableAncestry $selectable, :$ref = True) {

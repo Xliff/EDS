@@ -32,7 +32,7 @@ class Evolution::Source::Authentication is Evolution::Source::Extension {
     self.setESourceExtension($to-parent);
   }
 
-  method EDS::Raw::Definitions::ESourceAuthentication
+  method Evolution::Raw::Definitions::ESourceAuthentication
   { $!esa }
 
   method new (
