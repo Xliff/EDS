@@ -854,8 +854,8 @@ class ESource is repr<CStruct> is export {
 }
 
 class ESourceBackend is repr<CStruct> is export {
-	HAS ESourceExtension      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceBackendClass is repr<CStruct> is export {
@@ -863,8 +863,8 @@ class ESourceBackendClass is repr<CStruct> is export {
 }
 
 class ESourceAddressBook is repr<CStruct> is export {
-	HAS ESourceBackend            $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceBackend $!parent;
+	has Pointer        $!priv  ;
 }
 
 class ESourceAddressBookClass is repr<CStruct> is export {
@@ -872,8 +872,8 @@ class ESourceAddressBookClass is repr<CStruct> is export {
 }
 
 class ESourceAlarms is repr<CStruct> is export {
-	HAS ESourceExtension     $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension  $!parent;
+	has Pointer           $!priv  ;
 }
 
 class ESourceAlarmsClass is repr<CStruct> is export {
@@ -881,8 +881,8 @@ class ESourceAlarmsClass is repr<CStruct> is export {
 }
 
 class ESourceAuthentication is repr<CStruct> is export {
-	HAS ESourceExtension             $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceAuthenticationClass is repr<CStruct> is export {
@@ -890,8 +890,8 @@ class ESourceAuthenticationClass is repr<CStruct> is export {
 }
 
 class ESourceAutocomplete is repr<CStruct> is export {
-	HAS ESourceExtension           $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceAutocompleteClass is repr<CStruct> is export {
@@ -926,8 +926,8 @@ class ESourceCalendarClass is repr<CStruct> is export {
 }
 
 class ESourceCamel is repr<CStruct> is export {
-	HAS ESourceExtension    $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceCamelClass is repr<CStruct> is export {
@@ -936,8 +936,8 @@ class ESourceCamelClass is repr<CStruct> is export {
 }
 
 class ESourceCollection is repr<CStruct> is export {
-	HAS ESourceBackend           $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceBackend $!parent;
+	has Pointer        $!priv  ;
 }
 
 class ESourceCollectionClass is repr<CStruct> is export {
@@ -945,8 +945,8 @@ class ESourceCollectionClass is repr<CStruct> is export {
 }
 
 class ESourceContacts is repr<CStruct> is export {
-	HAS ESourceExtension       $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceContactsClass is repr<CStruct> is export {
@@ -954,18 +954,18 @@ class ESourceContactsClass is repr<CStruct> is export {
 }
 
 class ESourceCredentialsProvider is repr<CStruct> is export {
-	HAS GObject                           $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class ESourceCredentialsProviderImpl is repr<CStruct> is export {
-	HAS EExtension                            $!parent;
-	has Pointer $!priv  ;
+	HAS EExtension $!parent;
+	has Pointer    $!priv  ;
 }
 
 class ESourceCredentialsProviderImplPassword is repr<CStruct> is export {
-	HAS ESourceCredentialsProviderImpl                $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceCredentialsProviderImpl $!parent;
+	has Pointer                        $!priv  ;
 }
 
 # class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> is export {
@@ -973,8 +973,8 @@ class ESourceCredentialsProviderImplPassword is repr<CStruct> is export {
 # }
 
 class ESourceGoa is repr<CStruct> is export {
-	HAS ESourceExtension  $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceGoaClass is repr<CStruct> is export {
@@ -982,8 +982,8 @@ class ESourceGoaClass is repr<CStruct> is export {
 }
 
 class ESourceLDAP is repr<CStruct> is export {
-	HAS ESourceExtension   $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceLDAPClass is repr<CStruct> is export {
@@ -991,8 +991,8 @@ class ESourceLDAPClass is repr<CStruct> is export {
 }
 
 class ESourceLocal is repr<CStruct> is export {
-	HAS ESourceExtension    $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceLocalClass is repr<CStruct> is export {
@@ -1000,8 +1000,8 @@ class ESourceLocalClass is repr<CStruct> is export {
 }
 
 class ESourceMDN is repr<CStruct> is export {
-	HAS ESourceExtension  $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceMDNClass is repr<CStruct> is export {
@@ -1009,8 +1009,8 @@ class ESourceMDNClass is repr<CStruct> is export {
 }
 
 class ESourceMailAccount is repr<CStruct> is export {
-	HAS ESourceBackend            $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceBackend $!parent;
+	has Pointer        $!priv  ;
 }
 
 class ESourceMailAccountClass is repr<CStruct> is export {
@@ -1018,8 +1018,8 @@ class ESourceMailAccountClass is repr<CStruct> is export {
 }
 
 class ESourceMailComposition is repr<CStruct> is export {
-	HAS ESourceExtension              $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceMailCompositionClass is repr<CStruct> is export {
@@ -1027,8 +1027,8 @@ class ESourceMailCompositionClass is repr<CStruct> is export {
 }
 
 class ESourceMailIdentity is repr<CStruct> is export {
-	HAS ESourceExtension           $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceMailIdentityClass is repr<CStruct> is export {
@@ -1036,8 +1036,8 @@ class ESourceMailIdentityClass is repr<CStruct> is export {
 }
 
 class ESourceMailSignature is repr<CStruct> is export {
-	HAS ESourceExtension            $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceMailSignatureClass is repr<CStruct> is export {
@@ -1045,8 +1045,8 @@ class ESourceMailSignatureClass is repr<CStruct> is export {
 }
 
 class ESourceMailSubmission is repr<CStruct> is export {
-	HAS ESourceExtension             $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceMailSubmissionClass is repr<CStruct> is export {
@@ -1054,8 +1054,8 @@ class ESourceMailSubmissionClass is repr<CStruct> is export {
 }
 
 class ESourceMailTransport is repr<CStruct> is export {
-	HAS ESourceBackend              $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceBackend $!parent;
+	has Pointer        $!priv  ;
 }
 
 class ESourceMailTransportClass is repr<CStruct> is export {
@@ -1063,8 +1063,8 @@ class ESourceMailTransportClass is repr<CStruct> is export {
 }
 
 class ESourceMemoList is repr<CStruct> is export {
-	HAS ESourceSelectable      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceSelectable $!parent;
+	has Pointer           $!priv  ;
 }
 
 class ESourceMemoListClass is repr<CStruct> is export {
@@ -1072,8 +1072,8 @@ class ESourceMemoListClass is repr<CStruct> is export {
 }
 
 class ESourceOffline is repr<CStruct> is export {
-	HAS ESourceExtension      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension  $!parent;
+	has Pointer           $!priv  ;
 }
 
 class ESourceOfflineClass is repr<CStruct> is export {
@@ -1081,8 +1081,8 @@ class ESourceOfflineClass is repr<CStruct> is export {
 }
 
 class ESourceOpenPGP is repr<CStruct> is export {
-	HAS ESourceExtension      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceOpenPGPClass is repr<CStruct> is export {
@@ -1090,8 +1090,8 @@ class ESourceOpenPGPClass is repr<CStruct> is export {
 }
 
 class ESourceProxy is repr<CStruct> is export {
-	HAS ESourceExtension    $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceProxyClass is repr<CStruct> is export {
@@ -1099,8 +1099,8 @@ class ESourceProxyClass is repr<CStruct> is export {
 }
 
 class ESourceRefresh is repr<CStruct> is export {
-	HAS ESourceExtension      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceRefreshClass is repr<CStruct> is export {
@@ -1108,18 +1108,18 @@ class ESourceRefreshClass is repr<CStruct> is export {
 }
 
 class ESourceRegistry is repr<CStruct> is export {
-	HAS GObject                $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class ESourceRegistryWatcher is repr<CStruct> is export {
-	HAS GObject                       $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class ESourceResource is repr<CStruct> is export {
-	HAS ESourceExtension       $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceResourceClass is repr<CStruct> is export {
@@ -1127,8 +1127,8 @@ class ESourceResourceClass is repr<CStruct> is export {
 }
 
 class ESourceRevisionGuards is repr<CStruct> is export {
-	HAS ESourceExtension             $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceRevisionGuardsClass is repr<CStruct> is export {
@@ -1136,8 +1136,8 @@ class ESourceRevisionGuardsClass is repr<CStruct> is export {
 }
 
 class ESourceSMIME is repr<CStruct> is export {
-	HAS ESourceExtension    $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceSMIMEClass is repr<CStruct> is export {
@@ -1145,8 +1145,8 @@ class ESourceSMIMEClass is repr<CStruct> is export {
 }
 
 class ESourceSecurity is repr<CStruct> is export {
-	HAS ESourceExtension       $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceSecurityClass is repr<CStruct> is export {
@@ -1154,8 +1154,8 @@ class ESourceSecurityClass is repr<CStruct> is export {
 }
 
 class ESourceTaskList is repr<CStruct> is export {
-	HAS ESourceSelectable      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceSelectable $!parent;
+	has Pointer           $!priv  ;
 }
 
 class ESourceTaskListClass is repr<CStruct> is export {
@@ -1163,8 +1163,8 @@ class ESourceTaskListClass is repr<CStruct> is export {
 }
 
 class ESourceUoa is repr<CStruct> is export {
-	HAS ESourceExtension  $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceUoaClass is repr<CStruct> is export {
@@ -1172,8 +1172,8 @@ class ESourceUoaClass is repr<CStruct> is export {
 }
 
 class ESourceWeather is repr<CStruct> is export {
-	HAS ESourceExtension      $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceWeatherClass is repr<CStruct> is export {
@@ -1181,8 +1181,8 @@ class ESourceWeatherClass is repr<CStruct> is export {
 }
 
 class ESourceWebdav is repr<CStruct> is export {
-	HAS ESourceExtension     $!parent;
-	has Pointer $!priv  ;
+	HAS ESourceExtension $!parent;
+	has Pointer          $!priv  ;
 }
 
 class ESourceWebdavClass is repr<CStruct> is export {
@@ -1190,70 +1190,70 @@ class ESourceWebdavClass is repr<CStruct> is export {
 }
 
 class EUri is repr<CStruct> is export {
-	has Str $!protocol;
-	has Str $!user    ;
-	has Str $!authmech;
-	has Str $!passwd  ;
-	has Str $!host    ;
+	has Str   $!protocol;
+	has Str   $!user    ;
+	has Str   $!authmech;
+	has Str   $!passwd  ;
+	has Str   $!host    ;
 	has gint  $!port    ;
-	has Str $!path    ;
+	has Str   $!path    ;
 	has GData $!params  ;
-	has Str $!query   ;
-	has Str $!fragment;
+	has Str   $!query   ;
+	has Str   $!fragment;
 }
 
 class EWebDAVAccessControlEntry is repr<CStruct> is export {
 	has EWebDAVACEPrincipalKind $!principal_kind;
-	has Str                   $!principal_href;
+	has Str                     $!principal_href;
 	has guint32                 $!flags         ;
-	has Str                   $!inherited_href;
+	has Str                     $!inherited_href;
 	has GSList                  $!privileges    ;
 }
 
 class EWebDAVDiscoveredSource is repr<CStruct> is export {
-	has Str   $!href        ;
+	has Str     $!href        ;
 	has guint32 $!supports    ;
-	has Str   $!display_name;
-	has Str   $!description ;
-	has Str   $!color       ;
+	has Str     $!display_name;
+	has Str     $!description ;
+	has Str     $!color       ;
 }
 
 class EWebDAVPrivilege is repr<CStruct> is export {
-	has Str                $!ns_uri     ;
-	has Str                $!name       ;
-	has Str                $!description;
+	has Str                  $!ns_uri     ;
+	has Str                  $!name       ;
+	has Str                  $!description;
 	has EWebDAVPrivilegeKind $!kind       ;
 	has EWebDAVPrivilegeHint $!hint       ;
 }
 
 class EWebDAVPropertyChange is repr<CStruct> is export {
 	has EWebDAVPropertyChangeKind $!kind  ;
-	has Str                     $!ns_uri;
-	has Str                     $!name  ;
-	has Str                     $!value ;
+	has Str                       $!ns_uri;
+	has Str                       $!name  ;
+	has Str                       $!value ;
 }
 
 class EWebDAVResource is repr<CStruct> is export {
 	has EWebDAVResourceKind $!kind          ;
 	has guint32             $!supports      ;
-	has Str               $!href          ;
-	has Str               $!etag          ;
-	has Str               $!display_name  ;
-	has Str               $!content_type  ;
+	has Str                 $!href          ;
+	has Str                 $!etag          ;
+	has Str                 $!display_name  ;
+	has Str                 $!content_type  ;
 	has gsize               $!content_length;
 	has glong               $!creation_date ;
 	has glong               $!last_modified ;
-	has Str               $!description   ;
-	has Str               $!color         ;
+	has Str                 $!description   ;
+	has Str                 $!color         ;
 }
 
 class EWebDAVSession is repr<CStruct> is export {
-	HAS ESoupSession          $!parent;
-	has Pointer $!priv  ;
+	HAS ESoupSession $!parent;
+	has Pointer      $!priv  ;
 }
 
 class EXmlDocument is repr<CStruct> is export {
-	HAS GObject             $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -1264,29 +1264,29 @@ class addrinfo is repr<CStruct> is export {
 	has gint     $!ai_protocol ;
 	has gsize    $!ai_addrlen  ;
 	has sockaddr $!ai_addr     ;
-	has Str    $!ai_canonname;
+	has Str      $!ai_canonname;
 	has addrinfo $!ai_next     ;
 }
 
 class camel_search_word is repr<CStruct> is export {
 	has camel_search_word_t $!type;
-	has Str               $!word;
+	has Str                 $!word;
 }
 
 class camel_search_words is repr<CStruct> is export {
 	has gint                $!len  ;
 	has camel_search_word_t $!type ;
-	has camel_search_word  $!words;
+	has camel_search_word   $!words;
 }
 
 class encrypt is repr<CStruct> is export {
 	has CamelCipherValidityEncrypt $!status     ;
-	has Str                      $!description;
+	has Str                        $!description;
 	has GQueue                     $!encrypters ;
 }
 
 class sign is repr<CStruct> is export {
 	has CamelCipherValiditySign $!status     ;
-	has Str                   $!description;
+	has Str                     $!description;
 	has GQueue                  $!signers    ;
 }
