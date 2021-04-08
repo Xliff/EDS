@@ -5,8 +5,43 @@ use Evolution::Raw::Source::Selectable;
 
 use Evolution::Source::Backend;
 
+our subset ESourceSelectableAncestry is export of Mu
+  where ESourceSelectable | ESourceBackendAncestry;
+
 class Evolution::Source::Selectable is Evolution::Source::Backend {
-  has ESourceSelectable $!ess;
+  has ESourceSelectable $!ess is implementor;
+
+  submethod BUILD (:$selectable) {
+    self.setESourceSelectable($selectable) if $selectable;
+  }
+
+  method setESourceSelectable (ESourceSelectableAncestry $_) {
+    my $to-parent;
+
+    $!ess = do {
+      when ESourceSelectable {
+        $to-parent = cast(ESourceBackend, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(ESourceSelectable, $_);
+      }
+    }
+    self.setESourceBackend($to-parent);
+  }
+
+  method EDS::Raw::Definitions::ESourceSelectable
+  { $!ess }
+
+  multi method new (ESourceSelectableAncestry $selectable, :$ref = True) {
+    return Nil unless $selectable;
+
+    my $o = self.bless( :$selectable );
+    $o.ref if $ref;
+    $o;
+  }
 
   method dup_color {
     e_source_selectable_dup_color($!ess);
