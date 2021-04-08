@@ -6,7 +6,7 @@ use GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::SourceExtension;
+unit package Evolution::Raw::Source::Extension;
 
 ### /usr/include/evolution-data-server/libedataserver/e-source-extension.h
 
