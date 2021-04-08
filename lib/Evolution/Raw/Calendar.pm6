@@ -4,7 +4,12 @@ use NativeCall;
 
 use GLib::Raw::Definitions;
 use GLib::Raw::Structs;
+use GLib::Raw::Object;
+use GIO::Raw::Definitions;
+use ICal::Raw::Definitions;
 use Evolution::Raw::Definitions;
+use Evolution::Raw::Enums;
+use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Calendar;
 
@@ -12,7 +17,7 @@ unit package Evolution::Raw::Calendar;
 
 sub e_cal_client_add_timezone (
   ECalClient   $client,
-  ICalTimezone $zone,
+  icaltimezone $zone,
   GCancellable $cancellable,
                &callback (GObject, GAsyncResult, gpointer),
   gpointer     $user_data
@@ -33,7 +38,7 @@ sub e_cal_client_add_timezone_finish (
 
 sub e_cal_client_add_timezone_sync (
   ECalClient              $client,
-  ICalTimezone            $zone,
+  icaltimezone            $zone,
   GCancellable            $cancellable,
   CArray[Pointer[GError]] $error
 )
@@ -107,7 +112,7 @@ sub e_cal_client_connect_sync (
 
 sub e_cal_client_create_object (
   ECalClient    $client,
-  ICalComponent $icalcomp,
+  icalcomponent $icalcomp,
   guint32       $opflags,
   GCancellable  $cancellable,
                 &callback (GObject, GAsyncResult, gpointer),
@@ -130,7 +135,7 @@ sub e_cal_client_create_object_finish (
 
 sub e_cal_client_create_object_sync (
   ECalClient              $client,
-  ICalComponent           $icalcomp,
+  icalcomponent           $icalcomp,
   guint32                 $opflags,
   CArray[Str]             $out_uid,
   GCancellable            $cancellable,
@@ -248,7 +253,7 @@ sub e_cal_client_generate_instances (
 
 sub e_cal_client_generate_instances_for_object (
   ECalClient    $client,
-  ICalComponent $icalcomp,
+  icalcomponent $icalcomp,
   time_t        $start,
   time_t        $end,
   GCancellable  $cancellable,
@@ -262,7 +267,7 @@ sub e_cal_client_generate_instances_for_object (
 
 sub e_cal_client_generate_instances_for_object_sync (
   ECalClient    $client,
-  ICalComponent $icalcomp,
+  icalcomponent $icalcomp,
   time_t        $start,
   time_t        $end,
   GCancellable  $cancellable,
@@ -323,7 +328,7 @@ sub e_cal_client_get_attachment_uris_sync (
 
 sub e_cal_client_get_component_as_string (
   ECalClient $client,
-  ICalComponent $icalcomp
+  icalcomponent $icalcomp
 )
   returns Str
   is native(ecal)
@@ -340,10 +345,10 @@ sub e_cal_client_get_default_object (ECalClient $client,
 { * }
 
 sub e_cal_client_get_default_object_finish (
-  ECalClient                     $client,
-  GAsyncResult                   $result,
-  CArray[Pointer[ICalComponent]] $out_icalcomp,
-  CArray[Pointer[GError]]        $error
+  ECalClient              $client,
+  GAsyncResult            $result,
+  CArray[icalcomponent]   $out_icalcomp,
+  CArray[Pointer[GError]] $error
   )
   returns uint32
   is native(ecal)
@@ -352,7 +357,7 @@ sub e_cal_client_get_default_object_finish (
 
 sub e_cal_client_get_default_object_sync (
   ECalClient              $client,
-  CArray[ICalComponent]]  $out_icalcomp,
+  CArray[icalcomponent]   $out_icalcomp,
   GCancellable            $cancellable,
   CArray[Pointer[GError]] $error
 )
@@ -362,7 +367,7 @@ sub e_cal_client_get_default_object_sync (
 { * }
 
 sub e_cal_client_get_default_timezone (ECalClient $client)
-  returns ICalTimezone
+  returns icaltimezone
   is native(ecal)
   is export
 { * }
@@ -425,10 +430,10 @@ sub e_cal_client_get_object (
 { * }
 
 sub e_cal_client_get_object_finish (
-  ECalClient                     $client,
-  GAsyncResult                   $result,
-  CArray[Pointer[ICalComponent]] $out_icalcomp,
-  CArray[Pointer[GError]]        $error
+  ECalClient              $client,
+  GAsyncResult            $result,
+  CArray[icalcomponent]   $out_icalcomp,
+  CArray[Pointer[GError]] $error
 )
   returns uint32
   is native(ecal)
@@ -507,7 +512,7 @@ sub e_cal_client_get_object_sync (
   ECalClient                     $client,
   Str                            $uid,
   Str                            $rid,
-  CArray[Pointer[ICalComponent]] $out_icalcomp,
+  CArray[icalcomponent]          $out_icalcomp,
   GCancellable                   $cancellable,
   CArray[Pointer[GError]]        $error
 )
@@ -570,7 +575,7 @@ sub e_cal_client_get_timezone (
 sub e_cal_client_get_timezone_finish (
   ECalClient                    $client,
   GAsyncResult                  $result,
-  CArray[Pointer[ICalTimezone]] $out_zone,
+  CArray[Pointer[icaltimezone]] $out_zone,
   CArray[Pointer[GError]]       $error
 )
   returns uint32
@@ -581,7 +586,7 @@ sub e_cal_client_get_timezone_finish (
 sub e_cal_client_get_timezone_sync (
   ECalClient                    $client,
   Str                           $tzid,
-  CArray[Pointer[ICalTimezone]] $out_zone,
+  CArray[Pointer[icaltimezone]] $out_zone,
   GCancellable                  $cancellable,
   CArray[Pointer[GError]]       $error
 )
@@ -632,7 +637,7 @@ sub e_cal_client_get_view_sync (
 
 sub e_cal_client_modify_object (
   ECalClient     $client,
-  ICalComponent  $icalcomp,
+  icalcomponent  $icalcomp,
   ECalObjModType $mod,
   guint32        $opflags,
   GCancellable   $cancellable,
@@ -655,7 +660,7 @@ sub e_cal_client_modify_object_finish (
 
 sub e_cal_client_modify_object_sync (
   ECalClient              $client,
-  ICalComponent           $icalcomp,
+  icalcomponent           $icalcomp,
   ECalObjModType          $mod,
   guint32                 $opflags,
   GCancellable            $cancellable,
@@ -704,7 +709,7 @@ sub e_cal_client_modify_objects_sync (
 
 sub e_cal_client_receive_objects (
   ECalClient    $client,
-  ICalComponent $icalcomp,
+  icalcomponent $icalcomp,
   guint32       $opflags,
   GCancellable  $cancellable,
                 &callback (GObject, GAsyncResult, gpointer),
@@ -726,7 +731,7 @@ sub e_cal_client_receive_objects_finish (
 
 sub e_cal_client_receive_objects_sync (
   ECalClient              $client,
-  ICalComponent           $icalcomp,
+  icalcomponent           $icalcomp,
   guint32                 $opflags,
   GCancellable            $cancellable,
   CArray[Pointer[GError]] $error
@@ -812,7 +817,7 @@ sub e_cal_client_remove_objects_sync (
 
 sub e_cal_client_send_objects (
   ECalClient    $client,
-  ICalComponent $icalcomp,
+  icalcomponent $icalcomp,
   guint32       $opflags,
   GCancellable  $cancellable,
                 &callback (GObject, GAsyncResult, gpointer),
@@ -826,7 +831,7 @@ sub e_cal_client_send_objects_finish (
   ECalClient                     $client,
   GAsyncResult                   $result,
   CArray[Pointer[GSList]]        $out_users,
-  CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
+  CArray[icalcomponent]          $out_modified_icalcomp,
   CArray[Pointer[GError]]        $error
 )
   returns uint32
@@ -836,10 +841,10 @@ sub e_cal_client_send_objects_finish (
 
 sub e_cal_client_send_objects_sync (
   ECalClient                     $client,
-  ICalComponent                  $icalcomp,
+  icalcomponent                  $icalcomp,
   guint32                        $opflags,
   CArray[Pointer[GSList]]        $out_users,
-  CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
+  CArray[icalcomponent]          $out_modified_icalcomp,
   GCancellable                   $cancellable,
   CArray[Pointer[GError]]        $error
 )
@@ -848,7 +853,7 @@ sub e_cal_client_send_objects_sync (
   is export
 { * }
 
-sub e_cal_client_set_default_timezone (ECalClient $client, ICalTimezone $zone)
+sub e_cal_client_set_default_timezone (ECalClient $client, icaltimezone $zone)
   is native(ecal)
   is export
 { * }
