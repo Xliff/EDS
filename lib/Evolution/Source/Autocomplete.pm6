@@ -7,7 +7,7 @@ use Evolution::Raw::Types;
 use Evolution::Source::Extension;
 
 our subset ESourceAutocompleteAncestry is export of Mu
-  where ESourceAutocomplete | ESourceBackendAncestry;
+  where ESourceAutocomplete | ESourceExtensionAncestry;
 
 class Evolution::Source::Autocomplete is Evolution::Source::Extension {
   has ESourceAutocomplete $!esa;
@@ -30,11 +30,11 @@ class Evolution::Source::Autocomplete is Evolution::Source::Extension {
         cast(ESourceAutocomplete, $_);
       }
     }
-    self.setESourceBackend($to-parent);
+    self.setESourceExtension($to-parent);
   }
 
   method Evolution::Raw::Definitions::ESourceAutocomplete
-  { $!ess }
+  { $!esa }
 
   multi method new (ESourceAutocompleteAncestry $auto-complete, :$ref = True) {
     return Nil unless $auto-complete;
