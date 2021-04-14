@@ -39,7 +39,7 @@ class Evolution::Source::ESourceMailComposition
 
   method new (
     ESourceMailCompositionAncestry $mail-composition,
-                                  :$ref            = True
+                                   :$ref              = True
   ) {
     return Nil unless $mail-composition;
 
@@ -148,7 +148,7 @@ class Evolution::Source::ESourceMailComposition
   method set_start_bottom (Int() $start_bottom) {
     my EThreeState $s = $start_bottom;
 
-    e_source_mail_composition_set_start_bottom($!esmc, $);
+    e_source_mail_composition_set_start_bottom($!esmc, $s);
   }
 
   method set_templates_folder (Str() $templates_folder) {

@@ -155,7 +155,7 @@ sub e_source_mail_composition_set_drafts_folder (
 
 sub e_source_mail_composition_set_language (
 	ESourceMailComposition $extension,
-	Str $language
+	Str                    $language
 )
   is native(eds)
   is export
