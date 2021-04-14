@@ -11,7 +11,6 @@ our subset ESourceLDAPAncestry is export of Mu
 class Evolution::Source::LDAP is Evolution::Source::Extension {
   has ESourceLDAP $!esl is implementor;
 
-
   submethod BUILD (:$ldap) {
     self.setESourceLDAP($ldap) if $ldap;
   }
