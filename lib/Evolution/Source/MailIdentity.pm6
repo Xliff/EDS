@@ -37,7 +37,7 @@ class Evolution::Source::MailIdentity is Evolution::Source::Extension {
 
   method new (
     ESourceMailIdentityAncestry $mail-identity,
-                                   :$ref              = True
+                                :$ref           = True
   ) {
     return Nil unless $mail-identity;
 
