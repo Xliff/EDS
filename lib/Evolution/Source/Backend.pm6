@@ -70,7 +70,7 @@ our subset ESourceAddressBookAncestry is export of Mu
 class Evolution::Source::AddressBook is Evolution::Source::Backend {
   has ESourceAddressBook $!esa;
 
-  submethod (:$address-book) {
+  submethod BUILD (:$address-book) {
     self.setESourceAddressBook($address-book) if $address-book;
   }
 
@@ -110,7 +110,7 @@ our subset ESourceMailTransportAncestry is export of Mu
 class Evolution::Source::MailTransportAncestry is Evolution::Source::Backend {
   has ESourceMailTransport $!emt is implementor;
 
-  submethod (:$mail-transport) {
+  submethod BUILD (:$mail-transport) {
     self.setESourceMailTransport($mail-transport) if $mail-transport;
   }
 
