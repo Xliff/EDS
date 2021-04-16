@@ -46,6 +46,18 @@ class Evolution::Source::Weather is Evolution::Source::Extension {
     $o;
   }
 
+  method location is rw {
+    Proxy.new:
+      FETCH => -> $     { self.get_location    },
+      STORE => -> $, \v { self.set_location(v) }
+  }
+
+  method units is rw {
+    Proxy.new:
+      FETCH => -> $     { self.get_units    },
+      STORE => -> $, \v { self.set_units(v) }
+  }
+
   method dup_location {
     e_source_weather_dup_location($!esw);
   }
