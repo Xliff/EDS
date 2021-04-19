@@ -12,8 +12,8 @@ our subset ESourceContactsAncestry is export of Mu
 class Evolution::Source::Contacts is Evolution::Source::Extension {
   has ESourceContacts $!esc;
 
-  submethod BUILD (:$contacts) {
-    self.setESourceContacts($contacts) if $contacts;
+  submethod BUILD (:$Contacts) {
+    self.setESourceContacts($Contacts) if $Contacts;
   }
 
   method setESourceContacts (ESourceContactsAncestry $_) {
@@ -21,7 +21,7 @@ class Evolution::Source::Contacts is Evolution::Source::Extension {
 
     $!esc = do {
       when ESourceContacts {
-        $to-parent = cast(ESourceBackend, $_);
+        $to-parent = cast(ESourceExtension, $_);
         $_;
       }
 
@@ -33,13 +33,16 @@ class Evolution::Source::Contacts is Evolution::Source::Extension {
     self.setESourceExtension($to-parent);
   }
 
-  method Evolution::Raw::Definitions::ESourceContacts
+  method Evolution::Raw::Structs::ESourceContacts
   { $!esc }
 
-  multi method new (ESourceContactsAncestry $contacts, :$ref = True) {
-    return Nil unless $contacts;
+  method new (
+    ESourceContactsAncestry $Contacts,
+                            :$ref   = True
+  ) {
+    return Nil unless $Contacts;
 
-    my $o = self.bless( :$contacts );
+    my $o = self.bless( :$Contacts );
     $o.ref if $ref;
     $o;
   }
@@ -47,7 +50,7 @@ class Evolution::Source::Contacts is Evolution::Source::Extension {
   method include_me is rw {
     Proxy.new:
       FETCH => -> $     { self.get_include_me    },
-      STORE => -> $, \i { self.set_include_me(i) };
+      STORE => -> $, \v { self.set_include_me(v) }
   }
 
   method get_include_me {
@@ -63,12 +66,12 @@ class Evolution::Source::Contacts is Evolution::Source::Extension {
   method set_include_me (Int() $include_me) {
     my gboolean $i = $include_me.so.Int;
 
-    e_source_contacts_set_include_me($!esc, $i);
+    e_source_contacts_set_include_me($!esc, $include_me);
   }
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-Contacts.h
+### /usr/include/evolution-data-server/libedataserver/e-source-contacts.h
 
 sub e_source_contacts_get_include_me (ESourceContacts $extension)
   returns uint32
@@ -82,10 +85,7 @@ sub e_source_contacts_get_type ()
   is export
 { * }
 
-sub e_source_contacts_set_include_me (
-  ESourceContacts $extension,
-  gboolean $include_me
-)
+sub e_source_contacts_set_include_me (ESourceContacts $extension, gboolean $include_me)
   is native(eds)
   is export
 { * }
