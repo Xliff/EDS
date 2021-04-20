@@ -18,10 +18,6 @@ class Evolution::Calendar::View {
 
   has ECalClientView $!ecv;
 
-  also does GLib::Roles::Object;
-
-  has ECalClientView $!c is implementor;
-
   submethod BUILD (:$cal-view) {
     self.setECalClientView($cal-view) if $cal-view;
   }
@@ -29,7 +25,7 @@ class Evolution::Calendar::View {
   method setECalClientView (ECalClientViewAncestry $_) {
     my $to-parent;
 
-    $!c = do {
+    $!ecv = do {
       when ECalClientView {
         $to-parent = cast(GObject, $_);
         $_;
@@ -44,7 +40,7 @@ class Evolution::Calendar::View {
   }
 
   method Evolution::Raw::Definitions::ECalClientView
-  { $!c }
+  { $!ecv }
 
   method new (ECalClientViewAncestry $cal-view, :$ref = True) {
     return Nil unless $cal-view;
