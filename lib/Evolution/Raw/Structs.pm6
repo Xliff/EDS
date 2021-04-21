@@ -6,6 +6,7 @@ use GLib::Compat::Definitions;
 use GLib::Raw::Definitions;
 use GLib::Raw::Object;
 use GLib::Raw::Structs;
+use GLib::Raw::Subs;
 use GLib::Class::TypeModule;
 use GIO::Raw::Definitions;
 use SOUP::Raw::Definitions;
@@ -28,7 +29,7 @@ class CamelBlockFile is repr<CStruct> is export {
 }
 
 class CamelBlockRoot is repr<CStruct> is export {
-	has Str         $!version   ;
+	has Str           $!version   ;
 	has guint32       $!flags     ;
 	has guint32       $!block_size;
 	has camel_block_t $!free      ;
@@ -36,7 +37,7 @@ class CamelBlockRoot is repr<CStruct> is export {
 }
 
 class CamelCertDB is repr<CStruct> is export {
-	HAS GObject            $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -46,8 +47,8 @@ class CamelCharset is repr<CStruct> is export {
 }
 
 class CamelCipherCertInfo is repr<CStruct> is export {
-	has Str                $!name           ;
-	has Str                $!email          ;
+	has Str                  $!name           ;
+	has Str                  $!email          ;
 	has gpointer             $!cert_data      ;
 	has GDestroyNotify       $!cert_data_free ;
 	has CamelCipherCloneFunc $!cert_data_clone;
@@ -62,7 +63,7 @@ class CamelCipherCertInfoProperty is repr<CStruct> is export {
 }
 
 class CamelCipherContext is repr<CStruct> is export {
-	HAS GObject                   $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -79,17 +80,17 @@ class CamelContentDisposition is repr<CStruct> is export {
 }
 
 class CamelDB is repr<CStruct> is export {
-	HAS GObject        $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelDataCache is repr<CStruct> is export {
-	HAS GObject               $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelDataWrapper is repr<CStruct> is export {
-	HAS GObject                 $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -105,40 +106,40 @@ class CamelFIRecord is repr<CStruct> is export {
 	has guint32 $!junk_count   ;
 	has guint32 $!visible_count;
 	has guint32 $!jnd_count    ;
-	has Str   $!bdata        ;
+	has Str     $!bdata        ;
 }
 
 class CamelFilterDriver is repr<CStruct> is export {
-	HAS GObject                  $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelFilterInputStream is repr<CStruct> is export {
-	HAS GFilterInputStream            $!parent;
-	has Pointer $!priv  ;
+	HAS GFilterInputStream $!parent;
+	has Pointer            $!priv  ;
 }
 
 class CamelFilterOutputStream is repr<CStruct> is export {
-	HAS GFilterOutputStream            $!parent;
-	has Pointer $!priv  ;
+	HAS GFilterOutputStream $!parent;
+	has Pointer             $!priv  ;
 }
 
 class CamelObject is repr<CStruct> is export {
-	HAS GObject            $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelFolder is repr<CStruct> is export {
-	HAS CamelObject        $!parent;
-	has Pointer $!priv  ;
+	HAS CamelObject  $!parent;
+	has Pointer      $!priv  ;
 }
 
 class CamelFolderChangeInfo is repr<CStruct> is export {
-	has GPtrArray                    $!uid_added  ;
-	has GPtrArray                    $!uid_removed;
-	has GPtrArray                    $!uid_changed;
-	has GPtrArray                    $!uid_recent ;
-	has Pointer $!priv       ;
+	has GPtrArray $!uid_added  ;
+	has GPtrArray $!uid_removed;
+	has GPtrArray $!uid_changed;
+	has GPtrArray $!uid_recent ;
+	has Pointer   $!priv       ;
 }
 
 class CamelFolderInfo is repr<CStruct> is export {
@@ -160,58 +161,58 @@ class CamelFolderQuotaInfo is repr<CStruct> is export {
 }
 
 class CamelFolderSearch is repr<CStruct> is export {
-	HAS GObject                  $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelFolderSummary is repr<CStruct> is export {
-	HAS GObject                   $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelGpgContext is repr<CStruct> is export {
-	HAS CamelCipherContext     $!parent;
-	has Pointer $!priv  ;
+	HAS CamelCipherContext $!parent;
+	has Pointer            $!priv  ;
 }
 
 class CamelHTMLParser is repr<CStruct> is export {
-	HAS GObject                $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelIndex is repr<CStruct> is export {
-	HAS GObject           $!parent        ;
-	has Pointer $!priv          ;
-	has Str             $!path          ;
-	has guint32           $!version       ;
-	has guint32           $!flags         ;
-	has guint32           $!state         ;
-	has CamelIndexNorm    $!normalize     ;
-	has gpointer          $!normalize_data;
+	HAS GObject        $!parent        ;
+	has Pointer        $!priv          ;
+	has Str            $!path          ;
+	has guint32        $!version       ;
+	has guint32        $!flags         ;
+	has guint32        $!state         ;
+	has CamelIndexNorm $!normalize     ;
+	has gpointer       $!normalize_data;
 }
 
 class CamelIndexCursor is repr<CStruct> is export {
-	HAS GObject                 $!parent;
-	has Pointer $!priv  ;
-	has CamelIndex              $!index ;
+	HAS GObject    $!parent;
+	has Pointer    $!priv  ;
+	has CamelIndex $!index ;
 }
 
 class CamelIndexName is repr<CStruct> is export {
-	HAS GObject               $!parent;
-	has Pointer $!priv  ;
-	has CamelIndex            $!index ;
-	has Str                 $!name  ;
-	has GByteArray            $!buffer;
-	has GHashTable            $!words ;
+	HAS GObject    $!parent;
+	has Pointer    $!priv  ;
+	has CamelIndex $!index ;
+	has Str        $!name  ;
+	has GByteArray $!buffer;
+	has GHashTable $!words ;
 }
 
 class CamelInternetAddress is repr<CStruct> is export {
-	HAS CamelAddress                $!parent;
-	has Pointer $!priv  ;
+	HAS CamelAddress $!parent;
+	has Pointer      $!priv  ;
 }
 
 class CamelKeyFile is repr<CStruct> is export {
-	HAS GObject             $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -222,33 +223,33 @@ class CamelKeyRootBlock is repr<CStruct> is export {
 }
 
 class CamelKeyTable is repr<CStruct> is export {
-	HAS GObject              $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSettings is repr<CStruct> is export {
-	HAS GObject              $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelService is repr<CStruct> is export {
-	HAS CamelObject         $!parent;
-	has Pointer $!priv  ;
+	HAS CamelObject $!parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelStore is repr<CStruct> is export {
-	HAS CamelService      $!parent;
-	has Pointer $!priv  ;
+	HAS CamelService $!parent;
+	has Pointer      $!priv  ;
 }
 
 class CamelStoreSettings is repr<CStruct> is export {
-	HAS CamelSettings             $!parent;
-	has Pointer $!priv  ;
+	HAS CamelSettings $!parent;
+	has Pointer       $!priv  ;
 }
 
 class CamelLocalSettings is repr<CStruct> is export {
-	HAS CamelStoreSettings        $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStoreSettings $!parent;
+	has Pointer            $!priv  ;
 }
 
 class CamelLockHelperMsg is repr<CStruct> is export {
@@ -259,7 +260,7 @@ class CamelLockHelperMsg is repr<CStruct> is export {
 }
 
 class CamelMIRecord is repr<CStruct> is export {
-	has Str    $!uid                  ;
+	has Str      $!uid                  ;
 	has guint32  $!flags                ;
 	has guint32  $!msg_type             ;
 	has guint32  $!dirty                ;
@@ -272,24 +273,24 @@ class CamelMIRecord is repr<CStruct> is export {
 	has guint32  $!size                 ;
 	has gint64   $!dsent                ;
 	has gint64   $!dreceived            ;
-	has Str    $!subject              ;
-	has Str    $!from                 ;
-	has Str    $!to                   ;
-	has Str    $!cc                   ;
-	has Str    $!mlist                ;
-	has Str    $!followup_flag        ;
-	has Str    $!followup_completed_on;
-	has Str    $!followup_due_by      ;
-	has Str    $!part                 ;
-	has Str    $!labels               ;
-	has Str    $!usertags             ;
-	has Str    $!cinfo                ;
-	has Str    $!bdata                ;
+	has Str      $!subject              ;
+	has Str      $!from                 ;
+	has Str      $!to                   ;
+	has Str      $!cc                   ;
+	has Str      $!mlist                ;
+	has Str      $!followup_flag        ;
+	has Str      $!followup_completed_on;
+	has Str      $!followup_due_by      ;
+	has Str      $!part                 ;
+	has Str      $!labels               ;
+	has Str      $!usertags             ;
+	has Str      $!cinfo                ;
+	has Str      $!bdata                ;
 }
 
 class CamelMedium is repr<CStruct> is export {
-	HAS CamelDataWrapper   $!parent;
-	has Pointer $!priv  ;
+	HAS CamelDataWrapper $.parent;
+	has Pointer          $!priv  ;
 }
 
 class CamelContentType is repr<CStruct> is export {
@@ -312,17 +313,17 @@ class CamelMessageContentInfo is repr<CStruct> is export {
 }
 
 class CamelMessageInfo is repr<CStruct> is export {
-	HAS GObject                 $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelMessageInfoBase is repr<CStruct> is export {
-	HAS CamelMessageInfo     $!parent;
+	HAS CamelMessageInfo     $.parent;
 	has Pointer              $!priv;
 }
 
 class CamelMimeFilter is repr<CStruct> is export {
-	HAS GObject              $!parent  ;
+	HAS GObject              $.parent  ;
 	has Pointer              $!priv    ;
 	has Str                  $!outreal ;
 	has Str                  $!outbuf  ;
@@ -335,148 +336,148 @@ class CamelMimeFilter is repr<CStruct> is export {
 }
 
 class CamelMimeFilterBasic is repr<CStruct> is export {
-	HAS CamelMimeFilter             $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterBestenc is repr<CStruct> is export {
-	HAS CamelMimeFilter               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterCRLF is repr<CStruct> is export {
-	HAS CamelMimeFilter            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterCanon is repr<CStruct> is export {
-	HAS CamelMimeFilter             $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $!parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterCharset is repr<CStruct> is export {
-	HAS CamelMimeFilter               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterEnriched is repr<CStruct> is export {
-	HAS CamelMimeFilter                $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterFrom is repr<CStruct> is export {
-	HAS CamelMimeFilter            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterGZip is repr<CStruct> is export {
-	HAS CamelMimeFilter            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterHTML is repr<CStruct> is export {
-	HAS CamelMimeFilter            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterIndex is repr<CStruct> is export {
-	HAS CamelMimeFilter             $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterLinewrap is repr<CStruct> is export {
-	HAS CamelMimeFilter                $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterPgp is repr<CStruct> is export {
-	HAS CamelMimeFilter           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterProgress is repr<CStruct> is export {
-	HAS CamelMimeFilter                $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterToHTML is repr<CStruct> is export {
-	HAS CamelMimeFilter              $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterWindows is repr<CStruct> is export {
-	HAS CamelMimeFilter               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterYenc is repr<CStruct> is export {
-	HAS CamelMimeFilter            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimeFilter $.parent;
+	has Pointer         $!priv  ;
 }
 
 class CamelMimePart is repr<CStruct> is export {
-	HAS CamelMedium          $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMedium   $.parent;
+	has Pointer       $!priv  ;
 }
 
 class CamelMimeMessage is repr<CStruct> is export {
-	HAS CamelMimePart           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMimePart $.parent;
+	has Pointer       $!priv  ;
 }
 
 class CamelMimeParser is repr<CStruct> is export {
-	HAS GObject                $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelMsg is repr<CStruct> is export {
-	has CamelMsgPort $!reply_port;
+	has CamelMsgPort $.reply_port;
 	has gint         $!flags     ;
 }
 
 class CamelMultipart is repr<CStruct> is export {
-	HAS CamelDataWrapper      $!parent;
-	has Pointer $!priv  ;
+	HAS CamelDataWrapper $.parent;
+	has Pointer          $!priv  ;
 }
 
 class CamelMultipartEncrypted is repr<CStruct> is export {
-	HAS CamelMultipart                 $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMultipart $.parent;
+	has Pointer        $!priv  ;
 }
 
 class CamelMultipartSigned is repr<CStruct> is export {
-	HAS CamelMultipart              $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMultipart $.parent;
+	has Pointer        $!priv  ;
 }
 
 class CamelNNTPAddress is repr<CStruct> is export {
-	HAS CamelAddress            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelAddress   $.parent;
+	has Pointer        $!priv  ;
 }
 
 class CamelNullOutputStream is repr<CStruct> is export {
-	HAS GOutputStream                $!parent;
-	has Pointer $!priv  ;
+	HAS GOutputStream $.parent;
+	has Pointer       $!priv  ;
 }
 
 class CamelOfflineFolder is repr<CStruct> is export {
-	HAS CamelFolder               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelFolder $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelOfflineSettings is repr<CStruct> is export {
-	HAS CamelStoreSettings          $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStoreSettings $.parent;
+	has Pointer            $!priv  ;
 }
 
 class CamelOfflineStore is repr<CStruct> is export {
-	HAS CamelStore               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStore $.parent;
+	has Pointer    $!priv  ;
 }
 
 class CamelOperation is repr<CStruct> is export {
-	HAS GCancellable          $!parent;
-	has Pointer $!priv  ;
+	HAS GCancellable $.parent;
+	has Pointer      $!priv  ;
 }
 
 class CamelPartitionKey is repr<CStruct> is export {
@@ -490,135 +491,135 @@ class CamelPartitionMap is repr<CStruct> is export {
 }
 
 class CamelPartitionTable is repr<CStruct> is export {
-	HAS GObject                    $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSExp is repr<CStruct> is export {
-	HAS GObject          $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSMIMEContext is repr<CStruct> is export {
-	HAS CamelCipherContext       $!parent;
-	has Pointer $!priv  ;
+	HAS CamelCipherContext $.parent;
+	has Pointer            $!priv  ;
 }
 
 class CamelSasl is repr<CStruct> is export {
-	HAS GObject          $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSaslAnonymous is repr<CStruct> is export {
-	HAS CamelSasl                 $!parent;
-	has Pointer $!priv  ;
+	HAS CamelSasl $.parent;
+	has Pointer   $!priv  ;
 }
 
 class CamelSaslGssapi is repr<CStruct> is export {
-	HAS CamelSasl              $!parent;
-	has Pointer $!priv  ;
+	HAS CamelSasl $.parent;
+	has Pointer   $!priv  ;
 }
 
 class CamelSaslLogin is repr<CStruct> is export {
-	HAS CamelSasl             $!parent;
-	has Pointer $!priv  ;
+	HAS CamelSasl $.parent;
+	has Pointer   $!priv  ;
 }
 
 class CamelSaslNTLM is repr<CStruct> is export {
-	HAS CamelSasl            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelSasl $.parent;
+	has Pointer   $!priv  ;
 }
 
 class CamelSaslPlain is repr<CStruct> is export {
-	HAS CamelSasl             $!parent;
-	has Pointer $!priv  ;
+	HAS CamelSasl $.parent;
+	has Pointer   $!priv  ;
 }
 
 class CamelSession is repr<CStruct> is export {
-	HAS GObject             $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelStoreSummary is repr<CStruct> is export {
-	HAS GObject                  $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelStream is repr<CStruct> is export {
-	HAS GObject            $!parent;
+	HAS GObject $.parent;
 	has Pointer $!priv  ;
 }
 
 class CamelStreamBuffer is repr<CStruct> is export {
-	HAS CamelStream              $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStream $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelStreamFilter is repr<CStruct> is export {
-	HAS CamelStream              $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStream $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelStreamFs is repr<CStruct> is export {
-	HAS CamelStream          $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStream $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelStreamMem is repr<CStruct> is export {
-	HAS CamelStream           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStream $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelStreamNull is repr<CStruct> is export {
-	HAS CamelStream            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStream $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelStreamProcess is repr<CStruct> is export {
-	HAS CamelStream               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStream $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelTextIndex is repr<CStruct> is export {
-	HAS CamelIndex            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelIndex $.parent;
+	has Pointer    $!priv  ;
 }
 
 class CamelTextIndexCursor is repr<CStruct> is export {
-	HAS CamelIndexCursor            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelIndexCursor $.parent;
+	has Pointer          $!priv  ;
 }
 
 class CamelTextIndexKeyCursor is repr<CStruct> is export {
-	HAS CamelIndexCursor               $!parent;
-	has Pointer $!priv  ;
+	HAS CamelIndexCursor $.parent;
+	has Pointer          $!priv  ;
 }
 
 class CamelTextIndexName is repr<CStruct> is export {
-	HAS CamelIndexName            $!parent;
-	has Pointer $!priv  ;
+	HAS CamelIndexName $.parent;
+	has Pointer        $!priv  ;
 }
 
 class CamelTransport is repr<CStruct> is export {
-	HAS CamelService          $!parent;
-	has Pointer $!priv  ;
+	HAS CamelService $.parent;
+	has Pointer      $!priv  ;
 }
 
 class CamelURL is repr<CStruct> is export {
-	has Str $!protocol;
-	has Str $!user    ;
-	has Str $!authmech;
-	has Str $!host    ;
+	has Str   $!protocol;
+	has Str   $!user    ;
+	has Str   $!authmech;
+	has Str   $!host    ;
 	has gint  $!port    ;
-	has Str $!path    ;
+	has Str   $!path    ;
 	has GData $!params  ;
-	has Str $!query   ;
-	has Str $!fragment;
+	has Str   $!query   ;
+	has Str   $!fragment;
 }
 
 class CamelVeeFolder is repr<CStruct> is export {
-	HAS CamelFolder           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelFolder $.parent;
+	has Pointer     $!priv  ;
 }
 
 class CamelVTrashFolder is repr<CStruct> is export {
@@ -719,17 +720,17 @@ class EExtensionClass is repr<CStruct> is export {
 }
 
 class EFreeFormExpSymbol is repr<CStruct> is export {
-	has Str                     $!names     ;
-	has Str                     $!hint      ;
+	has Str                       $!names     ;
+	has Str                       $!hint      ;
 	has EFreeFormExpBuildSexpFunc $!build_sexp;
 }
 
 class EIterator is repr<CStruct> is export {
-	HAS GObject $!parent;
+	HAS GObject $.parent;
 }
 
 class EList is repr<CStruct> is export {
-	HAS GObject       $!parent   ;
+	HAS GObject       $.parent   ;
 	has GList         $!list     ;
 	has GList         $!iterators;
 	has EListCopyFunc $!copy     ;
@@ -738,7 +739,7 @@ class EList is repr<CStruct> is export {
 }
 
 class EListClass is repr<CStruct> is export {
-	HAS GObjectClass $!parent_class;
+	HAS GObjectClass $.parent_class;
 }
 
 class EListIterator is repr<CStruct> is export {
@@ -1289,4 +1290,135 @@ class sign is repr<CStruct> is export {
 	has CamelCipherValiditySign $!status     ;
 	has Str                     $!description;
 	has GQueue                  $!signers    ;
+}
+
+class EBook is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv  ;
+}
+
+class EBookClient is repr<CStruct> is export {
+  HAS EClient $.parent;
+  has Pointer $!priv  ;
+}
+
+class EBookClientClass is repr<CStruct> is export {
+  HAS Pointer $.parent_class; # EClientClass
+}
+
+class EBookClientCursor is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv  ;
+}
+
+class EBookClientView is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv  ;
+}
+
+class EBookView is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv  ;
+}
+
+class EDestination is repr<CStruct> is export {
+  HAS GObject $.object;
+  has Pointer $!priv  ;
+}
+
+class EVCard is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv  ;
+}
+
+class EVCardClass is repr<CStruct> is export {
+	HAS GObjectClass $.parent_class;
+	has Pointer      $!reserved0;    #= &(void);
+	has Pointer      $!reserved1;    #= &(void);
+	has Pointer      $!reserved2;    #= &(void);
+	has Pointer      $!reserved3;    #= &(void);
+	has Pointer      $!reserved4;    #= &(void);
+}
+
+class EContact is repr<CStruct> is export {
+  HAS EVCard  $.parent;
+  has Pointer $!priv  ;
+}
+
+class ESourceBackendSummarySetup is repr<CStruct> is export {
+  HAS ESourceBackend  $.parent;
+  has Pointer         $!priv  ;
+}
+
+class ESourceBackendSummarySetupClass is repr<CStruct> is export {
+  HAS ESourceBackendClass $.parent_class;
+}
+
+class EContactName is repr<CStruct> is export {
+	# cw: Needs accessors!
+  has Str $!family;
+  has Str $!given;
+  has Str $!additional;
+  has Str $!prefixes;
+  has Str $!suffixes;
+}
+
+class EContactGeo is repr<CStruct> is export {
+	has gdouble $.latitude  is rw;
+	has gdouble $.longitude is rw;
+}
+
+class EPhotoDataInlined is repr<CStruct> {
+  has gchar $!mime_type;
+  has gsize $.length     is rw;
+  has Str   $!data;
+
+	buildAccessors(::?CLASS);
+}
+
+class EPhotoData is repr<CUnion> {
+  HAS EPhotoDataInlined $!inlined;
+	has Str               $!uri;
+
+	buildAccessors(::?CLASS);
+}
+
+class EContactPhoto is repr<CStruct> is export {
+   has EContactPhotoType $.type;
+	 HAS EPhotoData        $.data;
+}
+
+class EContactAddress is repr<CStruct> is export {
+	has Str $!address_format; #= the two letter country code that determines the format/meaning of the following fields
+	has Str $!po;
+	has Str $!ext;
+	has Str $!street;
+	has Str $!locality;
+	has Str $!region;
+	has Str $!code;
+	has Str $!country;
+
+	buildAccessors(::?CLASS);
+}
+
+class EContactDate is repr<CStruct> is export {
+  has guint $.year  is rw;
+  has guint $.month is rw;
+  has guint $.day   is rw;
+}
+
+class EContactCert is repr<CStruct> is export {
+  has gsize $.length is rw;
+  has Str   $!data;
+
+	buildAccessors(::?CLASS);
+}
+
+class EContactClass is repr<CStruct> is export {
+	HAS EVCardClass $.parent_class;
+	has Pointer     $!reserved0;    #= &(void)
+	has Pointer     $!reserved1;    #= &(void)
+	has Pointer     $!reserved2;    #= &(void)
+	has Pointer     $!reserved3;    #= &(void)
+	has Pointer     $!reserved4;    #= &(void)
 }
