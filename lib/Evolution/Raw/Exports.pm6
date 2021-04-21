@@ -6,6 +6,7 @@ our @evolution-exports is export;
 
 BEGIN {
   @evolution-exports = <
+    Evolution::Raw::Constants
     Evolution::Raw::Definitions
     Evolution::Raw::Enums
     Evolution::Raw::Structs

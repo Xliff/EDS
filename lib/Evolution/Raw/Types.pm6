@@ -29,6 +29,7 @@ need GIO::Raw::Exports;
 need SOUP::Raw::Definitions;
 need SOUP::Raw::Enums;
 need SOUP::Raw::Subs;
+need Evolution::Raw::Constants;
 need Evolution::Raw::Definitions;
 need Evolution::Raw::Enums;
 need Evolution::Raw::Structs;
