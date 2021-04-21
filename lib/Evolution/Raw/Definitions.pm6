@@ -20,8 +20,9 @@ constant EFreeFormExpBuildSexpFunc is export := Pointer;
 constant EListCopyFunc             is export := Pointer;
 constant EListFreeFunc             is export := Pointer;
 
-constant ecal is export = 'ecal-2.0',v1;
-constant eds  is export = 'edataserver-1.2',v25;
+constant ecal  is export = 'ecal-2.0',v1;
+constant ebook is export = 'ebook-1.2',v20;
+constant eds   is export = 'edataserver-1.2',v25;
 
 class CamelMsgPort               is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarm         is repr<CPointer> is export does GLib::Roles::Pointers { }
