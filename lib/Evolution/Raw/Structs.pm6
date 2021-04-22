@@ -1,6 +1,6 @@
 use v6.c;
 
-no precompilation;
+#no precompilation;
 
 use NativeCall;
 
@@ -1375,14 +1375,14 @@ class EPhotoDataInlined is repr<CStruct> {
   has gsize $.length     is rw;
   has Str   $!data;
 
-	buildAccessors(::?CLASS);
+	BEGIN buildAccessors($?CLASS);
 }
 
 class EPhotoData is repr<CUnion> {
   HAS EPhotoDataInlined $!inlined;
 	has Str               $!uri;
 
-	buildAccessors(::?CLASS);
+	BEGIN buildAccessors($?CLASS);
 }
 
 class EContactPhoto is repr<CStruct> is export {
@@ -1400,7 +1400,7 @@ class EContactAddress is repr<CStruct> is export {
 	has Str $!code;
 	has Str $!country;
 
-	buildAccessors(::?CLASS);
+	BEGIN buildAccessors($?CLASS);
 }
 
 class EContactDate is repr<CStruct> is export {
@@ -1413,7 +1413,7 @@ class EContactCert is repr<CStruct> is export {
   has gsize $.length is rw;
   has Str   $!data;
 
-	buildAccessors(::?CLASS);
+	BEGIN buildAccessors($?CLASS);
 }
 
 class EContactClass is repr<CStruct> is export {
