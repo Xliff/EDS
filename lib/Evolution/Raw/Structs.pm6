@@ -1,7 +1,5 @@
 use v6.c;
 
-no precompilation;
-
 use NativeCall;
 
 use GLib::Compat::Definitions;
@@ -1374,15 +1372,11 @@ class EPhotoDataInlined is repr<CStruct> {
   has gchar $!mime_type;
   has gsize $.length     is rw;
   has Str   $!data;
-
-	buildAccessors(::?CLASS);
 }
 
 class EPhotoData is repr<CUnion> {
   HAS EPhotoDataInlined $!inlined;
 	has Str               $!uri;
-
-	buildAccessors(::?CLASS);
 }
 
 class EContactPhoto is repr<CStruct> is export {
@@ -1399,8 +1393,6 @@ class EContactAddress is repr<CStruct> is export {
 	has Str $!region;
 	has Str $!code;
 	has Str $!country;
-
-	buildAccessors(::?CLASS);
 }
 
 class EContactDate is repr<CStruct> is export {
@@ -1412,8 +1404,6 @@ class EContactDate is repr<CStruct> is export {
 class EContactCert is repr<CStruct> is export {
   has gsize $.length is rw;
   has Str   $!data;
-
-	buildAccessors(::?CLASS);
 }
 
 class EContactClass is repr<CStruct> is export {
@@ -1423,4 +1413,11 @@ class EContactClass is repr<CStruct> is export {
 	has Pointer     $!reserved2;    #= &(void)
 	has Pointer     $!reserved3;    #= &(void)
 	has Pointer     $!reserved4;    #= &(void)
+}
+
+BEGIN {
+	buildAccessors($_) for EPhotoDataInlined,
+												 EPhotoData,
+	                       EContactAddress,
+												 EContactCert;
 }
