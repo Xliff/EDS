@@ -1,7 +1,5 @@
 use v6.c;
 
-#no precompilation;
-
 use NativeCall;
 
 use GLib::Compat::Definitions;
