@@ -14,7 +14,7 @@ sub compare-single-value ($vcard, $attrname, $value) {
   my $attr = $vcard.get_attribute($attrname);
   ok $attr,        'Attribute is defined';
 
-  my $str = $vcard.get_value($attr);
+  my $str = $attr.get_value;
   ok $str,         'Attribute value is defined';
   is $str, $value, 'Attribute value matches expected result';
 
@@ -34,6 +34,7 @@ sub has-only-one ($vcard, $attrname) {
 
 sub test-vcard ($vcard-str) {
   my $vc1 = Evolution::VCard.new-from-string($vcard-str);
+
   my $str = ~$vc1;
   ok  $str,                                           'Stringified VCard is defined';
   is $str, $vcard-str,                                'Stringified VCard matches origin';
@@ -230,9 +231,9 @@ sub test-vcard-quoted-printable {
     'ActualValue ěščřžýáíéúůóöĚŠČŘŽÝÁÍÉÚŮÓÖ§ ' ~
     '1234567890 1234567890 1234567890 1234567890 1234567890';
 
-  constant VCARD_21 = qq:to/_VCARD/.chomp;
+  constant VCARD_21 = qq:to/_VCARD/.chomp.&crlf;
     BEGIN:VCARD
-    VERSION:
+    VERSION:2.1
     FN;ENCODING=quoted-printable:ActualValue=20=C4=9B=C5=A1{
     '' }=C4=8D=C5=99=C5=BE=C3=BD=C3=A1=C3=AD=C3=A9=C3=BA=C5=AF=C3{
     '' }=B3=C3=B6=C4=9A=C5=A0=C4=8C=C5=98=C5=BD=C3=9D=C3=81=C3=8D{
@@ -246,24 +247,24 @@ sub test-vcard-quoted-printable {
    ok test_vcard_qp_3_0_saving(EXPECTED-TEXT),            'VCard 3.0 text representation aves correctly';
 }
 
-constant TEST-VCARD-NO-UID-STR = q:to/_VCARD/.chomp;
-	BEGIN:VCARD
-	VERSION:3.0
-	EMAIL;TYPE=OTHER:zyx@no.where
-	FN:zyx mix
-	N:zyx;mix;;;
-	END:VCARD
-  _VCARD
-
-constant TEST-VCARD-WITH-UID-STR = q:to/_VCARD/.chomp;
+constant TEST-VCARD-NO-UID-STR = q:to/VCARD-DEF/.chomp.&crlf;
   BEGIN:VCARD
-	VERSION:3.0
-	UID:some-uid
-	EMAIL;TYPE=OTHER:zyx@no.where
-	FN:zyx mix
-	N:zyx;mix;;;
-	END:VCARD
-  _VCARD
+  VERSION:3.0
+  EMAIL;TYPE=OTHER:zyx@no.where
+  FN:zyx mix
+  N:zyx;mix;;;
+  END:VCARD
+  VCARD-DEF
+
+constant TEST-VCARD-WITH-UID-STR = q:to/VCARD-DEF/.chomp.&crlf;
+  BEGIN:VCARD
+  VERSION:3.0
+  UID:some-uid
+  EMAIL;TYPE=OTHER:zyx@no.where
+  FN:zyx mix
+  N:zyx;mix;;;
+  END:VCARD
+  VCARD-DEF
 
 sub test-vcard-with-uid {
   subtest { test-vcard(TEST-VCARD-WITH-UID-STR) },    'VCard with UID';
@@ -339,7 +340,7 @@ sub test-phone-params-and-value (
 }
 
 sub test-contact-empty-value {
-  my $contact = Evolution::Contact.new-from-vcard(q:to/_VCARD/.chomp);
+  my $contact = Evolution::Contact.new-from-vcard(q:to/_VCARD/.chomp.&crlf);
     BEGIN:VCARD
     UID:some-uid
     REV:2017-01-12T11:34:36Z(0)
