@@ -22,7 +22,7 @@ sub compare-single-value ($vcard, $attrname, $value) {
 }
 
 sub has-only-one ($vcard, $attrname) {
-  my $found = False
+  my $found = False;
   for $vcard.get-attributes {
     if $attrname eq $_ {
       return False if $found;
@@ -77,7 +77,7 @@ sub test-econtact ($vcard-str) {
   diag 'Parse';
   $c1.get-const(E_CONTACT_UID);
   ok  $c1.is-parsed,                                'Contact object is parsed after information retrieval';
-  $str = ~$c1;
+  my $str = ~$c1;
   ok  $str,                                         'Contact object re-stringifies with no issue';
   is  $str, $vcard-str,                             'Stringified contact object matches origin specification';
 
@@ -128,7 +128,7 @@ sub test-econtact ($vcard-str) {
   diag 'Parse';
   $c1.get-const(E_CONTACT_FULL_NAME);
   ok  compare-single-value($c1, 'UID', 'other-uid'), 'Contact contains the proper UID after information retrieval';
-  pl  $c1.is-parsed,                                 'Contact object is now parsed';
+  ok  $c1.is-parsed,                                 'Contact object is now parsed';
   $c2 = Evolution::contact.new-from-vcard(~$c1);
   ok  $c2,                                           'Second contact, created from stringified first, is defined';
   ok  has-only-one($c1, 'UID'),                      'First contact has a singular UID';
@@ -139,7 +139,7 @@ sub test-econtact ($vcard-str) {
   True
 }
 
-sub test-vcard-qp-2-1-parsing ($vcard-str, $expected-value) {
+sub test_vcard_qp_2_1_parsing ($vcard-str, $expected-value) {
   my $vcard = Evolution::VCard.new-from-string($vcard-str);
   ok $vcard,                   'VCard created from string successfully';
 
@@ -155,9 +155,9 @@ sub test-vcard-qp-2-1-parsing ($vcard-str, $expected-value) {
   # $vcard.unref
 }
 
-sub test-vcard-qp-2-1-saving ($expected-text) {
+sub test_vcard_qp_2_1_saving ($expected-text) {
   my $vcard = Evolution::VCard.new;
-  my $attr  = Evolution::VCard::Attribute.new($fn, :name);
+  my $attr  = Evolution::VCard::Attribute.new('FN', :name);
   my $param = Evolution::VCard::Attribute::Param.new('ENCODING');
   $param.add-value('quoted-printable');
   $attr.add-param($param);
@@ -178,8 +178,8 @@ sub test-vcard-qp-2-1-saving ($expected-text) {
   $vcard = Evolution::VCard.new-from-string($str);
   ok   $vcard,                         'VCard can be recreated from string representation';
 
-  $attr = $vcard.get-attribute('FN');
-  my $decoded = $attr.get-value-decoded;
+  $attr    = $vcard.get-attribute('FN');
+  $decoded = $attr.get-value-decoded;
   ok   $attr,                          'Retrieved attribute is defined';
   # Remember: $decoded is a GString!
   ok   $decoded.str,   $expected-text, 'Decoded attribute matches expected value';
@@ -187,7 +187,7 @@ sub test-vcard-qp-2-1-saving ($expected-text) {
   True;
 }
 
-sub test-vcard-qp-3-0-saving ($expected-text) {
+sub test_vcard_qp_3_0_saving ($expected-text) {
   my $vcard = Evolution::VCard.new;
   my $attr  = Evolution::VCard::Attribute.new('FN', :name);
   my $param = Evolution::VCard::Attribute::Param.new('ENCODING');
@@ -209,9 +209,9 @@ sub test-vcard-qp-3-0-saving ($expected-text) {
   my $str = ~$vcard;
   $vcard.unref;
   ok   $str,                           'Stringified object still exists after origin is unref\'d';
-  $vcard = Evolution::VCard.new-from-string($str);
+  $vcard  = Evolution::VCard.new-from-string($str);
   ok   $vcard,                         'New object created from string representation succeeds';
-  my $attr = $vcard.get-attribute('FN');
+  $attr   = $vcard.get-attribute('FN');
   ok   $attr,                          'Attribute retrieval from VCard succeeds';
   $decoded = $attr.get-value-decoded;
   ok   $decoded,                       'Round trip decoded attribute value is defined';
@@ -223,4 +223,102 @@ sub test-vcard-qp-3-0-saving ($expected-text) {
   isnt $value,         $encoded-value, 'Value does not match encoded value';
 
   True;
+}
+
+sub test-vcard-quoted-printable {
+  constant EXPECTED-TEXT =
+    'ActualValue ěščřžýáíéúůóöĚŠČŘŽÝÁÍÉÚŮÓÖ§ ' ~
+    '1234567890 1234567890 1234567890 1234567890 1234567890';
+
+  constant VCARD_21 = qq:to/_VCARD/.chomp;
+    BEGIN:VCARD
+    VERSION:
+    FN;ENCODING=quoted-printable:ActualValue=20=C4=9B=C5=A1{
+    '' }=C4=8D=C5=99=C5=BE=C3=BD=C3=A1=C3=AD=C3=A9=C3=BA=C5=AF=C3{
+    '' }=B3=C3=B6=C4=9A=C5=A0=C4=8C=C5=98=C5=BD=C3=9D=C3=81=C3=8D{
+    '' }=C3=89=C3=9A=C5=AE=C3=93=C3=96=C2=A7=201234567890=2012345{
+    '' }67890=201234567890=201234567890=201234567890
+    END:VCARD
+    _VCARD
+
+   ok test_vcard_qp_2_1_parsing(VCARD_21, EXPECTED-TEXT), 'VCard 2.1 text representation arses correctly';
+   ok test_vcard_qp_2_1_saving(EXPECTED-TEXT),            'VCard 2.1 text representation aves correctly';
+   ok test_vcard_qp_3_0_saving(EXPECTED-TEXT),            'VCard 3.0 text representation aves correctly';
+}
+
+constant TEST-VCARD-NO-UID-STR = q:to/_VCARD/.chomp;
+	BEGIN:VCARD
+	VERSION:3.0
+	EMAIL;TYPE=OTHER:zyx@no.where
+	FN:zyx mix
+	N:zyx;mix;;;
+	END:VCARD
+  _VCARD
+
+constant TEST-VCARD-WITH-UID-STR = q:to/_VCARD/.chomp;
+  BEGIN:VCARD
+	VERSION:3.0
+	UID:some-uid
+	EMAIL;TYPE=OTHER:zyx@no.where
+	FN:zyx mix
+	N:zyx;mix;;;
+	END:VCARD
+  _VCARD
+
+sub test-vcard-with-uid {
+  subtest { test-vcard(TEST-VCARD-WITH-UID-STR) },    'VCard with UID';
+}
+
+sub test-vcard-without-uid {
+  subtest { test-vcard(TEST-VCARD-NO-UID-STR) },      'VCard with no UID';
+}
+
+sub test-contact-with-uid {
+  subtest { test-econtact(TEST-VCARD-WITH-UID-STR) }, 'EContact with UID';
+}
+
+sub test-contact-without-uid {
+  subtest { test-econtact(TEST-VCARD-NO-UID-STR) },   'EContact with no UID';
+}
+
+sub test-phone-params-and-value {
+}
+
+sub test-contact-empty-value {
+  my $contact = Evolution::Contact.new-from-vcard(q:to/_VCARD/.chomp);
+    BEGIN:VCARD
+    UID:some-uid
+    REV:2017-01-12T11:34:36Z(0)
+    FN:zyx
+    N:zyx;;;;
+    EMAIL;TYPE=WORK:work@no.where
+    TEL;X-EVOLUTION-E164=00123456789,;TYPE=WORK,VOICE:00123456789
+    TEL;TYPE=WORK;TYPE=VOICE;X-EVOLUTION-E164=11123456789,:11123456789
+    TEL;X-EVOLUTION-E164=002233445566;TYPE=HOME,VOICE:002233445566
+    END:VCARD
+    _VCARD
+
+  is $contact.objectType.Int, Evolution::Contact.get-type, 'Contact object is an EContact';
+
+  test-phone-params-and-value(
+    $contact,
+    E_CONTACT_PHONE_BUSINESS,
+    '00123456789',
+    'WORK'
+  );
+
+  test-phone-params-and-value(
+    $contact,
+    E_CONTACT_PHONE_BUSINESS_2,
+    '11123456789',
+    'WORK'
+  );
+
+  test-phone-params-and-value(
+    $contact,
+    E_CONTACT_PHONE_HOME,
+    '002233445566',
+    'HOME'
+  );
+
 }
