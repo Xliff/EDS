@@ -5,6 +5,9 @@ use Evolution::Raw::Definitions;
 
 unit package Evolution::Raw::Enums;
 
+# cw: This is a project-specific definition and hence included first.
+our enum VCardVersion is export ('ver2-1', 'ver2_1' => 0, 'ver3', 'ver4');
+
 constant CAMEL_STORE_INFO_FOLDER_TYPE_BIT is export = 10;
 
 constant EOAuth2ServiceNavigationPolicy is export := guint32;
