@@ -22,6 +22,22 @@ sub checkListCompatible (@values, \T) {
   });
 }
 
+my %attrVersions;
+
+multi sub getAttributeVersion (Evolution::VCard::Attribute $a) {
+  $a.version;
+}
+multi sub getAttributeVersion (EVCardAttribute() $a) {
+  %attrVersions{ +$a.p }
+}
+
+sub setAttributeVersion (EVCardAttribute() $a, $version) {
+  %attrVersions{ +$a.p } = $version;
+}
+sub delAttributeVersion (EVCardAttribute() $a) {
+  %attrVersions{ +$a.p }:delete
+}
+
 our subset EVCardAncestry is export of Mu
   where EVCard | GObject;
 
@@ -30,8 +46,8 @@ class Evolution::VCard {
 
   has EVCard $!evc;
 
-  submethod BUILD (:$vcard) {
-    self.setEVCard($vcard) if $vcard;
+  submethod BUILD (:$evcard) {
+    self.setEVCard($evcard) if $evcard;
   }
 
   method setEVCard (EVCardAncestry $_) {
@@ -75,10 +91,11 @@ class Evolution::VCard {
   }
 
   method !checkAttr ($a) {
+    my $a-ver = getAttributeVersion($a);
     X::Evolution::VCard::AttributeVersionMismatch.new(
-      .getVersion,
-      $a.version
-    ).throw unless $a.version == self.getVersion;
+      self.getVersion,
+      $a-ver
+    ).throw unless $a-ver == self.getVersion;
   }
 
   method add_attribute (EVCardAttribute() $attr) is also<add-attribute> {
@@ -280,9 +297,14 @@ class Evolution::VCard::Attribute {
       );
       self.add-param($param);
     }
+    setAttributeVersion(self, $!version);
   }
 
-  method EVolution::Raw::Structs::EVCardAttribute
+  submethod DESTROY {
+    delAttributeVersion(self);
+  }
+
+  method Evolution::Raw::Definitions::EVCardAttribute
     is also<EVCardAttribute>
   { $!evca }
 
@@ -465,7 +487,7 @@ class Evolution::VCard::Attribute::Param {
     $!evcap = $param;
   }
 
-  method Evolution::Raw::Structs::EVCardAttributeParam
+  method Evolution::Raw::Definitions::EVCardAttributeParam
     is also<EVCardAttributeParam>
   { $!evcap }
 
