@@ -281,7 +281,61 @@ sub test-contact-without-uid {
   subtest { test-econtact(TEST-VCARD-NO-UID-STR) },   'EContact with no UID';
 }
 
-sub test-phone-params-and-value {
+sub test-phone-params-and-value (
+  $contact,
+  $field-id,
+  $expected-value,
+  $expected-value-type
+) {
+  is   $contact.objectType.Int,       Evolution::Contact.get-type, 'Contact object is an EContact';
+  my $field-value = $contact.get-const($field-id);
+  ok   $field-value,                                               "Can get a defined value for field '{$field-id}'";
+  is   $field-value, $expected-value,                              'Field value matches expection';
+  my $attributes = $contact.get-attributes($field-id);
+  ok   $attributes,                                                "Field '{ $field-id }' has defined attributes";
+  is   $attributes.elems,             4,                           'The number of those attributes is 4';
+
+  my $attr;
+  for $attributes.kv -> $k, $v {
+    ok $v,                                                         "Attribute #{$k} is defined";
+    my $value = $v.get-value;
+    ok $value,                                                     "Attribute #{$k} has a defined value";
+    if $value eq $expected-value {
+      $attr = $v;
+      last;
+    }
+  }
+  ok   $attr,                                                      'Proper attribute was found';
+  ok   $attr.get-name,                                             'Attribute name is defined';
+  my $params = $attr.get-params;
+  is   $params.elems,                 3,                           'Attribute has 3 parameters';
+
+  for $params.kv -> $k, $v {
+    ok $_,                                                         "Parameter #{$k} is defined";
+    my $name = .get-name;
+    ok $name,                                                      "Parameter #{$k} has a defined name";
+    is $name,                         (EVC_TYPE, EVC_X_E164).any,  'Parameter is of class TYPE or X_E164';
+
+    my $values = $v.get-values;
+    ok $values,                                                     'Parameter has defined values';
+    if $name eq EVC_X_E164 {
+      ok $values.elems < 2,                                         'EVC_X_E164 Parameter has less than 2 values';
+      my $value = $values[0];
+      ok $value,                                                    'First parameter value is defined';
+      is $value,                      $expected-value,              'Parameter value matches expected value';
+      if $values[1] {
+        is $values[1],                                              'Second value is present but it is a Nil string';
+      }
+    } else {
+      ok $values.elems >= 2,                                        'Non EVC_X_E164 parameter has at least 2 values';
+      ok $values.elems <  3,                                        'Non EVC_X_E164 parameter has less than 3 values';
+
+      ok $values[0],                                                'First parameter value is defined';
+      ok $values[1],                                                'Second parameter value is defined';
+      is $values[0],                   $expected-value,             'First parameter value matches expectation';
+      is $values[1],                   'VOICE',                     "Second parameter value matches 'VOICE'";
+    }
+  }
 }
 
 sub test-contact-empty-value {
@@ -322,3 +376,23 @@ sub test-contact-empty-value {
   );
 
 }
+
+sub test-construction-vcard-attribute-with-group {
+  my $attr1 = Evolution::VCard::Attribute.new('X-TEST', :name);
+  my $attr2 = Evolution::VCard::Attribute.new('', 'X-TEST');
+  my $attr3 = Evolution::VCard::Attribute.new('GROUP', 'X-TEST');
+
+  nok $attr1.get-group,          'First attribute does not have a group';
+  nok $attr2.get-group,          'Second attribute does not have a group';
+  is  $attr3.get-group, 'GROUP', "Third attribute has a group named 'GROUP'";
+
+  .free for $attr1, $attr2, $attr3;
+}
+
+test-vcard-with-uid;
+test-vcard-without-uid;
+test-vcard-quoted-printable;
+test-contact-with-uid;
+test-contact-without-uid;
+test-contact-empty-value;
+test-construction-vcard-attribute-with-group;
