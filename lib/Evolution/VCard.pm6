@@ -74,37 +74,50 @@ class Evolution::VCard {
     $evcard ?? self.bless( :$evcard ) !! Nil;
   }
 
+  method !checkAttr ($a) {
+    X::Evolution::VCard::AttributeVersionMismatch.new(
+      .getVersion,
+      $a.version
+    ).throw unless $a.version == self.getVersion;
+  }
+
   method add_attribute (EVCardAttribute() $attr) is also<add-attribute> {
+    self!checkAttr($attr);
     e_vcard_add_attribute($!evc, $attr);
   }
 
   method add_attribute_with_value (EVCardAttribute() $attr, Str() $value)
     is also<add-attribute-with-value>
   {
+    self!checkAttr($attr);
     e_vcard_add_attribute_with_value($!evc, $attr, $value);
   }
 
   method add_attribute_with_values (EVCardAttribute() $attr, *@values)
     is also<add-attribute-with-values>
   {
+    self!checkAttr($attr);
     #e_vcard_add_attribute_with_values($!evc, $attr);
     $attr.add_value($_) for checkListCompatible(@values, Str);
     self.add_attribute($attr);
   }
 
   method append_attribute (EVCardAttribute() $attr) is also<append-attribute> {
+    self!checkAttr($attr);
     e_vcard_append_attribute($!evc, $attr);
   }
 
   method append_attribute_with_value (EVCardAttribute() $attr, Str() $value)
     is also<append-attribute-with-value>
   {
+    self!checkAttr($attr);
     e_vcard_append_attribute_with_value($!evc, $attr, $value);
   }
 
   method append_attribute_with_values (EVCardAttribute $attr, *@values)
     is also<append-attribute-with-values>
   {
+    self!checkAttr($attr);
     #e_vcard_append_attribute_with_values($!evc, $attr);
     $attr.add_value($_) for checkListCompatible(@values, Str);
     self.append_attribute($attr);
@@ -181,6 +194,17 @@ class Evolution::VCard {
     unstable_get_type( self.^name, &e_vcard_get_type, $n, $t );
   }
 
+  method getVersion {
+    my $v = self.get-attribute('version') // self.get-attribute('VERSION');
+    given $v {
+      when    '2.1' { ver2_1 }
+      when    '3.0' { ver3   }
+      when    '4.0' { ver4   }
+
+      default       { ver3   }
+    }
+  }
+
   method is_parsed is also<is-parsed> {
     so e_vcard_is_parsed($!evc);
   }
@@ -226,23 +250,65 @@ class Evolution::VCard {
 
 # Boxed
 class Evolution::VCard::Attribute {
+  # Attribute default encodings...
+  # As per https://android.stackexchange.com/questions/106888/what-vcard-formats-versions-and-encodings-are-supported-for-import
+  # 2.1 => ASCII
+  # 3.0 => Speficied as charset in attribuet,
+  # 4.0 => UTF8
+  #
+  # As of this writing, we are supporting 2.1 and 3.0
+  #
+  # Note that VCards and VCard attributes are DECOUPLED! There is no mechanism
+  # for an attribute to query its parent version, so this mechanism must be
+  # created.
+  #
+  # As of this writing, the default version will be 3.0. Attributes can reset
+  # their version at CREATION TIME via a named parameter
+  #
+  # Attribues added to VCards must now have a version check with an exception
+  # thrown if versions mismatch.
   has EVCardAttribute $!evca;
+  has                 $.version;
 
-  submethod BUILD (:$attribute) {
+  submethod BUILD (:$attribute, :$!version = ver3) {
     $!evca = $attribute;
+
+    if $!version == ver3 {
+      my $param = Evolution::VCard::Attribute::Param.new_with_value(
+        'charset',
+        self.getAttrCharset
+      );
+      self.add-param($param);
+    }
   }
 
   method EVolution::Raw::Structs::EVCardAttribute
     is also<EVCardAttribute>
   { $!evca }
 
-  multi method new (Str() $attr_name) {
-    my $attribute = e_vcard_attribute_new($attr_name);
+  multi method new (Str() $attr-name, :$name is required) {
+    samewith(Str, $attr-name);
+  }
+  multi method new (Str() $group, Str() $attr_name) {
+    my $attribute = e_vcard_attribute_new($group, $attr_name);
 
     $attribute ?? self.bless( :$attribute ) !! Nil;
   }
   multi method new (EVCardAttribute $attribute) {
     $attribute ?? self.bless( :$attribute ) !! Nil;
+  }
+
+  method getAttrCharset {
+    do given $!version {
+      when ver2_1 { 'ASCII' }
+      when ver4   { 'utf8' }
+
+      when ver3   {
+        my $cs = self.get_param('charset') // self.get_param('CHARSET');
+        # Default unspecified, choose previous versions!
+        $cs ?? $cs !! 'ASCII'
+      }
+    }
   }
 
   method add_param (EVCardAttributeParam() $param) is also<add-param> {
@@ -266,10 +332,18 @@ class Evolution::VCard::Attribute {
     e_vcard_attribute_add_value($!evca, $value);
   }
 
-  method add_value_decoded (Str() $value, Int() $len = $value.encode.bytes)
+  method add_value_decoded (
+    Str() $value,
+    Int() $len    = -1
+  )
     is also<add-value-decoded>
   {
     my gint $l = $len;
+
+    if $l == -1 {
+      # cw: See comment at the top of the class definition.
+      $l = $value.encode(self.getAttrCharset).bytes
+    }
 
     e_vcard_attribute_add_value_decoded($!evca, $value, $l);
   }
@@ -402,6 +476,15 @@ class Evolution::VCard::Attribute::Param {
   }
   multi method new (EVCardAttributeParam $param) {
     $param ?? self.bless( :$param ) !! Nil;
+  }
+
+  method new_with_value (Str() $name, Str() $value) is also<new-with-value> {
+    my $o = Evolution::VCard::Attribute::Param.new($name);
+
+    return Nil unless $o;
+
+    $o.add-value($value);
+    $o;
   }
 
   method add_value (Str() $value) is also<add-value> {
