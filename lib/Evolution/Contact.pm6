@@ -13,6 +13,8 @@ use Evolution::VCard;
 our subset EContactAncestry is export of Mu
   where EContact | EVCardAncestry;
 
+class Evolution::Contact::Field { ... }
+
 class Evolution::Contact is Evolution::VCard {
   has EContact $!c;
 
@@ -56,7 +58,7 @@ class Evolution::Contact is Evolution::VCard {
   }
 
   method new_from_vcard (Str() $vcard) is also<new-from-vcard> {
-    my $contact = e_contact_new_from_vcard($!c, $vcard);
+    my $contact = e_contact_new_from_vcard($vcard);
 
     $contact ?? self.bless( :$contact ) !! Nil;
   }
@@ -64,7 +66,7 @@ class Evolution::Contact is Evolution::VCard {
   method new_from_vcard_with_uid (Str() $vcard, Str() $uid)
     is also<new-from-vcard-with-uid>
   {
-    my $contact = e_contact_new_from_vcard_with_uid($!c, $vcard, $uid);
+    my $contact = e_contact_new_from_vcard_with_uid($vcard, $uid);
 
     $contact ?? self.bless( :$contact ) !! Nil;
   }
@@ -78,19 +80,22 @@ class Evolution::Contact is Evolution::VCard {
       Nil;
   }
 
-  # cw: As long as we don't have to worry about signs, doubles, or floats!
-  method get (Int() $field_id) {
-    my EContactField $f  = $field_id;
-    my               $pv = e_contact_get($!c, $f);
-
+  method !returnedPointerType ($field_id, $pv is copy) {
     return cast(Str, $pv) if Evolution::Contact::Field.is_string($field_id);
 
     $pv = cast(CArray[uint32], $pv);
     $pv[0];
   }
 
-  method get_attributes (Int() $field_id, :$glist = False, :$raw = False)
-    is also<get-attributes>
+  # cw: As long as we don't have to worry about signs, doubles, or floats!
+  method get (Int() $field_id) {
+    my EContactField $f  = $field_id;
+
+    self!returnedPointerType( $f, e_contact_get($!c, $f) );
+  }
+
+  method get_contact_attributes (Int() $field_id, :$glist = False, :$raw = False)
+    is also<get-contact-attributes>
   {
     my EContactField $f = $field_id;
 
@@ -134,7 +139,7 @@ class Evolution::Contact is Evolution::VCard {
   method get_const (Int() $field_id) is also<get-const> {
     my EContactField $f = $field_id;
 
-    e_contact_get_const($!c, toPointer($field_id) );
+    self!returnedPointerType( $f, e_contact_get_const($!c, $f) );
   }
 
   method get_type is also<get-type> {
