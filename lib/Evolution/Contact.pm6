@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -10,6 +12,8 @@ use Evolution::VCard;
 
 our subset EContactAncestry is export of Mu
   where EContact | EVCardAncestry;
+
+class Evolution::Contact::Field { ... }
 
 class Evolution::Contact is Evolution::VCard {
   has EContact $!c;
@@ -36,6 +40,7 @@ class Evolution::Contact is Evolution::VCard {
   }
 
   method Evolution::Raw::Definitions::EContact
+    is also<EContact>
     #is also<EContact>
   { $!c }
 
@@ -52,14 +57,16 @@ class Evolution::Contact is Evolution::VCard {
     $contact ?? self.bless( :$contact ) !! Nil;
   }
 
-  method new_from_vcard (Str() $vcard) {
-    my $contact = e_contact_new_from_vcard($!c, $vcard);
+  method new_from_vcard (Str() $vcard) is also<new-from-vcard> {
+    my $contact = e_contact_new_from_vcard($vcard);
 
     $contact ?? self.bless( :$contact ) !! Nil;
   }
 
-  method new_from_vcard_with_uid (Str() $vcard, Str() $uid) {
-    my $contact = e_contact_new_from_vcard_with_uid($!c, $vcard, $uid);
+  method new_from_vcard_with_uid (Str() $vcard, Str() $uid)
+    is also<new-from-vcard-with-uid>
+  {
+    my $contact = e_contact_new_from_vcard_with_uid($vcard, $uid);
 
     $contact ?? self.bless( :$contact ) !! Nil;
   }
@@ -73,18 +80,23 @@ class Evolution::Contact is Evolution::VCard {
       Nil;
   }
 
-  # cw: As long as we don't have to worry about signs, doubles, or floats!
-  method get (Int() $field_id) {
-    my EContactField $f  = $field_id;
-    my               $pv = e_contact_get($!c, $f);
-
+  method !returnedPointerType ($field_id, $pv is copy) {
     return cast(Str, $pv) if Evolution::Contact::Field.is_string($field_id);
 
     $pv = cast(CArray[uint32], $pv);
     $pv[0];
   }
 
-  method get_attributes (Int() $field_id, :$glist = False, :$raw = False) {
+  # cw: As long as we don't have to worry about signs, doubles, or floats!
+  method get (Int() $field_id) {
+    my EContactField $f  = $field_id;
+
+    self!returnedPointerType( $f, e_contact_get($!c, $f) );
+  }
+
+  method get_contact_attributes (Int() $field_id, :$glist = False, :$raw = False)
+    is also<get-contact-attributes>
+  {
     my EContactField $f = $field_id;
 
     returnGList(
@@ -97,6 +109,7 @@ class Evolution::Contact is Evolution::VCard {
   }
 
   proto method get_attributes_set (|)
+      is also<get-attributes-set>
   { * }
 
   multi method get_attributes_set (
@@ -123,26 +136,28 @@ class Evolution::Contact is Evolution::VCard {
     );
   }
 
-  method get_const (Int() $field_id) {
+  method get_const (Int() $field_id) is also<get-const> {
     my EContactField $f = $field_id;
 
-    e_contact_get_const($!c, toPointer($field_id) );
+    self!returnedPointerType( $f, e_contact_get_const($!c, $f) );
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_get_type, $n, $t );
   }
 
-  method inline_local_photos (CArray[Pointer[GError]] $error = gerror) {
+  method inline_local_photos (CArray[Pointer[GError]] $error = gerror)
+    is also<inline-local-photos>
+  {
     clear_error;
     my $rv = so e_contact_inline_local_photos($!c, $error);
     set_error($error);
     $rv;
   }
 
-  method pretty_name {
+  method pretty_name is also<pretty-name> {
     e_contact_pretty_name($!c);
   }
 
@@ -152,13 +167,17 @@ class Evolution::Contact is Evolution::VCard {
     e_contact_set( $!c, $f, toPointer($value) );
   }
 
-  method set_attributes (Int() $field_id, GList() $attributes) {
+  method set_attributes (Int() $field_id, GList() $attributes)
+    is also<set-attributes>
+  {
     my EContactField $f = $field_id;
 
     e_contact_set_attributes($!c, $field_id, $attributes);
   }
 
-  method vcard_attribute (Evolution::Contact:U: Int() $field_id) {
+  method vcard_attribute (Evolution::Contact:U: Int() $field_id)
+    is also<vcard-attribute>
+  {
     my EContactField $f = $field_id;
 
     e_contact_vcard_attribute($f);
@@ -187,7 +206,7 @@ class Evolution::Contact::Address {
     e_contact_address_free($!ca);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_address_get_type, $n, $t );
@@ -211,7 +230,7 @@ class Evolution::Contact::AttrList does GLib::Roles::StaticClass {
     e_contact_attr_list_free($list);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_attr_list_get_type, $n, $t );
@@ -226,6 +245,7 @@ class Evolution::Contact::Cert {
   }
 
   method Evolution::Raw::Structs::EContactCert
+    is also<EContactCert>
   { $!cert }
 
   multi method new (EContactCert $cert) {
@@ -241,7 +261,7 @@ class Evolution::Contact::Cert {
     e_contact_cert_free($!cert);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_cert_get_type, $n, $t );
@@ -255,6 +275,7 @@ class Evolution::Contact::Date {
   submethod BUILD (:$!date) { }
 
   method Evolution::Raw::Struct::EContactDate
+    is also<EContactDate>
   { $!date }
 
   multi method new (EContactDate $date) {
@@ -266,7 +287,7 @@ class Evolution::Contact::Date {
     $date ?? self.bless( :$date ) !! Nil;
   }
 
-  method new_from_string (Str() $string) {
+  method new_from_string (Str() $string) is also<new-from-string> {
     Evolution::Contact::Date.from-string($string);
   }
 
@@ -274,7 +295,9 @@ class Evolution::Contact::Date {
     Evolution::Contact::Date:U:
     Str()                       $string,
                                 :$raw    = False
-  ) {
+  )
+    is also<from-string>
+  {
     my $date = e_contact_date_from_string($string);
 
     $date ??
@@ -298,13 +321,13 @@ class Evolution::Contact::Date {
     e_contact_date_free($!date);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_date_get_type, $n, $t );
   }
 
-  method to_string {
+  method to_string is also<to-string> {
     e_contact_date_to_string($!date);
   }
 
@@ -316,7 +339,7 @@ multi sub infix:<==> (EContactDate $d1, EContactDate $d2) is export {
 
 class Evolution::Contact::Field is GLib::Roles::StaticClass {
 
-  method id_from_vcard (Str() $field) {
+  method id_from_vcard (Str() $field) is also<id-from-vcard> {
     EContactFieldEnum( e_contact_field_id_from_vcard($field) );
   }
 
@@ -324,7 +347,7 @@ class Evolution::Contact::Field is GLib::Roles::StaticClass {
     EContactFieldEnum( e_contact_field_id($field) );
   }
 
-  method is_string (Int() $field) {
+  method is_string (Int() $field) is also<is-string> {
     my EContactField $f = $field;
 
     so e_contact_field_is_string($f);
@@ -361,11 +384,11 @@ class Evolution::Contact::Name {
     $name ?? self.bless( :$name ) !! Nil;
   }
 
-  method new_from_string (Str() $string) {
+  method new_from_string (Str() $string) is also<new-from-string> {
     Evolution::Contact::Name.new($string);
   }
 
-  method from_string (Str() $string, :$raw = False) {
+  method from_string (Str() $string, :$raw = False) is also<from-string> {
     my $name = e_contact_name_from_string($string);
 
     $name ??
@@ -387,13 +410,13 @@ class Evolution::Contact::Name {
     e_contact_name_free($!name);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_name_get_type, $n, $t );
   }
 
-  method to_string {
+  method to_string is also<to-string> {
     e_contact_name_to_string($!name);
   }
 
@@ -415,7 +438,7 @@ class Evolution::Contact::Geo {
     e_contact_geo_free($!geo);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_geo_get_type, $n, $t );
@@ -438,7 +461,7 @@ class Evolution::Contact::Photo {
     $photo ?? self.bless( :$photo ) !! Nil;
   }
 
-  method mime_type is rw {
+  method mime_type is rw is also<mime-type> {
     Proxy.new:
       FETCH => -> $     { self.get_mime_type    },
       STORE => -> $, \v { self.set_mime_type(v) };
@@ -464,6 +487,7 @@ class Evolution::Contact::Photo {
   }
 
   proto method get_inlined (|)
+      is also<get-inlined>
   { * }
 
   multi method get_inlined {
@@ -480,31 +504,33 @@ class Evolution::Contact::Photo {
     ($data, $len);
   }
 
-  method get_mime_type {
+  method get_mime_type is also<get-mime-type> {
     e_contact_photo_get_mime_type($!photo);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_contact_photo_get_type, $n, $t );
   }
 
-  method get_uri {
+  method get_uri is also<get-uri> {
     e_contact_photo_get_uri($!photo);
   }
 
-  method set_inlined (Str() $data, Int() $len = $data.chars) {
+  method set_inlined (Str() $data, Int() $len = $data.chars)
+    is also<set-inlined>
+  {
     my gsize $l = $len;
 
     e_contact_photo_set_inlined($!photo, $data, $l);
   }
 
-  method set_mime_type (Str() $mime_type) {
+  method set_mime_type (Str() $mime_type) is also<set-mime-type> {
     e_contact_photo_set_mime_type($!photo, $mime_type);
   }
 
-  method set_uri (Str() $uri) {
+  method set_uri (Str() $uri) is also<set-uri> {
     e_contact_photo_set_uri($!photo, $uri);
   }
 

@@ -50,3 +50,22 @@ constant CAMEL_FOLDER_TYPE_BIT               is export = 10;
 constant E_OAUTH2_SECRET_REFRESH_TOKEN       is export = 'refresh_token';
 constant E_OAUTH2_SECRET_ACCESS_TOKEN        is export = 'access_token';
 constant E_OAUTH2_SECRET_EXPIRES_AFTER       is export = 'expires_after';
+
+# Exceptions
+
+class X::Evolution::VCard::AttributeVersionMismatch is Exception {
+  has $.expected;
+  has $.received;
+
+  submethod BUILD (:$!expected, :$!received) { }
+
+  method new ($expected, $received) {
+    self.bless($expected, $received);
+  }
+
+  method message {
+    "Encountered version {
+     $!received } of an attribute when expecting version { $!expected }";
+  }
+
+}
