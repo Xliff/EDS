@@ -273,43 +273,11 @@ class Evolution::VCard {
 
 # Boxed
 class Evolution::VCard::Attribute {
-  # Attribute default encodings...
-  # As per https://android.stackexchange.com/questions/106888/what-vcard-formats-versions-and-encodings-are-supported-for-import
-  # 2.1 => ASCII
-  # 3.0 => Speficied as charset in attribuet,
-  # 4.0 => UTF8
-  #
-  # As of this writing, we are supporting 2.1 and 3.0
-  #
-  # Note that VCards and VCard attributes are DECOUPLED! There is no mechanism
-  # for an attribute to query its parent version, so this mechanism must be
-  # created.
-  #
-  # As of this writing, the default version will be 3.0. Attributes can reset
-  # their version at CREATION TIME via a named parameter
-  #
-  # Attribues added to VCards must now have a version check with an exception
-  # thrown if versions mismatch.
   has EVCardAttribute $!evca;
   has                 $.version;
 
   submethod BUILD (:$attribute, :$!version = ver3) {
     $!evca = $attribute;
-
-    # if $!version == ver3 {
-    #   unless self.get_param('CHARSET').elems {
-    #     my $param = Evolution::VCard::Attribute::Param.new_with_value(
-    #       'CHARSET',
-    #       self.getAttrCharset
-    #     );
-    #     self.add-param($param);
-    #   }
-    # }
-    # setAttributeVersion(self, $!version);
-  }
-
-  submethod DESTROY {
-    # delAttributeVersion(self);
   }
 
   method Evolution::Raw::Definitions::EVCardAttribute
@@ -329,17 +297,8 @@ class Evolution::VCard::Attribute {
   }
 
   method getAttrCharset {
-    # do given $!version {
-    #   when ver2_1 { 'ASCII' }
-    #   when ver4   { 'utf8' }
-    #
-    #   when ver3   {
-    #     my $cs = self.get_param('charset') // self.get_param('CHARSET');
-    #     # Default unspecified, choose previous versions!
-    #     $cs ?? $cs !! 'ASCII'
-    #   }
-    # }
-    'utf-8';
+    my $cs = self.get_param('CHARSET');
+    $cs ?? $cs[0] !! 'utf-8';
   }
 
   method add_param (EVCardAttributeParam() $param) is also<add-param> {
@@ -365,16 +324,11 @@ class Evolution::VCard::Attribute {
 
   method add_value_decoded (
     Str() $value,
-    Int() $len    = -1
+    Int() $len    = $value.encode(self.getAttrCharset).bytes
   )
     is also<add-value-decoded>
   {
     my gint $l = $len;
-
-    if $l == -1 {
-      # cw: See comment at the top of the class definition.
-      $l = $value.encode(self.getAttrCharset).bytes
-    }
 
     e_vcard_attribute_add_value_decoded($!evca, $value, $l);
   }
