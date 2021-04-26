@@ -33,37 +33,73 @@ sub has-only-one ($vcard, $attrname) {
 }
 
 sub test-vcard ($vcard-str) {
-  my $vc1 = Evolution::VCard.new-from-string($vcard-str);
+  {
+    my $vc1 = Evolution::VCard.new-from-string($vcard-str);
 
-  my $str = ~$vc1;
-  ok  $str,                                           'Stringified VCard is defined';
-  is $str, $vcard-str,                                'Stringified VCard matches origin';
+    # Do not parse
+    my $str = ~$vc1;
+    ok  $str,                                           'Stringified VCard is defined';
+    is  $str, $vcard-str,                               'Stringified VCard matches origin';
+    nok $vc1.is-parsed,                                 'VCard is NOT parsed';
 
-  $vc1.get-attribute('FN');
-  ok  $vc1.is-parsed,                                 'VCard parsed successfully';
-  ok  ~$vc1,                                          'Stringified VCard is defined     (repeat?)';
-  is  $str, $vcard-str,                               'Stringified VCard matches origin (repeat?)';
+    # Parse
+    my $attr = $vc1.get-attribute('UID');
+    ok  $vc1.is-parsed,                                 'VCard with attribute is parsed after attribute retrieval';
+    $str = ~$vc1;
+    ok  $str,                                           'VCard can be stringified after attribute retrieval';
+    is  ~$vc1, $vcard-str,                              'VCard still matches origin after attribute retrieval';
 
-  $vc1 = Evolution::VCard.new-from-string($vcard-str);
-  $vc1.append-attribute-with-value(
-    Evolution::VCard::Attribute.new('UID', :name),
-    'other-uid'
-  );
-  nok $vc1.is-parsed,                                 'VCard with attribute is not parsed';
+    # Getting FN will parse
+    $vc1.get-attribute('FN');
+    ok  $vc1.is-parsed,                                 'VCard parsed after retrieving 2nd attribute';
+    $str = ~$vc1;
+    ok  $str,                                           'VCard can be stringified after 2nd attribute retrieval';
+    is  ~$vc1, $vcard-str,                              'VCard still matches origin after 2nd attribute retrieval';
+  }
 
-  # Getting FN will parse
-  $vc1.get-attribute('FN');
-  ok  $vc1.is-parsed,                                 'VCard parsed after retrieving attribute';
-  my $vc2 = Evolution::VCard.new-from-string(~$vc1);
-  ok  compare-single-value($vc2, 'UID', 'other-uid'), 'Created attribute is present in a copied VCard';
+  {
+    # Do not parse
+    my $vc1 = Evolution::VCard.new-from-string($vcard-str);
+    $vc1.append-attribute-with-value(
+      Evolution::VCard::Attribute.new('UID', :name),
+      'other-uid'
+    );
+    nok $vc1.is-parsed,                                   'VCard NOT parsed after attribute addition';
+    ok  compare-single-value($vc1, 'UID', 'other-uid'),   'Created attribute is present in a VCard';
+    nok $vc1.is-parsed,                                   'Retrieval of created attribute does not parse VCard';
+    $vc1.get-attribute('FN');
+    ok  $vc1.is-parsed,                                   "Retrieval of 'FN' attribute parses VCard";
 
-  $vc1.get-attribute('FN');
-  ok  $vc1.is-parsed,                                 'First VCard re-parsed correctly';
-  ok  compare-single-value($vc1, 'UID', 'other-uid'), 'Created attribute is present in a original VCard';
-  nok $vc2.is-parsed,                                 'Copied VCard is not parsed';
-  ok  compare-single-value($vc2, 'UID', 'other-uid'), 'Created attribute is present remains valid in copied VCard';
-  ok  has-only-one($vc1, 'UID');
-  ok  has-only-one($vc2, 'UID');
+    $vc1.unref;
+
+    # Parse
+    $vc1 = Evolution::VCard.new-from-string($vcard-str);
+    nok $vc1.is-parsed,                                   'Recreated VCard is NOT parsed';
+    $vc1.remove-attributes('UID', :name);
+
+    ok  $vc1.is-parsed,                                   'Recreated VCard is parsed after UID removal';
+    $vc1.append-attribute-with-value(
+      Evolution::VCard::Attribute.new('UID', :name),
+      'other-uid'
+    );
+    ok    compare-single-value($vc1, 'UID', 'other-uid'), 'Proper UID can be retrieved after re-creation';
+    {
+      my $vc2 = Evolution::VCard.new-from-string(~$vc1);
+      ok  compare-single-value($vc1, 'UID', 'other-uid'), 'Proper UID can be retrieved after re-creation';
+    }
+
+    {
+      # Parse
+      $vc1.get-attribute('FN');
+      ok  $vc1.is-parsed,                                   'First VCard re-parsed correctly';
+      ok  compare-single-value($vc1, 'UID', 'other-uid'),   'Created attribute is present in a original VCard';
+      my $vc2 = Evolution::VCard.new-from-string(~$vc1);
+      nok $vc2.is-parsed,                                   'Copied VCard is NOT parsed';
+      ok  compare-single-value($vc2, 'UID', 'other-uid'),   'Created attribute is present remains valid in copied VCard';
+      ok  has-only-one($vc1, 'UID');
+      ok  has-only-one($vc2, 'UID');
+    }
+  }
 
   True;
 }
