@@ -7,6 +7,8 @@ use Evolution::Raw::Types;
 use Evolution::Contact;
 use Evolution::VCard;
 
+plan 121;
+
 sub compare-single-value ($vcard, $attrname, $value) {
   ok $vcard,       'VCard is defined';
   ok $attrname,    'Attribute name is defined';
@@ -167,7 +169,7 @@ sub test-econtact ($vcard-str) {
   $c1.get-const(E_CONTACT_FULL_NAME);
   ok  compare-single-value($c1, 'UID', 'other-uid'), 'Contact contains the proper UID after information retrieval';
   ok  $c1.is-parsed,                                 'Contact object is now parsed';
-  $c2 = Evolution::contact.new-from-vcard(~$c1);
+  $c2 = Evolution::Contact.new-from-vcard(~$c1);
   ok  $c2,                                           'Second contact, created from stringified first, is defined';
   ok  has-only-one($c1, 'UID'),                      'First contact has a singular UID';
   ok  has-only-one($c2, 'UID'),                      'Second contact has a singular UID';
@@ -329,55 +331,59 @@ sub test-phone-params-and-value (
   my $field-value = $contact.get-const($field-id);
   ok   $field-value,                                               "Can get a defined value for field '{$field-id}'";
   is   $field-value, $expected-value,                              'Field value matches expection';
-  my $attributes = $contact.get-attributes($field-id);
+  my $attributes = $contact.get-contact-attributes($field-id);
   ok   $attributes,                                                "Field '{ $field-id }' has defined attributes";
-  is   $attributes.elems,             4,                           'The number of those attributes is 4';
+  is   $attributes.elems,             3,                           'The number of those attributes is 3';
 
   my $attr;
   for $attributes.kv -> $k, $v {
-    ok $v,                                                         "Attribute #{$k} is defined";
+    ok $v,                                                         "Attribute {$k} is defined";
     my $value = $v.get-value;
-    ok $value,                                                     "Attribute #{$k} has a defined value";
+    ok $value,                                                     "Attribute {$k} has a defined value";
     if $value eq $expected-value {
       $attr = $v;
       last;
     }
   }
+
   ok   $attr,                                                      'Proper attribute was found';
   ok   $attr.get-name,                                             'Attribute name is defined';
+
   my $params = $attr.get-params;
-  is   $params.elems,                 3,                           'Attribute has 3 parameters';
+  is   $params.elems,                 2,                           'Attribute has 2 parameters';
 
   for $params.kv -> $k, $v {
-    ok $_,                                                         "Parameter #{$k} is defined";
-    my $name = .get-name;
-    ok $name,                                                      "Parameter #{$k} has a defined name";
+    ok $v,                                                         "Parameter {$k} is defined";
+    my $name = $v.get-name;
+    ok $name,                                                      "Parameter {$k} has a defined name";
     is $name,                         (EVC_TYPE, EVC_X_E164).any,  'Parameter is of class TYPE or X_E164';
 
     my $values = $v.get-values;
+
     ok $values,                                                     'Parameter has defined values';
-    if $name eq EVC_X_E164 {
+    if $name.lc eq EVC_X_E164.lc {
       ok $values.elems < 2,                                         'EVC_X_E164 Parameter has less than 2 values';
-      my $value = $values[0];
-      ok $value,                                                    'First parameter value is defined';
-      is $value,                      $expected-value,              'Parameter value matches expected value';
+      ok $values[0],                                                'First parameter value is defined';
+      is $values[0],                  $expected-value,              'Parameter value matches expected value';
       if $values[1] {
         is $values[1],                                              'Second value is present but it is a Nil string';
       }
     } else {
       ok $values.elems >= 2,                                        'Non EVC_X_E164 parameter has at least 2 values';
       ok $values.elems <  3,                                        'Non EVC_X_E164 parameter has less than 3 values';
-
+      #
+      # diag "V: $values";
+      #
       ok $values[0],                                                'First parameter value is defined';
       ok $values[1],                                                'Second parameter value is defined';
-      is $values[0],                   $expected-value,             'First parameter value matches expectation';
+      is $values[0],                   $expected-value-type,        'First parameter value type matches expectation';
       is $values[1],                   'VOICE',                     "Second parameter value matches 'VOICE'";
     }
   }
 }
 
 sub test-contact-empty-value {
-  my $contact = Evolution::Contact.new-from-vcard(q:to/_VCARD/.chomp.&crlf);
+  my $contact = Evolution::Contact.new-from-vcard(q:to/VCARD/.chomp.&crlf);
     BEGIN:VCARD
     UID:some-uid
     REV:2017-01-12T11:34:36Z(0)
@@ -388,7 +394,7 @@ sub test-contact-empty-value {
     TEL;TYPE=WORK;TYPE=VOICE;X-EVOLUTION-E164=11123456789,:11123456789
     TEL;X-EVOLUTION-E164=002233445566;TYPE=HOME,VOICE:002233445566
     END:VCARD
-    _VCARD
+    VCARD
 
   is $contact.objectType.Int, Evolution::Contact.get-type, 'Contact object is an EContact';
 
