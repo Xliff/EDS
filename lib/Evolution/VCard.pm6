@@ -230,9 +230,14 @@ class Evolution::VCard {
     e_vcard_remove_attribute($!evc, $attr);
   }
 
-  method remove_attributes (Str() $attr_group, Str() $attr_name)
+  proto method remove_attributes (|)
     is also<remove-attributes>
-  {
+  { * }
+
+  multi method remove_attributes (Str() $attr_name, :$name is required) {
+    samewith(Str, $attr_name);
+  }
+  multi method remove_attributes (Str() $attr_group, Str() $attr_name) {
     e_vcard_remove_attributes($!evc, $attr_group, $attr_name);
   }
 
@@ -291,11 +296,13 @@ class Evolution::VCard::Attribute {
     $!evca = $attribute;
 
     if $!version == ver3 {
-      my $param = Evolution::VCard::Attribute::Param.new_with_value(
-        'charset',
-        self.getAttrCharset
-      );
-      self.add-param($param);
+      unless self.get_param('CHARSET').elems {
+        my $param = Evolution::VCard::Attribute::Param.new_with_value(
+          'CHARSET',
+          self.getAttrCharset
+        );
+        self.add-param($param);
+      }
     }
     setAttributeVersion(self, $!version);
   }
