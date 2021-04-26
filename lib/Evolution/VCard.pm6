@@ -6,6 +6,7 @@ use Evolution::Raw::Types;
 use Evolution::Raw::VCard;
 
 use GLib::GList;
+use GLib::String;
 
 use GLib::Roles::Object;
 
@@ -338,7 +339,7 @@ class Evolution::VCard::Attribute {
     #     $cs ?? $cs !! 'ASCII'
     #   }
     # }
-    'ASCII';
+    'utf-8';
   }
 
   method add_param (EVCardAttributeParam() $param) is also<add-param> {
@@ -433,8 +434,13 @@ class Evolution::VCard::Attribute {
     e_vcard_attribute_get_value($!evca);
   }
 
-  method get_value_decoded is also<get-value-decoded> {
-    e_vcard_attribute_get_value_decoded($!evca);
+  method get_value_decoded (:$raw = False) is also<get-value-decoded> {
+    my $s = e_vcard_attribute_get_value_decoded($!evca);
+
+    $s ??
+      ( $raw ?? $s !! GLib::String.new($s, :!ref) )
+      !!
+      Nil;
   }
 
   method get_values (:$glist = False, :$raw = False) is also<get-values> {
