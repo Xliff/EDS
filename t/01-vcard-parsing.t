@@ -24,7 +24,7 @@ sub compare-single-value ($vcard, $attrname, $value) {
 sub has-only-one ($vcard, $attrname) {
   my $found = False;
   for $vcard.get-attributes {
-    if $attrname eq $_ {
+    if $attrname eq .get-name {
       return False if $found;
       $found = True;
     }
@@ -96,8 +96,8 @@ sub test-vcard ($vcard-str) {
       my $vc2 = Evolution::VCard.new-from-string(~$vc1);
       nok $vc2.is-parsed,                                   'Copied VCard is NOT parsed';
       ok  compare-single-value($vc2, 'UID', 'other-uid'),   'Created attribute is present remains valid in copied VCard';
-      ok  has-only-one($vc1, 'UID');
-      ok  has-only-one($vc2, 'UID');
+      ok  has-only-one($vc1, 'UID'),                        'UID is singluar on first VCard';
+      ok  has-only-one($vc2, 'UID'),                        'UID is singluar on second VCard';
     }
   }
 
@@ -278,9 +278,9 @@ sub test-vcard-quoted-printable {
     END:VCARD
     _VCARD
 
-   ok test_vcard_qp_2_1_parsing(VCARD_21, EXPECTED-TEXT), 'VCard 2.1 text representation arses correctly';
-   ok test_vcard_qp_2_1_saving(EXPECTED-TEXT),            'VCard 2.1 text representation aves correctly';
-   ok test_vcard_qp_3_0_saving(EXPECTED-TEXT),            'VCard 3.0 text representation aves correctly';
+   ok test_vcard_qp_2_1_parsing(VCARD_21, EXPECTED-TEXT), 'VCard 2.1 text representation parses correctly';
+   ok test_vcard_qp_2_1_saving(EXPECTED-TEXT),            'VCard 2.1 text representation parses correctly';
+   ok test_vcard_qp_3_0_saving(EXPECTED-TEXT),            'VCard 3.0 text representation parses correctly';
 }
 
 constant TEST-VCARD-NO-UID-STR = q:to/VCARD-DEF/.chomp.&crlf;
