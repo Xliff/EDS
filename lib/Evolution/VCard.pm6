@@ -555,8 +555,12 @@ class Evolution::VCard::Attribute::Param {
     unstable_get_type( self.^name, &e_vcard_attribute_param_get_type, $n, $t );
   }
 
-  method get_values is also<get-values> {
-    e_vcard_attribute_param_get_values($!evcap);
+  method get_values (:$glist = False, :$raw = False) is also<get-values> {
+    returnGList(
+      e_vcard_attribute_param_get_values($!evcap),
+      $glist,
+      $raw
+    );
   }
 
   method remove_values is also<remove-values> {
