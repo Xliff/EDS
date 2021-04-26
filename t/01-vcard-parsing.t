@@ -422,9 +422,9 @@ sub test-contact-empty-value {
 }
 
 sub test-construction-vcard-attribute-with-group {
-  my $attr1 = Evolution::VCard::Attribute.new('X-TEST', :name);
-  my $attr2 = Evolution::VCard::Attribute.new('', 'X-TEST');
-  my $attr3 = Evolution::VCard::Attribute.new('GROUP', 'X-TEST');
+  my $attr1 = Evolution::VCard::Attribute.new('X-TEST',    :name);
+  my $attr2 = Evolution::VCard::Attribute.new('',       'X-TEST');
+  my $attr3 = Evolution::VCard::Attribute.new('GROUP',  'X-TEST');
 
   nok $attr1.get-group,          'First attribute does not have a group';
   nok $attr2.get-group,          'Second attribute does not have a group';
