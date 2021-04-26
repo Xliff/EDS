@@ -91,11 +91,11 @@ class Evolution::VCard {
   }
 
   method !checkAttr ($a) {
-    my $a-ver = getAttributeVersion($a);
-    X::Evolution::VCard::AttributeVersionMismatch.new(
-      self.getVersion,
-      $a-ver
-    ).throw unless $a-ver == self.getVersion;
+    # my $a-ver = getAttributeVersion($a);
+    # X::Evolution::VCard::AttributeVersionMismatch.new(
+    #   self.getVersion,
+    #   $a-ver
+    # ).throw unless $a-ver == self.getVersion;
   }
 
   method add_attribute (EVCardAttribute() $attr) is also<add-attribute> {
@@ -295,20 +295,20 @@ class Evolution::VCard::Attribute {
   submethod BUILD (:$attribute, :$!version = ver3) {
     $!evca = $attribute;
 
-    if $!version == ver3 {
-      unless self.get_param('CHARSET').elems {
-        my $param = Evolution::VCard::Attribute::Param.new_with_value(
-          'CHARSET',
-          self.getAttrCharset
-        );
-        self.add-param($param);
-      }
-    }
-    setAttributeVersion(self, $!version);
+    # if $!version == ver3 {
+    #   unless self.get_param('CHARSET').elems {
+    #     my $param = Evolution::VCard::Attribute::Param.new_with_value(
+    #       'CHARSET',
+    #       self.getAttrCharset
+    #     );
+    #     self.add-param($param);
+    #   }
+    # }
+    # setAttributeVersion(self, $!version);
   }
 
   submethod DESTROY {
-    delAttributeVersion(self);
+    # delAttributeVersion(self);
   }
 
   method Evolution::Raw::Definitions::EVCardAttribute
@@ -328,16 +328,17 @@ class Evolution::VCard::Attribute {
   }
 
   method getAttrCharset {
-    do given $!version {
-      when ver2_1 { 'ASCII' }
-      when ver4   { 'utf8' }
-
-      when ver3   {
-        my $cs = self.get_param('charset') // self.get_param('CHARSET');
-        # Default unspecified, choose previous versions!
-        $cs ?? $cs !! 'ASCII'
-      }
-    }
+    # do given $!version {
+    #   when ver2_1 { 'ASCII' }
+    #   when ver4   { 'utf8' }
+    #
+    #   when ver3   {
+    #     my $cs = self.get_param('charset') // self.get_param('CHARSET');
+    #     # Default unspecified, choose previous versions!
+    #     $cs ?? $cs !! 'ASCII'
+    #   }
+    # }
+    'ASCII';
   }
 
   method add_param (EVCardAttributeParam() $param) is also<add-param> {
