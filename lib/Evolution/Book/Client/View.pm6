@@ -35,7 +35,7 @@ class Evolution::Book::Client::View {
   ) {
     my $to-parent;
 
-    $!sr = do {
+    $!ebcv = do {
       when EBookClientView {
         $to-parent = cast(GObject, $_);
         $_;
