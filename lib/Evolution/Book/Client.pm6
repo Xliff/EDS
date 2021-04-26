@@ -7,19 +7,26 @@ use Evolution::Raw::Book::Client;
 
 use GLib::GList;
 use Evolution::Client;
-#use Evolution::Contact;
+use Evolution::Contact;
+
+use GLib::Roles::Object;
+use GIO::Roles::Initable;
+use GIO::Roles::AsyncInitable;
 
 our subset EBookClientAncestry is export of Mu
-  where EBookClient | EClient;
+  where EBookClient | GInitable | GAsyncInitable | EClient;
 
 class Evolution::Book::Client is Evolution::Client {
+  also does GIO::Roles::Initable;
+  also does GIO::Roles::AsyncInitable;
+
   has EBookClient $!ebc;
 
-  submethod BUILD (:$book-client ) {
+  submethod BUILD (:$book-client, :$init, :$cancellable) {
     self.setEBookClient($book-client ) if $book-client ;
   }
 
-  method setEBookClient (EBookClientAncestry $_) {
+  method setEBookClient (EBookClientAncestry $_, :$init, :$cancellable) {
     my $to-parent;
 
     $!ebc = do {
@@ -28,12 +35,26 @@ class Evolution::Book::Client is Evolution::Client {
         $_;
       }
 
+      when GInitable {
+        $to-parent = cast(GObject, $_);
+        $!i = $_;
+        cast(ESource, $_);
+      }
+
+      when GAsyncInitable {
+        $to-parent = cast(GObject, $_);
+        $!ai = $_;
+        cast(ESourceRegistry, $_);
+      }
+
       default {
         $to-parent = $_;
         cast(EBookClient, $_);
       }
     }
     self.setEClient($to-parent);
+    self.roleInit-GInitable;
+    self.roleInit-AsyncInitable(:$init, :$cancellable);
   }
 
   method Evolution::Raw::Definitions::EBookClient
