@@ -23,7 +23,7 @@ class Evolution::Book::Client is Evolution::Client {
   has EBookClient $!ebc;
 
   submethod BUILD (:$book-client, :$init, :$cancellable) {
-    self.setEBookClient($book-client ) if $book-client ;
+    self.setEBookClient($book-client, :$init, :$cancellable) if $book-client;
   }
 
   method setEBookClient (EBookClientAncestry $_, :$init, :$cancellable) {
@@ -53,8 +53,8 @@ class Evolution::Book::Client is Evolution::Client {
       }
     }
     self.setEClient($to-parent);
-    self.roleInit-GInitable;
-    self.roleInit-AsyncInitable(:$init, :$cancellable);
+    self.roleInit-GInitable(:$init, :$cancellable);
+    self.roleInit-AsyncInitable;
   }
 
   method Evolution::Raw::Definitions::EBookClient
