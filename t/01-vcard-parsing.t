@@ -4,6 +4,7 @@ use Test;
 
 use Evolution::Raw::Types;
 
+use Evolution::Contact;
 use Evolution::VCard;
 
 sub compare-single-value ($vcard, $attrname, $value) {
@@ -82,7 +83,7 @@ sub test-vcard ($vcard-str) {
       Evolution::VCard::Attribute.new('UID', :name),
       'other-uid'
     );
-    ok    compare-single-value($vc1, 'UID', 'other-uid'), 'Proper UID can be retrieved after re-creation';
+    ok    compare-single-value($vc1, 'UID', 'other-uid'), 'Proper UID can be 4 after re-creation';
     {
       my $vc2 = Evolution::VCard.new-from-string(~$vc1);
       ok  compare-single-value($vc1, 'UID', 'other-uid'), 'Proper UID can be retrieved after re-creation';
@@ -202,7 +203,7 @@ sub test_vcard_qp_2_1_saving ($expected-text) {
 
   my $decoded = $attr.get-value-decoded;
   ok   $decoded,                       'Decoded attribute value created successfully';
-  is   $decoded, $expected-text,       'Decoded attribute value matches expected value';
+  is   $decoded.str,   $expected-text, 'Decoded attribute value matches expected value';
 
   my $encoded-value = $attr.get-value;
   ok   $encoded-value,                 'Encoded value is defined';
@@ -219,7 +220,7 @@ sub test_vcard_qp_2_1_saving ($expected-text) {
   $decoded = $attr.get-value-decoded;
   ok   $attr,                          'Retrieved attribute is defined';
   # Remember: $decoded is a GString!
-  ok   $decoded.str,   $expected-text, 'Decoded attribute matches expected value';
+  is   $decoded.str,   $expected-text, 'Decoded attribute matches expected value';
 
   True;
 }
