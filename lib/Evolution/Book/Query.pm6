@@ -1,8 +1,20 @@
+use v6.c;
+
+use NativeCall;
+
+use Evolution::Raw::Types;
+use Evolution::Raw::Book::Query;
+
+multi sub trait_mod:<is> (Parameter $param, :$also is required) {
+  use nqp;
+  my @named := nqp::getattr(nqp::decont($param), Parameter, '$!named_names');
+  nqp::push_s(@named, $_) for $also.Array;
+  nqp::bindattr( nqp::decont($param), Parameter, '$!named_names', @named );
+}
+
 # BOXED
 class Evolution::Book::Query {
   has EBookQuery $!ebq;
-
-  # NOWHERE NEAR COMPLETE!
 
   submethod BUILD (:$query) {
     $!ebq = $query if $query;
@@ -11,60 +23,25 @@ class Evolution::Book::Query {
   method Evolution::Raw::Definitions::EBookQuery
   { $!ebq }
 
-  method new (EBookQuery $query) {
+  multi method new (EBookQuery $query) {
     $query ?? self.bless( :$query ) !! Nil;
   }
 
-  method vcard_field_exists (
-    Evolution::Book::Query:U:
-
-    Int() $field,
-          :$raw = False
+  multi method new (
+    Str() $nq,
+    # Aliases
+    :from_string(
+      :from-string(
+        :from_str(
+          :from-str(
+            :string(:$str)
+          )
+        )
+      )
+    ) is required
   ) {
-
-    my $q = e_book_query_vcard_field_exists($f);
-
-    $q ??
-      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
-      !!
-      Nil;
+    Evolution::Book::Query.from_string($nq);
   }
-
-  method vcard_field_test (
-    Evolution::Book::Query:U:
-
-    Int() $field,
-    Int() $test,
-    Str() $value
-  ) {
-    my EBookField     $f = $field;
-    my EBookQueryTest $t = $test;
-    my                $q = e_book_query_vcard_field_test($!ebq, $test, $value);
-
-    $q ??
-      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
-      !!
-      Nil;
-  }
-
-  # Finish out as per .or
-  multi method and (@qs, Int() $unref = False) {
-    samewith( @qs.elems, CArray[EBookQuery].new(@qs), $unref );
-  }
-  multi method and (Int() $nq ,CArray[EBookQuery] $qs, Int() $unref = False) {
-    my gint     $n = $nq;
-    my gboolean $u = $unref.so.Int;
-
-    e_book_query_and($n, $qs, $unref);
-  }
-
-  # cw: Since the regular and() accepts an array, there really is no need for
-  #     andv() or orv()
-  #
-  # method andv (*@queries) {
-  #   e_book_query_andv($!ebq);
-  # }
-
   method from_string (Evolution::Book::Query:U: Str() $nq, :$raw = False) {
     my $q = e_book_query_from_string($nq);
 
@@ -74,6 +51,70 @@ class Evolution::Book::Query {
       Nil;
   }
 
+  multi method new (
+    Int() $field,
+    :vcard_field_exists(
+      :vcard-field-exists(
+        :vcard_field(:$vcard-field)
+      )
+    ) is required
+  ) {
+    Evolution::Book::Query.vcard_field_exists($field);
+  }
+  method vcard_field_exists (
+    Evolution::Book::Query:U:
+
+    Str() $field,
+          :$raw = False
+  ) {
+    my $q = e_book_query_vcard_field_exists($field);
+
+    $q ??
+      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
+      !!
+      Nil;
+  }
+
+  multi method new (
+    Int() $field,
+    Int() $test,
+    Str() $value,
+          :vcard_field_test(:$vcard-field-test) is required
+  ) {
+    Evolution::Book::Query.vcard_field_test($field, $test, $value)
+  }
+  method vcard_field_test (
+    Evolution::Book::Query:U:
+
+    Int() $field,
+    Int() $test,
+    Str() $value,
+          :$raw   = False
+  ) {
+    my EContactField  $f = $field;
+    my EBookQueryTest $t = $test;
+    my                $q = e_book_query_vcard_field_test($!ebq, $test, $value);
+
+    $q ??
+      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
+      !!
+      Nil;
+  }
+
+  multi method new (
+    Str() $value,
+          :any_field_contains(
+            :any-field-contains(
+              :field_contains(
+                :field-contains(
+                  :contains(:$any)
+                )
+              )
+            )
+          ) is required
+  ) {
+    Evolution::Book::Query.any_field_contains($value);
+  }
   method any_field_contains (
     Evolution::Book::Query:U:
 
@@ -82,6 +123,81 @@ class Evolution::Book::Query {
   ) {
     e_book_query_any_field_contains($value);
   }
+
+  # new() alias?
+  method field_exists (Evolution::Book::Query:U: Int() $field, :$raw = False) {
+    my EContactField $f = $field;
+
+    my $q = e_book_query_field_exists($f);
+
+    $q ??
+      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
+      !!
+      Nil;
+  }
+
+  # new() alias?
+  method field_test (
+    Evolution::Book::Query:U:
+
+    Int() $field,
+    Int() $test,
+    Str() $value,
+          :$raw  = False
+  ) {
+    my EContactField  $f = $field;
+    my EBookQueryTest $t = $test;
+
+    my $q = e_book_query_field_test($f, $t, $value);
+
+    $q ??
+      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
+      !!
+      Nil;
+  }
+
+  multi method and (
+    Evolution::Book::Query:D:
+
+          *@qs,
+    Int() :$unref = False,
+          :$raw   = False
+  ) {
+    Evolution::Book::Query.and($!ebq, |@qs, :$unref, :$raw);
+  }
+  multi method and (
+    Evolution::Book::Query:U:
+
+          *@qs,
+    Int() :$unref = False,
+          :$raw   = False
+  ) {
+    samewith( @qs.elems, ArrayToCArray(EBookQuery, @qs), $unref, :$raw );
+  }
+  multi method and (
+    Evolution::Book::Query:U:
+
+    Int()              $nq,
+    CArray[EBookQuery] $qs,
+    Int()              $unref = False,
+                       :$raw  = False
+  ) {
+    my gint     $n = $nq;
+    my gboolean $u = $unref.so.Int;
+    my          $q = e_book_query_and($n, $qs, $unref);
+
+    $q ??
+      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
+      !!
+      Nil;
+  }
+
+  # cw: Since the regular and() accepts an array, there really is no need for
+  #     andv() or orv()
+  #
+  # method andv (*@queries) {
+  #   e_book_query_andv($!ebq);
+  # }
 
   multi method copy (:$raw = False) {
     Evolution::Book::Query.copy($!ebq, :$raw);
@@ -96,36 +212,6 @@ class Evolution::Book::Query {
 
     $c ??
       ( $raw ?? $c !! Evolution::Book::Query.new($c) )
-      !!
-      Nil;
-  }
-
-  method field_exists (Evolution::Book::Query:U: Int() $field, :$raw = False) {
-    my EBookField $f = $field;
-
-    my $q = e_book_query_field_exists($f);
-
-    $q ??
-      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
-      !!
-      Nil;
-  }
-
-  method field_test (
-    Evolution::Book::Query:U:
-
-    Int() $field,
-    Int() $test,
-    Str() $value,
-          :$raw  = False
-  ) {
-    my EBookField     $f = $field;
-    my EBookQueryTest $t = $test;
-
-    my $q = e_book_query_field_test($f, $t, $value);
-
-    $q ??
-      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
       !!
       Nil;
   }
@@ -171,18 +257,19 @@ class Evolution::Book::Query {
     Int() :$unref = False,
           :$raw   = False
   ) {
-    samewith( @qs.elems, ArrayToCArray(@qs, EBookQuery), $unref );
+    samewith( @qs.elems, ArrayToCArray(EBookQuery, @qs), $unref, :$raw );
   }
   multi method or (
     Evolution::Book::Query:U:
 
     Int()              $nq,
     CArray[EBookQuery] $qs,
-    Int()              $unref = False
+    Int()              $unref = False,
+                       :$raw  = False
   ) {
     my gint     $n = $nq;
     my gboolean $u = $unref.so.Int;
-    my          $q = e_book_query_or($!ebq, $qs, $unref);
+    my          $q = e_book_query_or($n, $qs, $unref);
 
     $q ??
       ( $raw ?? $q !! Evolution::Book::Query.new($q) )
@@ -197,8 +284,8 @@ class Evolution::Book::Query {
   multi method ref (Evolution::Book::Query:D: :$raw = False) {
     Evolution::Book::Query.ref($!ebq, :$raw);
   }
-  multi method ref (Evolution::Book::Query:U: EBookQuery() $q :$raw = False) {
-    my $qq = e_book_query_ref($qq);
+  multi method ref (Evolution::Book::Query:U: EBookQuery() $q, :$raw = False) {
+    my $qq = e_book_query_ref($q);
 
     $qq ??
       ( $raw ?? $qq !! Evolution::Book::Query.new($qq) )
@@ -210,10 +297,10 @@ class Evolution::Book::Query {
     e_book_query_to_string($!ebq);
   }
 
-  method unref (Evolution::Book::Query:D: ) {
+  multi method unref (Evolution::Book::Query:D: ) {
     Evolution::Book::Query.unref($!ebq);
   }
-  method unref (Evolution::Book::Query:D: EBookQuery() $qq) {
+  multi method unref (Evolution::Book::Query:D: EBookQuery() $qq) {
     e_book_query_unref($qq);
   }
 
