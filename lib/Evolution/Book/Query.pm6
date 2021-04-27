@@ -7,9 +7,10 @@ use Evolution::Raw::Book::Query;
 
 multi sub trait_mod:<is> (Parameter $param, :$also is required) {
   use nqp;
-  my @named := nqp::getattr(nqp::decont($param), Parameter, '$!named_names');
-  nqp::push_s(@named, $_) for $also.Array;
-  nqp::bindattr( nqp::decont($param), Parameter, '$!named_names', @named );
+  my $named := nqp::getattr(nqp::decont($param), Parameter, '$!named_names');
+  #nqp::push_s($named, $_) for $also.Array;
+  $named := nqp::splice($named, nqp::decont($also.Array), nqp::elems($named), 0);
+  nqp::bindattr( nqp::decont($param), Parameter, '$!named_names', $named );
 }
 
 # BOXED
