@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -22,6 +24,7 @@ class Evolution::Book::Query {
   }
 
   method Evolution::Raw::Definitions::EBookQuery
+    is also<EBookQuery>
   { $!ebq }
 
   multi method new (EBookQuery $query) {
@@ -43,7 +46,9 @@ class Evolution::Book::Query {
   ) {
     Evolution::Book::Query.from_string($nq);
   }
-  method from_string (Evolution::Book::Query:U: Str() $nq, :$raw = False) {
+  method from_string (Evolution::Book::Query:U: Str() $nq, :$raw = False)
+    is also<from-string>
+  {
     my $q = e_book_query_from_string($nq);
 
     $q ??
@@ -67,7 +72,9 @@ class Evolution::Book::Query {
 
     Str() $field,
           :$raw = False
-  ) {
+  )
+    is also<vcard-field-exists>
+  {
     my $q = e_book_query_vcard_field_exists($field);
 
     $q ??
@@ -91,7 +98,9 @@ class Evolution::Book::Query {
     Int() $test,
     Str() $value,
           :$raw   = False
-  ) {
+  )
+    is also<vcard-field-test>
+  {
     my EContactField  $f = $field;
     my EBookQueryTest $t = $test;
     my                $q = e_book_query_vcard_field_test($!ebq, $test, $value);
@@ -121,12 +130,16 @@ class Evolution::Book::Query {
 
     Str() $value,
           :$raw   = False
-  ) {
+  )
+    is also<any-field-contains>
+  {
     e_book_query_any_field_contains($value);
   }
 
   # new() alias?
-  method field_exists (Evolution::Book::Query:U: Int() $field, :$raw = False) {
+  method field_exists (Evolution::Book::Query:U: Int() $field, :$raw = False)
+    is also<field-exists>
+  {
     my EContactField $f = $field;
 
     my $q = e_book_query_field_exists($f);
@@ -145,7 +158,9 @@ class Evolution::Book::Query {
     Int() $test,
     Str() $value,
           :$raw  = False
-  ) {
+  )
+    is also<field-test>
+  {
     my EContactField  $f = $field;
     my EBookQueryTest $t = $test;
 
@@ -217,7 +232,7 @@ class Evolution::Book::Query {
       Nil;
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_book_query_get_type, $n, $t );
@@ -294,7 +309,12 @@ class Evolution::Book::Query {
       Nil;
   }
 
-  method to_string {
+  method to_string
+    is also<
+      to-string
+      Str
+    >
+  {
     e_book_query_to_string($!ebq);
   }
 
