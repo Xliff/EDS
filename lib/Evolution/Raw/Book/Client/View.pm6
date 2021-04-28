@@ -1,6 +1,10 @@
 use v6.c;
 
+use NativeCall;
+
 use GLib::Raw::Definitions;
+use GLib::Raw::Structs;
+use GIO::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use Evolution::Raw::Structs;
@@ -10,7 +14,7 @@ unit package Evolution::Raw::Book::Client::View;
 ### /usr/include/evolution-data-server/libebook/e-book-client-view.h
 
 sub e_book_client_view_get_client (EBookClientView $client_view)
-  returns _EBookClient
+  returns EBookClient
   is native(ebook)
   is export
 { * }
@@ -40,7 +44,7 @@ sub e_book_client_view_is_running (EBookClientView $client_view)
 { * }
 
 sub e_book_client_view_ref_client (EBookClientView $client_view)
-  returns _EBookClient
+  returns EBookClient
   is native(ebook)
   is export
 { * }
