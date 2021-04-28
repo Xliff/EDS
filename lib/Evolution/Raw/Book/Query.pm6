@@ -10,17 +10,18 @@ unit package Evolution::Raw::Book::Query;
 
 ### /usr/include/evolution-data-server/libebook-contacts/e-book-query.h
 
-sub e_book_query_and (gint $nqs, EBookQuery $qs, gboolean $unref)
+sub e_book_query_and (gint $nqs, CArray[EBookQuery] $qs, gboolean $unref)
   returns EBookQuery
   is native(ebook-contacts)
   is export
 { * }
 
-sub e_book_query_andv (EBookQuery $q)
-  returns EBookQuery
-  is native(ebook-contacts)
-  is export
-{ * }
+# cw: Not to be used. Will be removed in a future commit...
+# sub e_book_query_andv (EBookQuery $q)
+#   returns EBookQuery
+#   is native(ebook-contacts)
+#   is export
+# { * }
 
 sub e_book_query_any_field_contains (Str $value)
   returns EBookQuery
@@ -68,17 +69,18 @@ sub e_book_query_not (EBookQuery $q, gboolean $unref)
   is export
 { * }
 
-sub e_book_query_or (gint $nqs, EBookQuery $qs, gboolean $unref)
+sub e_book_query_or (gint $nqs, CArray[EBookQuery] $qs, gboolean $unref)
   returns EBookQuery
   is native(ebook-contacts)
   is export
 { * }
 
-sub e_book_query_orv (EBookQuery $q)
-  returns EBookQuery
-  is native(ebook-contacts)
-  is export
-{ * }
+# cw: Not to be used. Will be removed in a future commit...
+# sub e_book_query_orv (EBookQuery $q)
+#   returns EBookQuery
+#   is native(ebook-contacts)
+#   is export
+# { * }
 
 sub e_book_query_ref (EBookQuery $q)
   returns EBookQuery
