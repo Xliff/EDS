@@ -240,7 +240,7 @@ class Evolution::Source::Proxy is Evolution::Source::Extension {
     samewith(
       $uri,
       $cancellable,
-      &callable,
+      &callback,
       $user_data
     );
   }
