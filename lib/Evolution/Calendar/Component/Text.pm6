@@ -14,7 +14,7 @@ class Evolution::Calendar::Component::Text is Evolution::Calendar::Component {
   method setECalComponentText (ECalComponentTextAncestry $_) {
     my $to-parent;
 
-    $!c = do {
+    $!ecct = do {
       when ECalComponentText {
         $to-parent = cast(ECalComponent, $_);
         $_;
@@ -25,7 +25,7 @@ class Evolution::Calendar::Component::Text is Evolution::Calendar::Component {
         cast(ECalComponentText, $_);
       }
     }
-    self!setObject($to-parent);
+    self.setECalComponent($to-parent);
   }
 
   method Evolution::Raw::Definitions::ECalComponentText
