@@ -1,5 +1,7 @@
 use v6.c;
 
+use NativeCall;
+
 use Evolution::Raw::Types;
 use Evolution::Raw::Book::Client::View;
 
@@ -18,7 +20,7 @@ our subset EBookClientViewAncestry is export of Mu
 class Evolution::Book::Client::View {
   also does GLib::Roles::Object;
   also does GIO::Roles::Initable;
-  also does GIO::Roles::AsyncInitable
+  also does GIO::Roles::AsyncInitable;
   also does Evolution::Roles::Signals::Book::Client::View;
 
   has EBookClientView $!ebcv;
@@ -149,7 +151,7 @@ class Evolution::Book::Client::View {
     self.connect-progress($!ebcv);
   }
 
-  method get_client is DEPRECATED<ref_client> {
+  method get_client (:$raw = False) is DEPRECATED<ref_client> {
     my $c = e_book_client_view_get_client($!ebcv);
 
     # Transfer: none
@@ -176,7 +178,7 @@ class Evolution::Book::Client::View {
   method get_type {
     state ($n, $t);
 
-    unstable_get_type( self.^name. &e_book_client_view_get_type, $n, $t );
+    unstable_get_type( self.^name, &e_book_client_view_get_type, $n, $t );
   }
 
   method is_running {
