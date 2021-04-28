@@ -2,6 +2,7 @@ use v6.c;
 
 use NativeCall;
 
+use GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
@@ -15,7 +16,7 @@ sub e_cal_component_text_copy (ECalComponentText $text)
   is export
 { * }
 
-sub e_cal_component_text_free (gpointer $text)
+sub e_cal_component_text_free (ECalComponentText $text)
   is native(ecal)
   is export
 { * }

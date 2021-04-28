@@ -1,6 +1,8 @@
 use v6.c;
 
 use ICal::Raw::Definitions;
+use ICal::Raw::Enums;
+use ICal::Raw::Structs;
 use Evolution::Raw::Types;
 use Evolution::Raw::Calendar::Component;
 
@@ -9,11 +11,13 @@ use ICal::Attach;
 use ICal::Component;
 use ICal::Property;
 
-our subset ECalComponentAncestry is export of Mu
-  where ECalComponent | GObject
+use GLib::Roles::Object;
 
-class Evolution::Calendar::Componment {
-  also does GLib::Object;
+our subset ECalComponentAncestry is export of Mu
+  where ECalComponent | GObject;
+
+class Evolution::Calendar::Component {
+  also does GLib::Roles::Object;
 
   has ECalComponent $!ecc;
 
@@ -24,7 +28,7 @@ class Evolution::Calendar::Componment {
   method setECalComponent (ECalComponentAncestry $_) {
     my $to-parent;
 
-    $!c = do {
+    $!ecc = do {
       when ECalComponent {
         $to-parent = cast(GObject, $_);
         $_;
@@ -55,7 +59,7 @@ class Evolution::Calendar::Componment {
   }
 
   method new_from_icalcomponent (icalcomponent() $icalcomp) {
-    $calendar-component = e_cal_component_new_from_icalcomponent($icalcomp);
+    my $calendar-component = e_cal_component_new_from_icalcomponent($icalcomp);
 
     $calendar-component ?? self.bless( :$calendar-component ) !! Nil;
   }
@@ -76,194 +80,194 @@ class Evolution::Calendar::Componment {
 
   method attachments (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_attachments(:$glist, :$raw) },
-      STORE => $, $v { self.set_attachments($!att, $v)      }
+      FETCH => ->      { self.get_attachments(:$glist, :$raw) },
+      STORE => -> $, $v { self.set_attachments($!ecc, $v)      }
   }
 
   method attendees (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_attendees(:$glist, :$raw) },
-      STORE => $, $v { self.set_attendees($!att, $v)      }
+      FETCH => -> $     { self.get_attendees(:$glist, :$raw) },
+      STORE => -> $, $v { self.set_attendees($!ecc, $v)      }
   }
 
   method categories is rw {
     Proxy.new:
-      FETCH => $           { self.get_categories            },
-      STORE => $, Str() $v { self.set_categories($!att, $v) }
+      FETCH => -> $           { self.get_categories            },
+      STORE => -> $, Str() $v { self.set_categories($!ecc, $v) }
   }
 
   method categories_list is rw {
     Proxy.new:
-      FETCH => $     { self.get_categories_list           },
-      STORE => $, \v { self.set_categories_list($!att, v) }
+      FETCH => -> $     { self.get_categories_list           },
+      STORE => -> $, \v { self.set_categories_list($!ecc, v) }
   }
 
   method classification is rw {
     Proxy.new:
-      FETCH => $           { self.get_classification            },
-      STORE => $, Int() $v { self.set_classification($!att, $v) }
+      FETCH => -> $           { self.get_classification            },
+      STORE => -> $, Int() $v { self.set_classification($!ecc, $v) }
   }
 
   method comments (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_comments(:$glist, :$raw) },
-      STORE => $, \v { self.set_comments($!att, v)       }
+      FETCH => -> $     { self.get_comments(:$glist, :$raw) },
+      STORE => -> $, \v { self.set_comments($!ecc, v)       }
   }
 
   method completed (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_completed(:$raw)    },
-      STORE => $, \v { self.set_completed($!att, v) }
+      FETCH => -> $     { self.get_completed(:$raw)    },
+      STORE => -> $, \v { self.set_completed($!ecc, v) }
   }
 
   method contacts is rw {
     Proxy.new:
-      FETCH => $     { self.get_contacts           },
-      STORE => $, \v { self.set_contacts($!att, v) }
+      FETCH => -> $     { self.get_contacts           },
+      STORE => -> $, \v { self.set_contacts($!ecc, v) }
   }
 
   method created (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $                    { self.get_created            },
-      STORE => $, icaltimetype() $v { self.set_created($!att, $v) }
+      FETCH => -> $                    { self.get_created            },
+      STORE => -> $, icaltimetype() $v { self.set_created($!ecc, $v) }
   }
 
   method descriptions (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_descriptions(:$glist, :$raw) },
-      STORE => $, \v { self.set_descriptions($!att, v)       }
+      FETCH => -> $     { self.get_descriptions(:$glist, :$raw) },
+      STORE => -> $, \v { self.set_descriptions($!ecc, v)       }
   }
 
   method dtend (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_dtend(:$raw)    },
-      STORE => $, \v { self.set_dtend($!att, v) }
+      FETCH => -> $     { self.get_dtend(:$raw)    },
+      STORE => -> $, \v { self.set_dtend($!ecc, v) }
   }
 
   method dtstamp(:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                    { self.get_dtstamp(:$raw)    },
-      STORE => $, icaltimetype() $v { self.set_dtstamp($!att, v) }
+      FETCH => -> $                    { self.get_dtstamp(:$raw)     },
+      STORE => -> $, icaltimetype() $v { self.set_dtstamp($!ecc, $v) }
   }
 
   method dtstart (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                             { self.get_dtstart(:$raw)     },
-      STORE => $, ECalComponentDateTime() $v { self.set_dtstart($!att, $v) }
+      FETCH => -> $                             { self.get_dtstart(:$raw)     },
+      STORE => -> $, ECalComponentDateTime() $v { self.set_dtstart($!ecc, $v) }
   }
 
   method due (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                           { self.get_due(:$raw)     },
-      STORE => $, ECalComponentDateTime $v { self.set_due($!att, $v) }
+      FETCH => -> $                           { self.get_due(:$raw)     },
+      STORE => -> $, ECalComponentDateTime $v { self.set_due($!ecc, $v) }
   }
 
-  method exdates (:$raw = False) is rw {
+  method exdates (:$glist, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_exdates(:$glist, :$raw) },
-      STORE => $, \v { self.set_exdates($!att, v)        }
+      FETCH => -> $     { self.get_exdates(:$glist, :$raw) },
+      STORE => -> $, \v { self.set_exdates($!ecc, v)        }
   }
 
   method exrules (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_exrules(:$glist, :$raw) },
-      STORE => $, \v { self.set_exrules($!att, v)       }
+      FETCH => -> $     { self.get_exrules(:$glist, :$raw) },
+      STORE => -> $, \v { self.set_exrules($!ecc, v)       }
   }
 
   method geo is rw {
     Proxy.new:
-      FETCH => $                   { self.get_geo           },
-      STORE => $, icalgeotypetype() $v { self.set_geo($!att, v) }
+      FETCH => -> $                   { self.get_geo            },
+      STORE => -> $, icalgeotype() $v { self.set_geo($!ecc, $v) }
   }
 
   method icalcomponent (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                      { self.get_icalcomponent(:$raw)     },
-      STORE => $, icalcomponment() $v { self.set_icalcomponent($!att, $v) }
+      FETCH => -> $                     { self.get_icalcomponent(:$raw)     },
+      STORE => -> $, icalcomponent() $v { self.set_icalcomponent($!ecc, $v) }
   }
 
   method last_modified (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                    { self.get_last_modified(:$raw)     },
-      STORE => $, icaltimetype() $v { self.set_last_modified($!att, $v) }
+      FETCH => -> $                    { self.get_last_modified(:$raw)     },
+      STORE => -> $, icaltimetype() $v { self.set_last_modified($!ecc, $v) }
   }
 
   method location is rw {
     Proxy.new:
-      FETCH => $           { self.get_location            },
-      STORE => $, Str() \v { self.set_location($!att, $v) }
+      FETCH => -> $           { self.get_location            },
+      STORE => -> $, Str() $v { self.set_location($!ecc, $v) }
   }
 
   method organizer (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                              { self.get_organizer(:$raw)    },
-      STORE => $, ECalComponentOrganizer() $v { self.set_organizer($!att, v) }
+      FETCH => -> $                              { self.get_organizer(:$raw)     },
+      STORE => -> $, ECalComponentOrganizer() $v { self.set_organizer($!ecc, $v) }
   }
 
   method percent_complete is rw {
     Proxy.new:
-      FETCH => $           { self.get_percent_complete            },
-      STORE => $, Int() $v { self.set_percent_complete($!att, $v) }
+      FETCH => -> $           { self.get_percent_complete            },
+      STORE => -> $, Int() $v { self.set_percent_complete($!ecc, $v) }
   }
 
   method priority is rw {
     Proxy.new:
-      FETCH => $           { self.get_priority            },
-      STORE => $, Int() $v { self.set_priority($!att, $v) }
+      FETCH => -> $           { self.get_priority            },
+      STORE => -> $, Int() $v { self.set_priority($!ecc, $v) }
   }
 
   method rdates (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_rdates(:$glist, :$raw },
-      STORE => $, \v { self.set_rdates($!att, v)      }
+      FETCH => -> $     { self.get_rdates(:$glist, :$raw) },
+      STORE => -> $, \v { self.set_rdates($!ecc, v)       }
   }
 
   method recurid (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                          { self.get_recurid(:$raw)    },
-      STORE => $, ECalComponentRange() \v { self.set_recurid($!att, v) }
+      FETCH => -> $                          { self.get_recurid(:$raw)    },
+      STORE => -> $, ECalComponentRange() \v { self.set_recurid($!ecc, v) }
   }
 
   method rrules (:$glist = False, :$raw = False) is rw {
     Proxy.new:
-      FETCH => $     { self.get_rrules(:$glist, :$raw) },
-      STORE => $, \v { self.set_rrules($!att, v)       }
+      FETCH => -> $     { self.get_rrules(:$glist, :$raw) },
+      STORE => -> $, \v { self.set_rrules($!ecc, v)       }
   }
 
   method sequence is rw {
     Proxy.new:
-      FETCH => $           { self.get_sequence           },
-      STORE => $, Int() $v { self.set_sequence($!att, $v) }
+      FETCH => -> $           { self.get_sequence           },
+      STORE => -> $, Int() $v { self.set_sequence($!ecc, $v) }
   }
 
   method status is rw {
     Proxy.new:
-      FETCH => $           { self.get_status            },
-      STORE => $, Int() $v { self.set_status($!att, $v) }
+      FETCH => -> $           { self.get_status            },
+      STORE => -> $, Int() $v { self.set_status($!ecc, $v) }
   }
 
   method summary (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                       { self.get_summary(:$raw)    },
-      STORE => $, ECalComponentText $v { self.set_summary($!att, v) }
+      FETCH => -> $                       { self.get_summary(:$raw)     },
+      STORE => -> $, ECalComponentText $v { self.set_summary($!ecc, $v) }
   }
 
   method transparency (:$raw = False) is rw {
     Proxy.new:
-      FETCH => $                         { self.get_transparency(:$raw)     },
-      STORE => $, ECalComponentText() $v { self.set_transparency($!att, $v) }
+      FETCH => -> $                         { self.get_transparency(:$raw)     },
+      STORE => -> $, ECalComponentText() $v { self.set_transparency($!ecc, $v) }
   }
 
   method uid is rw {
     Proxy.new:
-      FETCH => $           { self.get_uid            },
-      STORE => $, Str() $v { self.set_uid($!att, $v) }
+      FETCH => -> $           { self.get_uid            },
+      STORE => -> $, Str() $v { self.set_uid($!ecc, $v) }
   }
 
   method url is rw {
     Proxy.new:
-      FETCH => $           { self.get_url           },
-      STORE => $, Str() $v { self.set_url($!att, $v) }
+      FETCH => -> $           { self.get_url           },
+      STORE => -> $, Str() $v { self.set_url($!ecc, $v) }
   }
 
   method abort_sequence {
@@ -343,7 +347,7 @@ class Evolution::Calendar::Componment {
     e_cal_component_get_categories($!ecc);
   }
 
-  method get_categories_list {
+  method get_categories_list (:$glist = False, :$raw = False) {
     returnGList(
       e_cal_component_get_categories_list($!ecc),
       $glist,
@@ -402,7 +406,7 @@ class Evolution::Calendar::Componment {
     my $t = e_cal_component_get_dtend($!ecc);
 
     $t ??
-      ( $raw ?? $t !! ::('Evolution::Calendar::Component::DateTime').new($t)
+      ( $raw ?? $t !! ::('Evolution::Calendar::Component::DateTime').new($t) )
       !!
       Nil
   }
@@ -411,7 +415,7 @@ class Evolution::Calendar::Componment {
     my $t = e_cal_component_get_dtstamp($!ecc);
 
     $t ??
-      ( $raw ?? $t !! ::('Evolution::Calendar::Component::DateTime').new($t)
+      ( $raw ?? $t !! ::('Evolution::Calendar::Component::DateTime').new($t) )
       !!
       Nil
   }
@@ -424,7 +428,7 @@ class Evolution::Calendar::Componment {
     my $t = e_cal_component_get_due($!ecc);
 
     $t ??
-      ( $raw ?? $t !! ::('Evolution::Calendar::Component::DateTime').new($t)
+      ( $raw ?? $t !! ::('Evolution::Calendar::Component::DateTime').new($t) )
       !!
       Nil
   }
@@ -515,7 +519,7 @@ class Evolution::Calendar::Componment {
      )
   }
 
-  method get_recurid {
+  method get_recurid (:$raw = False) {
     my $r = e_cal_component_get_recurid($!ecc);
 
     $r ??
@@ -577,7 +581,7 @@ class Evolution::Calendar::Componment {
   }
 
   method get_vtype {
-    ECalComponentVTypeEnum( _cal_component_get_vtype($!ecc) );
+    ECalComponentVTypeEnum( e_cal_component_get_vtype($!ecc) );
   }
 
   method has_alarms {
@@ -700,9 +704,9 @@ class Evolution::Calendar::Componment {
   { * }
 
   multi method set_contacts (@contacts) {
-    samwith( GLib::GSList.new(@contacts, typed => ECalComponentText) );
+    samewith( GLib::GSList.new(@contacts, typed => ECalComponentText) );
   }
-  method set_contacts (GSList() $text_list) {
+  multi method set_contacts (GSList() $text_list) {
     e_cal_component_set_contacts($!ecc, $text_list);
   }
 
@@ -714,7 +718,7 @@ class Evolution::Calendar::Componment {
   { * }
 
   multi method set_descriptions (@list) {
-    samewith( GLib::GSList.new(@list, typed => ECalComponentText);
+    samewith( GLib::GSList.new(@list, typed => ECalComponentText) );
   }
   multi method set_descriptions (GSList() $text_list) {
     e_cal_component_set_descriptions($!ecc, $text_list);
@@ -756,7 +760,7 @@ class Evolution::Calendar::Componment {
     e_cal_component_set_exrules($!ecc, $recur_list);
   }
 
-  method set_geo (icalgeotypetype() $geo) {
+  method set_geo (icalgeotype() $geo) {
     e_cal_component_set_geo($!ecc, $geo);
   }
 
