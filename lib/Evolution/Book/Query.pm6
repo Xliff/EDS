@@ -112,7 +112,7 @@ class Evolution::Book::Query {
   }
 
   multi method new (
-    Str() $value,
+    Str() $value = Str,
           :any_field_contains(
             :any-field-contains(
               :field_contains(
@@ -128,15 +128,28 @@ class Evolution::Book::Query {
   method any_field_contains (
     Evolution::Book::Query:U:
 
-    Str() $value,
+    Str() $value  = Str,
           :$raw   = False
   )
     is also<any-field-contains>
   {
-    e_book_query_any_field_contains($value);
+    my $q = e_book_query_any_field_contains($value);
+
+    $q ??
+      ( $raw ?? $q !! Evolution::Book::Query.new($q) )
+      !!
+      Nil;
   }
 
-  # new() alias?
+  multi method new (
+    Int() $f,
+          :$raw = False,
+          :field_exists(
+            :field-exists(:$field)
+          ) is required
+  ) {
+    Evolution::Book::Query.field_exists($f);
+  }
   method field_exists (Evolution::Book::Query:U: Int() $field, :$raw = False)
     is also<field-exists>
   {
@@ -150,7 +163,14 @@ class Evolution::Book::Query {
       Nil;
   }
 
-  # new() alias?
+  multi method new (
+    Int() $field,
+    Int() $t,      # Test. Renamed no not conflict with required named parameter
+    Str() $value,
+    :field_test(:field-test(:$test)) is required
+  ) {
+    Evolution::Book::Query.field_test($field, $t, $value);
+  }
   method field_test (
     Evolution::Book::Query:U:
 
@@ -321,7 +341,7 @@ class Evolution::Book::Query {
   multi method unref (Evolution::Book::Query:D: ) {
     Evolution::Book::Query.unref($!ebq);
   }
-  multi method unref (Evolution::Book::Query:D: EBookQuery() $qq) {
+  multi method unref (Evolution::Book::Query:U: EBookQuery() $qq) {
     e_book_query_unref($qq);
   }
 
