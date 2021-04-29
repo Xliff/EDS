@@ -24,6 +24,7 @@ constant ecal           is export = 'ecal-2.0',v1;
 constant ebook          is export = 'ebook-1.2',v20;
 constant ebook-contacts is export = 'ebook-contacts-1.2',v3;
 constant eds            is export = 'edataserver-1.2',v25;
+constant ebackend       is export = 'ebackend-1.2',v10;
 
 class CamelMsgPort               is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookQuery                 is repr<CPointer> is export does GLib::Roles::Pointers { }
