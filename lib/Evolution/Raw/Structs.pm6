@@ -854,6 +854,37 @@ class ESource is repr<CStruct> is export {
 	has Pointer $!priv  ;
 }
 
+class ESourceClass is repr<CStruct> is export {
+  HAS GObjectClass $!parent;
+
+  # Signals
+  has Pointer $!changed;                          #= void      (*changed)              (ESource *source);
+  has Pointer $!credentials_required;             #= void      (*credentials_required) (ESource *source, ESourceCredentialsReason reason, const gchar *certificate_pem, GTlsCertificateFlags certificate_errors, const GError *op_error);
+  has Pointer $!authenticate;                     #= void      (* authenticate)        (ESource *source, const ENamedParameters *credentials);
+
+  # Methods
+  has Pointer $!remove_sync;                                    #= gboolean  (*remove_sync)          (ESource *source, GCancellable *cancellable, GError **error);
+  has Pointer $!remove;                                         #= void      (*remove)               (ESource *source, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+  has Pointer $!remove_finish;                                  #= gboolean  (*remove_finish)        (ESource *source, GAsyncResult *result, GError **error);
+  has Pointer $!write_sync;                                     #= gboolean  (*write_sync)           (ESource *source, GCancellable *cancellable, GError **error);
+  has Pointer $!write;                                          #= void      (*write)                (ESource *source, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+  has Pointer $!write_finish;                                   #= gboolean  (*write_finish)         (ESource *source, GAsyncResult *result, GError **error);
+  has Pointer $!remote_create_sync;                             #= gboolean  (*remote_create_sync)   (ESource *source, ESource *scratch_source, GCancellable *cancellable, GError **error);
+  has Pointer $!remote_create;                                  #= void      (*remote_create)        (ESource *source, ESource *scratch_source, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+  has Pointer $!remote_create_finish;                           #= gboolean  (*remote_create_finish) (ESource *source, GAsyncResult *result, GError **error);
+  has Pointer $!remote_delete_sync;                             #= gboolean  (*remote_delete_sync)   (ESource *source, GCancellable *cancellable, GError **error);
+  has Pointer $!remote_delete;                                  #= void      (*remote_delete)        (ESource *source, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+  has Pointer $!remote_delete_finish;                           #= gboolean  (*remote_delete_finish) (ESource *source, GAsyncResult *result, GError **error);
+  has Pointer $!get_oauth2_access_token_sync;                   #= gboolean  (*get_oauth2_access_token_sync)                   (ESource *source, GCancellable *cancellable, gchar **out_access_token, gint *out_expires_in, GError **error);
+  has Pointer $!get_oauth2_access_token;                        #= void      (*get_oauth2_access_token)                        (ESource *source, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+  has Pointer $!get_oauth2_access_token_finish;                 #= gboolean  (*get_oauth2_access_token_finish)                 (ESource *source, GAsyncResult *result, gchar **out_access_token, gint *out_expires_in, GError **error);
+  has Pointer $!invoke_credentials_required_impl;               #= gboolean  (*invoke_credentials_required_impl)               (ESource *source, gpointer dbus_source, /* EDBusSource * */ const gchar *arg_reason, const gchar *arg_certificate_pem, const gchar *arg_certificate_errors, const gchar *arg_dbus_error_name, const gchar *arg_dbus_error_message, GCancellable *cancellable, GError **error);
+  has Pointer $!invoke_authenticate_impl;                       #= gboolean  (*invoke_authenticate_impl)                       (ESource *source, gpointer dbus_source, /* EDBusSource * */ const gchar * const *arg_credentials, GCancellable *cancellable, GError **error);
+  has Pointer $!unset_last_credentials_required_arguments_impl; #= gboolean  (*unset_last_credentials_required_arguments_impl) (ESource *source, GCancellable *cancellable, GError **error);
+
+  HAS gpointer @.reserved[6] is CArray;
+}
+
 class ESourceBackend is repr<CStruct> is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
@@ -967,6 +998,11 @@ class ESourceCredentialsProviderImpl is repr<CStruct> is export {
 class ESourceCredentialsProviderImplPassword is repr<CStruct> is export {
 	HAS ESourceCredentialsProviderImpl $!parent;
 	has Pointer                        $!priv  ;
+}
+
+class ESourceCredentialsProviderClass is repr<CStruct> is export {
+  HAS GObjectClass $!parent_class;
+  has Pointer      $!ref_source;   #= ESource *       (*ref_source)   (ESourceCredentialsProvider *provider, const gchar *uid);
 }
 
 # class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> is export {
@@ -1413,6 +1449,113 @@ class EContactClass is repr<CStruct> is export {
 	has Pointer     $!reserved2;    #= &(void)
 	has Pointer     $!reserved3;    #= &(void)
 	has Pointer     $!reserved4;    #= &(void)
+}
+
+# libebackend
+
+class EBackend is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= EBackendPrivate
+}
+
+class EBackendFactory is repr<CStruct> is export {
+  HAS EExtension $!parent;
+  has Pointer    $!priv  ; #= EBackendFactoryPrivate
+}
+
+class ECache is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= ECachePrivate
+}
+
+class ECollectionBackend is repr<CStruct> is export {
+  HAS EBackend $!parent;
+  has Pointer  $!priv  ; #= ECollectionBackendPrivate
+}
+
+class ECollectionBackendFactory is repr<CStruct> is export {
+  HAS EBackendFactory $!parent;
+  has Pointer         $!priv  ; #= ECollectionBackendFactoryPrivate
+}
+
+class EDBusServer is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= EDBusServerPrivate
+}
+
+class EDataFactory is repr<CStruct> is export {
+  HAS EDBusServer $!parent;
+  has Pointer     $!priv  ; #= EDataFactoryPrivate
+}
+
+class EDbHash is repr<CStruct> is export {
+  HAS Pointer $!priv; #= EDbHashPrivate
+}
+
+class EFileCache is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= EFileCachePrivate
+}
+
+class EFileCacheClass is repr<CStruct> is export {
+  HAS GObjectClass $!parent_class;
+}
+
+class EOfflineListener is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= EOfflineListenerPrivate
+}
+
+class EServerSideSource is repr<CStruct> is export {
+  HAS ESource $!parent;
+  has Pointer $!priv  ; #= EServerSideSourcePrivate
+}
+
+class EServerSideSourceClass is repr<CStruct> is export {
+  HAS ESourceClass $!parent_class;
+}
+
+class EServerSideSourceCredentialsProvider is repr<CStruct> is export {
+  HAS ESourceCredentialsProvider $!parent;
+  has Pointer                    $!priv  ; #= EServerSideSourceCredentialsProviderPrivate
+}
+
+class EServerSideSourceCredentialsProviderClass is repr<CStruct> is export {
+  HAS ESourceCredentialsProviderClass $!parent_class;
+}
+
+class ESourceRegistryServer is repr<CStruct> is export {
+  HAS EDataFactory $!parent;
+  has Pointer      $!priv  ; #= ESourceRegistryServerPrivate
+}
+
+class ESubprocessFactory is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= ESubprocessFactoryPrivate
+}
+
+class EUserPrompter is repr<CStruct> is export {
+  HAS GObject $!parent;
+  has Pointer $!priv  ; #= EUserPrompterPrivate
+}
+
+class EUserPrompterClass is repr<CStruct> is export {
+  HAS GObjectClass $!parent;
+}
+
+class EUserPrompterServer is repr<CStruct> is export {
+  HAS EDBusServer $!parent;
+  has Pointer     $!priv  ; #= EUserPrompterServerPrivate
+}
+
+class EUserPrompterServerExtension is repr<CStruct> is export {
+  HAS EExtension $!parent;
+  has Pointer    $!priv  ; #= EUserPrompterServerExtensionPrivate
+}
+
+class EWebDAVCollectionBackend is repr<CStruct> is export {
+	HAS ECollectionBackend $!parent;
+	has Pointer            $!priv  ; #= EWebDAVCollectionBackendPrivate
 }
 
 BEGIN {
