@@ -78,7 +78,7 @@ class Evolution::Source {
 
   method new_with_uid (
     Str()                   $uid,
-    GMainContext()          $main_context,
+    GMainContext()          $main_context  = GMainContext,
     CArray[Pointer[GError]] $error         = gerror
   ) {
     clear_error;
