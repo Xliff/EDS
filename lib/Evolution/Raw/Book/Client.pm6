@@ -276,14 +276,14 @@ sub e_book_client_get_cursor_finish (
 { * }
 
 sub e_book_client_get_cursor_sync (
-	EBookClient             $client,
-	Str                     $sexp,
-	EContactField           $sort_fields,
-	EBookCursorSortType     $sort_types,
-	guint                   $n_fields,
-	EBookClientCursor       $out_cursor,
-	GCancellable            $cancellable,
-	CArray[Pointer[GError]] $error
+	EBookClient                 $client,
+	Str                         $sexp,
+	CArray[EContactField]       $sort_fields,
+	CArray[EBookCursorSortType] $sort_types,
+	guint                       $n_fields,
+	EBookClientCursor           $out_cursor,
+	GCancellable                $cancellable,
+	CArray[Pointer[GError]]     $error
 )
   returns uint32
   is native(ebook)
