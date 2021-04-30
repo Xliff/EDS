@@ -541,3 +541,11 @@ sub e_book_client_set_self (
   is native(ebook)
   is export
 { * }
+
+### /usr/include/evolution-data-server/libebook-contact/e-book-contacts-utils.h
+
+sub e_book_client_error_quark ()
+	returns GQuark
+	is native(ebook-contacts)
+	is export
+{ * }

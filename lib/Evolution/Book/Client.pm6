@@ -13,6 +13,8 @@ use GLib::Roles::Object;
 use GIO::Roles::Initable;
 use GIO::Roles::AsyncInitable;
 
+our $E_BOOK_CLIENT_ERROR is export;
+
 our subset EBookClientAncestry is export of Mu
   where EBookClient | GInitable | GAsyncInitable | EClient;
 
@@ -1530,4 +1532,8 @@ class Evolution::Book::Client is Evolution::Client {
     $rv;
   }
 
+}
+
+INIT {
+  $E_BOOK_CLIENT_ERROR = e_book_client_error_quark;
 }
