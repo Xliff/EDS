@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -34,6 +36,7 @@ class Evolution::Source::Backend is Evolution::Source::Extension {
   }
 
   method Evolution::Raw::Definitions::ESourceBackend
+    is also<ESourceBackend>
   { $!esb }
 
   multi method new (ESourceBackendAncestry $backend, :$ref = True) {
@@ -44,21 +47,27 @@ class Evolution::Source::Backend is Evolution::Source::Extension {
     $o;
   }
 
-  method dup_backend_name {
+  method backend_name is rw is also<backend-name> {
+    Proxy.new:
+      FETCH => -> $     { self.get_backend_name     },
+      STORE => -> $, $s { self.set_backend_name($s) };
+  }
+
+  method dup_backend_name is also<dup-backend-name> {
     e_source_backend_dup_backend_name($!esb);
   }
 
-  method get_backend_name {
+  method get_backend_name is also<get-backend-name> {
     e_source_backend_get_backend_name($!esb);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_source_backend_get_type, $n, $t );
   }
 
-  method set_backend_name (Str() $backend_name) {
+  method set_backend_name (Str() $backend_name) is also<set-backend-name> {
     e_source_backend_set_backend_name($!esb, $backend_name);
   }
 
@@ -92,6 +101,7 @@ class Evolution::Source::AddressBook is Evolution::Source::Backend {
   }
 
   method Evolution::Raw::Definitions::ESourceAddressBook
+    is also<ESourceAddressBook>
   { $!esa }
 
   multi method new (ESourceAddressBookAncestry $address-book, :$ref = True) {
@@ -132,6 +142,7 @@ class Evolution::Source::MailTransportAncestry is Evolution::Source::Backend {
   }
 
   method Evolution::Raw::Definitions::ESourceMailTransport
+    is also<ESourceMailTransport>
   { $!emt }
 
   multi method new (ESourceMailTransportAncestry $mail-transport, :$ref = True) {
