@@ -37,14 +37,16 @@ class Cursor::Search {
 		my $ip = $*PROGRAM.add(UI-FILE);
 		$ui-def = $ip.slurp if $ip.e;
 
-		my $builder = GTK::Builder.new-from-string($ui-def);
+		my $builder = GTK::Builder.new-from-string(
+			GTK::Builder.templateToUI($ui-def)
+		);
 
 		$!top = $builder.top-level;
     for $builder.pairs {
-      when .key eq 'popup'       { $!popup       = .value }
-      when .key eq 'name_radio'  { $!name_radio  = .value }
-      when .key eq 'phone_radio' { $!phone_radio = .value }
-      when .key eq 'email_radio' { $!email_radio = .value }
+      when .key eq 'popup'          { $!popup       = .value }
+      when .key eq 'name_radio'     { $!name_radio  = .value }
+      when .key eq 'phone_radio'    { $!phone_radio = .value }
+      when .key eq 'email_radio'    { $!email_radio = .value }
     }
 
 		sub checkMenu ($w) {
