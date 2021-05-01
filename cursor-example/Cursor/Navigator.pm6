@@ -1,15 +1,17 @@
 use GTK::Raw::Types;
 
-class Cursor::Natigator {
+use GTK::Scale;
+
+class Cursor::Navigator {
   has @!alphabet;
   has $!index;
 
   # Should also handle coercion! ;D
-  has $!scale handles<*>;
+  has GTK::Scale $!scale handles<*>;
 
   has $!adj;
   has %!supplier;
-  has $!block-change-event;
+  has $!block-value-change-event;
 
   submethod BUILD {
     $!scale = GTK::Scale.new(
@@ -17,8 +19,11 @@ class Cursor::Natigator {
       ( $!adj = GTK::Adjustment.new(0, 0, 1, 1, 1, 0) )
     );
 
+    my $self = self;
     $!adj.notify('value').tap(-> *@a {
-      self.index = $!adj.value unless $!block-change-event;
+      # cw: Doubt this will work... we don't make the assignment!
+      # cw: Also... self will not wrap, but $self will
+      $self.index = $!adj.value unless $!block-value-change-event;
     });
 
     $!scale.format-value.tap(-> *@a {
@@ -38,7 +43,7 @@ class Cursor::Natigator {
       };
   }
 
-  method index (:$action = True) is rw {
+  method index ( :$action = True ) is rw {
     Proxy.new:
       FETCH => -> $           { $!index },
 
@@ -46,9 +51,9 @@ class Cursor::Natigator {
         $!index = $i.clamp( 0 ..^ +@!alphabet );
 
         %!supplier<index-changed>.emit($!index) if $action;
-        $!block-change-event = True;
+        $!block-value-change-event = True;
         $!adj.value = $!index;
-        $!block-change-event = False;
+        $!block-value-change-event = False;
       }
   }
 
