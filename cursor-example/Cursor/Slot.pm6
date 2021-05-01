@@ -21,7 +21,9 @@ class Cursor::Slot {
     my $ip = $*PROGRAM.add(UI-FILE);
     $ui-def = $ip.slurp if $ip.e;
 
-    my $builder = GTK::Builder.new-from-string($ui-def);
+    my $builder = GTK::Builder.new-from-string(
+      GTK::Builder.templateToUI($ui-def)
+    );
 
     $!top = $builder.top-level;
     for $builder.pairs.grep( .key ne $builder.top-level-id ) {
