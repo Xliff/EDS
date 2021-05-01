@@ -12,6 +12,8 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Client;
 
+our $E_CLIENT_ERROR is export;
+
 ### /usr/include/evolution-data-server/libedataserver/e-client.h
 
 sub e_client_cancel_all (EClient $client)
@@ -33,6 +35,12 @@ sub e_client_check_refresh_supported (EClient $client)
 
 sub e_client_dup_bus_name (EClient $client)
   returns Str
+  is native(eds)
+  is export
+{ * }
+
+sub e_client_error_quark ()
+  returns GQuark
   is native(eds)
   is export
 { * }
@@ -417,3 +425,7 @@ sub e_client_wait_for_connected_sync (
   is native(eds)
   is export
 { * }
+
+INIT {
+  $E_CLIENT_ERROR = e_client_error_quark()
+}

@@ -407,14 +407,13 @@ class Evolution::Book::Client::Cursor {
     Int()                   $flags,
     Int()                   $origin,
     Int()                   $count,
-    CArray[Pointer[GSList]] $out_contacts,
-    GCancellable            $cancellable   = GCancellable,
     CArray[Pointer[GError]] $error         = gerror,
+    GCancellable            :$cancellable  = GCancellable,
                             :$glist        = False,
                             :$raw          = False
   ) {
     (my $oc = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
-    my ($rv, $cl) = samewith(
+    my ($n, $cl) = samewith(
       $flags,
       $origin,
       $count,
@@ -424,15 +423,19 @@ class Evolution::Book::Client::Cursor {
       :all
     );
 
-    return Nil unless $rv;
+    return Nil if $n == -1
 
-    returnGList(
-      $cl,
-      $glist,
-      $raw,
-      EContact,
-      Evolution::Contact
-    );
+    # List return,
+    (
+      $n,
+      returnGList(
+        $cl,
+        $glist,
+        $raw,
+        EContact,
+        Evolution::Contact
+      )
+    )
   }
   multi method step_sync (
     Int()                   $flags,
@@ -448,7 +451,7 @@ class Evolution::Book::Client::Cursor {
     my gint                 $c = $count;
 
     clear_error;
-    my $rv = so e_book_client_cursor_step_sync(
+    my $n = e_book_client_cursor_step_sync(
       $!ebcc,
       $f,
       $o,
@@ -457,11 +460,9 @@ class Evolution::Book::Client::Cursor {
       $cancellable,
       $error
     );
-    set_error($error);
+    set_error($error)
 
-    return $rv unless $all;
-
-    ( $rv, ppr($out_contacts) );
+    ( $n, ppr($out_contacts) );
   }
 
 

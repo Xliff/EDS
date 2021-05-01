@@ -276,14 +276,14 @@ sub e_book_client_get_cursor_finish (
 { * }
 
 sub e_book_client_get_cursor_sync (
-	EBookClient             $client,
-	Str                     $sexp,
-	EContactField           $sort_fields,
-	EBookCursorSortType     $sort_types,
-	guint                   $n_fields,
-	EBookClientCursor       $out_cursor,
-	GCancellable            $cancellable,
-	CArray[Pointer[GError]] $error
+	EBookClient                 $client,
+	Str                         $sexp,
+	CArray[EContactField]       $sort_fields,
+	CArray[EBookCursorSortType] $sort_types,
+	guint                       $n_fields,
+	EBookClientCursor           $out_cursor,
+	GCancellable                $cancellable,
+	CArray[Pointer[GError]]     $error
 )
   returns uint32
   is native(ebook)
@@ -540,4 +540,12 @@ sub e_book_client_set_self (
   returns uint32
   is native(ebook)
   is export
+{ * }
+
+### /usr/include/evolution-data-server/libebook-contact/e-book-contacts-utils.h
+
+sub e_book_client_error_quark ()
+	returns GQuark
+	is native(ebook-contacts)
+	is export
 { * }

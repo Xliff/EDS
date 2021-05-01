@@ -13,6 +13,8 @@ use GLib::Roles::Object;
 use GIO::Roles::Initable;
 use GIO::Roles::AsyncInitable;
 
+our $E_BOOK_CLIENT_ERROR is export;
+
 our subset EBookClientAncestry is export of Mu
   where EBookClient | GInitable | GAsyncInitable | EClient;
 
@@ -893,10 +895,58 @@ class Evolution::Book::Client is Evolution::Client {
   proto method get_cursor_sync (|)
   { * }
 
+
+  multi method get_cursor_sync (
+                            %fieldTypes,
+    CArray[Pointer[GError]] $error        = gerror,
+    Str()                   :$sexp        = Str,
+    GCancellable()          :$cancellable = GCancellable,
+                            :$raw         = False
+  ) {
+    samewith(
+      %fieldTypes.pairs.sort( *.key ),
+      $error,
+      :$sexp,
+      :$cancellable,
+      :$raw
+    );
+  }
+  multi method get_cursor_sync (
+                            @fieldTypes  where *.all ~~ Pair,
+    CArray[Pointer[GError]] :$error       = gerror,
+    Str()                   :$sexp        = Str,
+    GCancellable()          :$cancellable = GCancellable,
+                            :$raw         = False
+  ) {
+    my (@fields, @types);
+    for @fieldTypes {
+      @fields.push: EContactFieldEnum.enums{ .key };
+      @types.push: .value
+    }
+
+    samewith(@fields, @types, :$sexp);
+  }
+  multi method get_cursor_sync (
+                            @sort_fields,
+                            @sort_types,
+    CArray[Pointer[GError]] $error        = gerror,
+    Str()                   :$sexp        = Str,
+    GCancellable()          :$cancellable = GCancellable,
+                            :$raw         = False
+  ) {
+    samewith(
+      $sexp,
+      CArray[EContactField].new(@sort_fields),
+      CArray[EBookCursorSortType].new(@sort_types),
+      $error,
+      :$cancellable,
+      :$raw
+    );
+  }
   multi method get_cursor_sync (
     Str()                   $sexp,
                             @sort_fields,
-    Int()                   $sort_types,
+                            @sort_types,
     CArray[Pointer[GError]] $error        = gerror,
     GCancellable()          :$cancellable = GCancellable,
                             :$raw         = False
@@ -907,7 +957,7 @@ class Evolution::Book::Client is Evolution::Client {
     my ($rv, $ecc) = samewith(
       $sexp,
       CArray[EContactField].new(@sort_fields),
-      $sort_types,
+      CArray[EBookCursorSortType].new(@sort_types),
       @sort_fields.elems,
       $oc,
       $cancellable,
@@ -925,14 +975,13 @@ class Evolution::Book::Client is Evolution::Client {
   multi method get_cursor_sync (
     Str()                              $sexp,
     CArray[EContactField]              $sort_fields,
-    Int()                              $sort_types,
+    CArray[EBookCursorSortType]        $sort_types,
     Int()                              $n_fields,
     CArray[Pointer[EBookClientCursor]] $out_cursor,
     GCancellable()                     $cancellable,
     CArray[Pointer[GError]]            $error,
                                        :$all         = False
   ) {
-    my EBookCursorSortType $s = $sort_types;
     my guint               $n = $n_fields;
 
     clear_error;
@@ -940,7 +989,7 @@ class Evolution::Book::Client is Evolution::Client {
       $!ebc,
       $sexp,
       $sort_fields,
-      $s,
+      $sort_types,
       $n,
       $out_cursor,
       $cancellable,
@@ -1483,4 +1532,8 @@ class Evolution::Book::Client is Evolution::Client {
     $rv;
   }
 
+}
+
+INIT {
+  $E_BOOK_CLIENT_ERROR = e_book_client_error_quark;
 }
