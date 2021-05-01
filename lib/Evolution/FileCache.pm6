@@ -22,7 +22,7 @@ class Evolution::FileCache {
   method setEFileCache (EFileCacheAncestry $_) {
     my $to-parent;
 
-    $!efc= do {
+    $!efc = do {
       when EFileCache {
         $to-parent = cast(GObject, $_);
         $_;
