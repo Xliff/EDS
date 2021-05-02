@@ -1304,3 +1304,35 @@ our enum EContactFieldEnum is export (
   E_CONTACT_FIRST_LABEL_ID     => 13, #= E_CONTACT_ADDRESS_LABEL_HOME,
   E_CONTACT_LAST_LABEL_ID      => 15  #= E_CONTACT_ADDRESS_LABEL_OTHER
 );
+
+### /usr/include/evolution-data-server/ebackend/e-backend-enums.h
+
+constant EAuthenticationSessionResult is export := guint32;
+our enum EAuthenticationSessionResultEnum is export <
+  E_AUTHENTICATION_SESSION_ERROR
+  E_AUTHENTICATION_SESSION_SUCCESS
+  E_AUTHENTICATION_SESSION_DISMISSED
+>;
+
+constant EDBusServerExitCode is export := guint32;
+our enum EDBusServerExitCodeEnum is export <
+  E_DBUS_SERVER_EXIT_NONE
+  E_DBUS_SERVER_EXIT_NORMAL
+  E_DBUS_SERVER_EXIT_RELOAD
+>;
+
+constant EOfflineState is export := gint32;
+our enum EOfflineStateEnum is export (
+  E_OFFLINE_STATE_UNKNOWN          => -1,
+  'E_OFFLINE_STATE_SYNCED',
+  'E_OFFLINE_STATE_LOCALLY_CREATED',
+  'E_OFFLINE_STATE_LOCALLY_MODIFIED',
+  'E_OFFLINE_STATE_LOCALLY_DELETED'
+);
+
+constant ESourcePermissionFlags is export := guint32;
+our enum ESourcePermissionFlagsEnum is export (
+  E_SOURCE_PERMISSION_NONE      =>      0,
+  E_SOURCE_PERMISSION_WRITABLE  => 1 +< 0,
+  E_SOURCE_PERMISSION_REMOVABLE => 1 +< 1,
+);
