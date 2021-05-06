@@ -3,6 +3,7 @@ use v6.c;
 use NativeCall;
 
 use GLib::Raw::Definitions;
+use Evolution::Raw::Distro;
 
 use GLib::Roles::Pointers;
 
@@ -20,11 +21,11 @@ constant EFreeFormExpBuildSexpFunc is export := Pointer;
 constant EListCopyFunc             is export := Pointer;
 constant EListFreeFunc             is export := Pointer;
 
-constant ecal           is export = 'ecal-2.0',v1;
-constant ebook          is export = 'ebook-1.2',v20;
-constant ebook-contacts is export = 'ebook-contacts-1.2',v3;
-constant eds            is export = 'edataserver-1.2',v25;
-constant ebackend       is export = 'ebackend-1.2',v10;
+constant ecal           is export = version-by-distro('ecal');
+constant ebook          is export = version-by-distro('ebook');
+constant ebook-contacts is export = version-by-distro('ebook-contacts');
+constant eds            is export = version-by-distro('edataserver');
+constant ebackend       is export = version-by-distro('ebackend');
 
 class CamelMsgPort               is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookQuery                 is repr<CPointer> is export does GLib::Roles::Pointers { }
