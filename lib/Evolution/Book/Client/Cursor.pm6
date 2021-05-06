@@ -423,7 +423,7 @@ class Evolution::Book::Client::Cursor {
       :all
     );
 
-    return Nil if $n == -1
+    return Nil if $n == -1;
 
     # List return,
     (
