@@ -24,7 +24,7 @@ class Evolution::UserPrompter {
   method setEUserPrompter (EUserPrompterAncestry $_) {
     my $to-parent;
 
-    $!eb = do {
+    $!eup = do {
       when EUserPrompter {
         $to-parent = cast(GObject, $_);
         $_;
@@ -39,7 +39,7 @@ class Evolution::UserPrompter {
   }
 
   method Evolution::Raw::Definitions::EUserPrompter
-  { $!eb }
+  { $!eup }
 
   multi method new (EUserPrompterAncestry $prompt, :$ref = True) {
     return Nil unless $prompt;
@@ -172,6 +172,7 @@ class Evolution::UserPrompter {
       $cancellable,
       &callback,
       $user_data
+    )
   }
   multi method prompt (
     Str()          $type,
