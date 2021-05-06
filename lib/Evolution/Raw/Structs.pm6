@@ -289,7 +289,7 @@ class CamelMIRecord is repr<CStruct> is export {
 }
 
 class CamelMedium is repr<CStruct> is export {
-	HAS CamelDataWrapper $.parent;
+	HAS CamelDataWrapper $!parent;
 	has Pointer          $!priv  ;
 }
 
@@ -313,17 +313,17 @@ class CamelMessageContentInfo is repr<CStruct> is export {
 }
 
 class CamelMessageInfo is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelMessageInfoBase is repr<CStruct> is export {
-	HAS CamelMessageInfo     $.parent;
+	HAS CamelMessageInfo     $!parent;
 	has Pointer              $!priv;
 }
 
 class CamelMimeFilter is repr<CStruct> is export {
-	HAS GObject              $.parent  ;
+	HAS GObject              $!parent  ;
 	has Pointer              $!priv    ;
 	has Str                  $!outreal ;
 	has Str                  $!outbuf  ;
@@ -336,17 +336,17 @@ class CamelMimeFilter is repr<CStruct> is export {
 }
 
 class CamelMimeFilterBasic is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterBestenc is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterCRLF is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
@@ -356,77 +356,77 @@ class CamelMimeFilterCanon is repr<CStruct> is export {
 }
 
 class CamelMimeFilterCharset is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterEnriched is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterFrom is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterGZip is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterHTML is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterIndex is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterLinewrap is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterPgp is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterProgress is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterToHTML is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterWindows is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimeFilterYenc is repr<CStruct> is export {
-	HAS CamelMimeFilter $.parent;
+	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
 class CamelMimePart is repr<CStruct> is export {
-	HAS CamelMedium   $.parent;
+	HAS CamelMedium   $!parent;
 	has Pointer       $!priv  ;
 }
 
 class CamelMimeMessage is repr<CStruct> is export {
-	HAS CamelMimePart $.parent;
+	HAS CamelMimePart $!parent;
 	has Pointer       $!priv  ;
 }
 
 class CamelMimeParser is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -436,47 +436,47 @@ class CamelMsg is repr<CStruct> is export {
 }
 
 class CamelMultipart is repr<CStruct> is export {
-	HAS CamelDataWrapper $.parent;
+	HAS CamelDataWrapper $!parent;
 	has Pointer          $!priv  ;
 }
 
 class CamelMultipartEncrypted is repr<CStruct> is export {
-	HAS CamelMultipart $.parent;
+	HAS CamelMultipart $!parent;
 	has Pointer        $!priv  ;
 }
 
 class CamelMultipartSigned is repr<CStruct> is export {
-	HAS CamelMultipart $.parent;
+	HAS CamelMultipart $!parent;
 	has Pointer        $!priv  ;
 }
 
 class CamelNNTPAddress is repr<CStruct> is export {
-	HAS CamelAddress   $.parent;
+	HAS CamelAddress   $!parent;
 	has Pointer        $!priv  ;
 }
 
 class CamelNullOutputStream is repr<CStruct> is export {
-	HAS GOutputStream $.parent;
+	HAS GOutputStream $!parent;
 	has Pointer       $!priv  ;
 }
 
 class CamelOfflineFolder is repr<CStruct> is export {
-	HAS CamelFolder $.parent;
+	HAS CamelFolder $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelOfflineSettings is repr<CStruct> is export {
-	HAS CamelStoreSettings $.parent;
+	HAS CamelStoreSettings $!parent;
 	has Pointer            $!priv  ;
 }
 
 class CamelOfflineStore is repr<CStruct> is export {
-	HAS CamelStore $.parent;
+	HAS CamelStore $!parent;
 	has Pointer    $!priv  ;
 }
 
 class CamelOperation is repr<CStruct> is export {
-	HAS GCancellable $.parent;
+	HAS GCancellable $!parent;
 	has Pointer      $!priv  ;
 }
 
@@ -491,117 +491,117 @@ class CamelPartitionMap is repr<CStruct> is export {
 }
 
 class CamelPartitionTable is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSExp is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSMIMEContext is repr<CStruct> is export {
-	HAS CamelCipherContext $.parent;
+	HAS CamelCipherContext $!parent;
 	has Pointer            $!priv  ;
 }
 
 class CamelSasl is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelSaslAnonymous is repr<CStruct> is export {
-	HAS CamelSasl $.parent;
+	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
 class CamelSaslGssapi is repr<CStruct> is export {
-	HAS CamelSasl $.parent;
+	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
 class CamelSaslLogin is repr<CStruct> is export {
-	HAS CamelSasl $.parent;
+	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
 class CamelSaslNTLM is repr<CStruct> is export {
-	HAS CamelSasl $.parent;
+	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
 class CamelSaslPlain is repr<CStruct> is export {
-	HAS CamelSasl $.parent;
+	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
 class CamelSession is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelStoreSummary is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelStream is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelStreamBuffer is repr<CStruct> is export {
-	HAS CamelStream $.parent;
+	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelStreamFilter is repr<CStruct> is export {
-	HAS CamelStream $.parent;
+	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelStreamFs is repr<CStruct> is export {
-	HAS CamelStream $.parent;
+	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelStreamMem is repr<CStruct> is export {
-	HAS CamelStream $.parent;
+	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelStreamNull is repr<CStruct> is export {
-	HAS CamelStream $.parent;
+	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelStreamProcess is repr<CStruct> is export {
-	HAS CamelStream $.parent;
+	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelTextIndex is repr<CStruct> is export {
-	HAS CamelIndex $.parent;
+	HAS CamelIndex $!parent;
 	has Pointer    $!priv  ;
 }
 
 class CamelTextIndexCursor is repr<CStruct> is export {
-	HAS CamelIndexCursor $.parent;
+	HAS CamelIndexCursor $!parent;
 	has Pointer          $!priv  ;
 }
 
 class CamelTextIndexKeyCursor is repr<CStruct> is export {
-	HAS CamelIndexCursor $.parent;
+	HAS CamelIndexCursor $!parent;
 	has Pointer          $!priv  ;
 }
 
 class CamelTextIndexName is repr<CStruct> is export {
-	HAS CamelIndexName $.parent;
+	HAS CamelIndexName $!parent;
 	has Pointer        $!priv  ;
 }
 
 class CamelTransport is repr<CStruct> is export {
-	HAS CamelService $.parent;
+	HAS CamelService $!parent;
 	has Pointer      $!priv  ;
 }
 
@@ -618,67 +618,67 @@ class CamelURL is repr<CStruct> is export {
 }
 
 class CamelVeeFolder is repr<CStruct> is export {
-	HAS CamelFolder $.parent;
+	HAS CamelFolder $!parent;
 	has Pointer     $!priv  ;
 }
 
 class CamelVTrashFolder is repr<CStruct> is export {
-	HAS CamelVeeFolder           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelVeeFolder $!parent;
+	has Pointer        $!priv  ;
 }
 
 class CamelVeeDataCache is repr<CStruct> is export {
-	HAS GObject                  $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelVeeMessageInfo is repr<CStruct> is export {
-	HAS CamelMessageInfo           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelMessageInfo $!parent;
+	has Pointer          $!priv  ;
 }
 
 class CamelVeeMessageInfoData is repr<CStruct> is export {
-	HAS GObject                        $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelVeeStore is repr<CStruct> is export {
-	HAS CamelStore           $!parent;
-	has Pointer $!priv  ;
+	HAS CamelStore $!parent;
+	has Pointer    $!priv  ;
 }
 
 class CamelVeeSubfolderData is repr<CStruct> is export {
-	HAS GObject                      $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class CamelVeeSummary is repr<CStruct> is export {
-	HAS CamelFolderSummary     $!parent;
-	has Pointer $!priv  ;
+	HAS CamelFolderSummary $!parent;
+	has Pointer            $!priv  ;
 }
 
 class EClient is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class ECalClient is repr<CStruct> is export {
-	HAS EClient $.parent;
+	HAS EClient $!parent;
 	has Pointer $!priv  ;
 }
 
 class ECalClientView is repr<CStruct> is export {
-	has GObject               $!object;
+	has GObject $!object;
 	has Pointer $!priv  ;
 }
 
 class ECalComponent is repr<CStruct> is export {
-	HAS GObject              $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class ECalComponentClass is repr<CStruct> is export {
-	HAS GObjectClass $!parent_class;
+	HAS GObjectClass $.parent_class;
 }
 
 class ECancellableLocksBase is repr<CStruct> is export {
@@ -697,8 +697,8 @@ class ECancellableRecMutex is repr<CStruct> is export {
 }
 
 class EClientErrorsList is repr<CStruct> is export {
-	has Str $!name    ;
-	has gint  $!err_code;
+	has Str  $!name    ;
+	has gint $!err_code;
 }
 
 class ECredentials is repr<CStruct> is export {
@@ -710,12 +710,12 @@ class EExtensibleInterface is repr<CStruct> is export {
 }
 
 class EExtension is repr<CStruct> is export {
-	HAS GObject           $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class EExtensionClass is repr<CStruct> is export {
-	HAS GObjectClass $!parent_class   ;
+	HAS GObjectClass $.parent_class   ;
 	has GType        $!extensible_type;
 }
 
@@ -726,11 +726,11 @@ class EFreeFormExpSymbol is repr<CStruct> is export {
 }
 
 class EIterator is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 }
 
 class EList is repr<CStruct> is export {
-	HAS GObject       $.parent   ;
+	HAS GObject       $!parent   ;
 	has GList         $!list     ;
 	has GList         $!iterators;
 	has EListCopyFunc $!copy     ;
@@ -767,29 +767,29 @@ class EIteratorClass is repr<CStruct> is export {
 };
 
 class EListIteratorClass is repr<CStruct> is export {
-	HAS EIteratorClass $!parent_class;
+	HAS EIteratorClass $.parent_class;
 }
 
 class EModule is repr<CStruct> is export {
-	HAS GTypeModule    $!parent;
-	has Pointer $!priv  ;
+	HAS GTypeModule $!parent;
+	has Pointer     $!priv  ;
 }
 
 class EModuleClass is repr<CStruct> is export {
-	HAS GTypeModuleClass $!parent_class;
+	HAS GTypeModuleClass $.parent_class;
 }
 
 class ENetworkMonitor is repr<CStruct> is export {
-	HAS GObject                $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
 class ENetworkMonitorClass is repr<CStruct> is export {
-	HAS GObjectClass $!parent_class;
+	HAS GObjectClass $.parent_class;
 }
 
 class EOAuth2Services is repr<CStruct> is export {
-	HAS GObject $.parent;
+	HAS GObject $!parent;
 	has Pointer $!priv;
 }
 
@@ -801,7 +801,7 @@ class EOAuth2ServicesClass is repr<CStruct> is export {
 }
 
 class EProxy is repr<CStruct> is export {
-	HAS GObject       $!parent;
+	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
@@ -816,7 +816,7 @@ class ESExp is repr<CStruct> is export {
 }
 
 class ESExpClass is repr<CStruct> is export {
-	HAS GObjectClass $!parent_class;
+	HAS GObjectClass $.parent_class;
 }
 
 class ESoupAuthBearer is repr<CStruct> is export {
@@ -825,7 +825,7 @@ class ESoupAuthBearer is repr<CStruct> is export {
 }
 
 class ESoupAuthBearerClass is repr<CStruct> is export {
-	HAS SoupAuthClass $!parent_class;
+	HAS SoupAuthClass $.parent_class;
 }
 
 class ESoupSession is repr<CStruct> is export {
@@ -834,7 +834,7 @@ class ESoupSession is repr<CStruct> is export {
 }
 
 class ESourceExtension is repr<CStruct> is export {
-  HAS GObject $.parent;
+  HAS GObject $!parent;
   has Pointer $!priv;
 }
 
@@ -855,7 +855,7 @@ class ESource is repr<CStruct> is export {
 }
 
 class ESourceClass is repr<CStruct> is export {
-  HAS GObjectClass $!parent;
+  HAS GObjectClass $.parent;
 
   # Signals
   has Pointer $!changed;                          #= void      (*changed)              (ESource *source);
@@ -891,7 +891,7 @@ class ESourceBackend is repr<CStruct> is export {
 }
 
 class ESourceBackendClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceAddressBook is repr<CStruct> is export {
@@ -900,7 +900,7 @@ class ESourceAddressBook is repr<CStruct> is export {
 }
 
 class ESourceAddressBookClass is repr<CStruct> is export {
-	HAS ESourceBackendClass $!parent_class;
+	HAS ESourceBackendClass $.parent_class;
 }
 
 class ESourceAlarms is repr<CStruct> is export {
@@ -909,7 +909,7 @@ class ESourceAlarms is repr<CStruct> is export {
 }
 
 class ESourceAlarmsClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceAuthentication is repr<CStruct> is export {
@@ -918,7 +918,7 @@ class ESourceAuthentication is repr<CStruct> is export {
 }
 
 class ESourceAuthenticationClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceAutocomplete is repr<CStruct> is export {
@@ -927,7 +927,7 @@ class ESourceAutocomplete is repr<CStruct> is export {
 }
 
 class ESourceAutocompleteClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceAutoconfig is repr<CStruct> is export {
@@ -936,7 +936,7 @@ class ESourceAutoconfig is repr<CStruct> is export {
 }
 
 class ESourceAutoconfigClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceSelectable is repr<CStruct> is export {
@@ -945,7 +945,7 @@ class ESourceSelectable is repr<CStruct> is export {
 }
 
 class ESourceSelectableClass is repr<CStruct> is export {
-	HAS ESourceBackendClass $!parent_class;
+	HAS ESourceBackendClass $.parent_class;
 }
 
 class ESourceCalendar is repr<CStruct> is export {
@@ -954,7 +954,7 @@ class ESourceCalendar is repr<CStruct> is export {
 }
 
 class ESourceCalendarClass is repr<CStruct> is export {
-	HAS ESourceSelectableClass $!parent_class;
+	HAS ESourceSelectableClass $.parent_class;
 }
 
 class ESourceCamel is repr<CStruct> is export {
@@ -963,7 +963,7 @@ class ESourceCamel is repr<CStruct> is export {
 }
 
 class ESourceCamelClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class ;
+	HAS ESourceExtensionClass $.parent_class ;
 	has GType                 $!settings_type;
 }
 
@@ -973,7 +973,7 @@ class ESourceCollection is repr<CStruct> is export {
 }
 
 class ESourceCollectionClass is repr<CStruct> is export {
-	HAS ESourceBackendClass $!parent_class;
+	HAS ESourceBackendClass $.parent_class;
 }
 
 class ESourceContacts is repr<CStruct> is export {
@@ -982,7 +982,7 @@ class ESourceContacts is repr<CStruct> is export {
 }
 
 class ESourceContactsClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceCredentialsProvider is repr<CStruct> is export {
@@ -1001,12 +1001,12 @@ class ESourceCredentialsProviderImplPassword is repr<CStruct> is export {
 }
 
 class ESourceCredentialsProviderClass is repr<CStruct> is export {
-  HAS GObjectClass $!parent_class;
+  HAS GObjectClass $.parent_class;
   has Pointer      $!ref_source;   #= ESource *       (*ref_source)   (ESourceCredentialsProvider *provider, const gchar *uid);
 }
 
 # class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> is export {
-# 	HAS ESourceCredentialsProviderImplClass $!parent_class;
+# 	HAS ESourceCredentialsProviderImplClass $.parent_class;
 # }
 
 class ESourceGoa is repr<CStruct> is export {
@@ -1015,7 +1015,7 @@ class ESourceGoa is repr<CStruct> is export {
 }
 
 class ESourceGoaClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceLDAP is repr<CStruct> is export {
@@ -1024,7 +1024,7 @@ class ESourceLDAP is repr<CStruct> is export {
 }
 
 class ESourceLDAPClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceLocal is repr<CStruct> is export {
@@ -1033,7 +1033,7 @@ class ESourceLocal is repr<CStruct> is export {
 }
 
 class ESourceLocalClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceMDN is repr<CStruct> is export {
@@ -1042,7 +1042,7 @@ class ESourceMDN is repr<CStruct> is export {
 }
 
 class ESourceMDNClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceMailAccount is repr<CStruct> is export {
@@ -1051,7 +1051,7 @@ class ESourceMailAccount is repr<CStruct> is export {
 }
 
 class ESourceMailAccountClass is repr<CStruct> is export {
-	HAS ESourceBackendClass $!parent_class;
+	HAS ESourceBackendClass $.parent_class;
 }
 
 class ESourceMailComposition is repr<CStruct> is export {
@@ -1060,7 +1060,7 @@ class ESourceMailComposition is repr<CStruct> is export {
 }
 
 class ESourceMailCompositionClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceMailIdentity is repr<CStruct> is export {
@@ -1069,7 +1069,7 @@ class ESourceMailIdentity is repr<CStruct> is export {
 }
 
 class ESourceMailIdentityClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceMailSignature is repr<CStruct> is export {
@@ -1078,7 +1078,7 @@ class ESourceMailSignature is repr<CStruct> is export {
 }
 
 class ESourceMailSignatureClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceMailSubmission is repr<CStruct> is export {
@@ -1087,7 +1087,7 @@ class ESourceMailSubmission is repr<CStruct> is export {
 }
 
 class ESourceMailSubmissionClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceMailTransport is repr<CStruct> is export {
@@ -1096,7 +1096,7 @@ class ESourceMailTransport is repr<CStruct> is export {
 }
 
 class ESourceMailTransportClass is repr<CStruct> is export {
-	HAS ESourceBackendClass $!parent_class;
+	HAS ESourceBackendClass $.parent_class;
 }
 
 class ESourceMemoList is repr<CStruct> is export {
@@ -1105,7 +1105,7 @@ class ESourceMemoList is repr<CStruct> is export {
 }
 
 class ESourceMemoListClass is repr<CStruct> is export {
-	HAS ESourceSelectableClass $!parent_class;
+	HAS ESourceSelectableClass $.parent_class;
 }
 
 class ESourceOffline is repr<CStruct> is export {
@@ -1114,7 +1114,7 @@ class ESourceOffline is repr<CStruct> is export {
 }
 
 class ESourceOfflineClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceOpenPGP is repr<CStruct> is export {
@@ -1123,7 +1123,7 @@ class ESourceOpenPGP is repr<CStruct> is export {
 }
 
 class ESourceOpenPGPClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceProxy is repr<CStruct> is export {
@@ -1132,7 +1132,7 @@ class ESourceProxy is repr<CStruct> is export {
 }
 
 class ESourceProxyClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceRefresh is repr<CStruct> is export {
@@ -1141,7 +1141,7 @@ class ESourceRefresh is repr<CStruct> is export {
 }
 
 class ESourceRefreshClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceRegistry is repr<CStruct> is export {
@@ -1160,7 +1160,7 @@ class ESourceResource is repr<CStruct> is export {
 }
 
 class ESourceResourceClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceRevisionGuards is repr<CStruct> is export {
@@ -1169,7 +1169,7 @@ class ESourceRevisionGuards is repr<CStruct> is export {
 }
 
 class ESourceRevisionGuardsClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceSMIME is repr<CStruct> is export {
@@ -1178,7 +1178,7 @@ class ESourceSMIME is repr<CStruct> is export {
 }
 
 class ESourceSMIMEClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceSecurity is repr<CStruct> is export {
@@ -1187,7 +1187,7 @@ class ESourceSecurity is repr<CStruct> is export {
 }
 
 class ESourceSecurityClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceTaskList is repr<CStruct> is export {
@@ -1196,7 +1196,7 @@ class ESourceTaskList is repr<CStruct> is export {
 }
 
 class ESourceTaskListClass is repr<CStruct> is export {
-	HAS ESourceSelectableClass $!parent_class;
+	HAS ESourceSelectableClass $.parent_class;
 }
 
 class ESourceUoa is repr<CStruct> is export {
@@ -1205,7 +1205,7 @@ class ESourceUoa is repr<CStruct> is export {
 }
 
 class ESourceUoaClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceWeather is repr<CStruct> is export {
@@ -1214,7 +1214,7 @@ class ESourceWeather is repr<CStruct> is export {
 }
 
 class ESourceWeatherClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class ESourceWebdav is repr<CStruct> is export {
@@ -1223,7 +1223,7 @@ class ESourceWebdav is repr<CStruct> is export {
 }
 
 class ESourceWebdavClass is repr<CStruct> is export {
-	HAS ESourceExtensionClass $!parent_class;
+	HAS ESourceExtensionClass $.parent_class;
 }
 
 class EUri is repr<CStruct> is export {
@@ -1329,12 +1329,12 @@ class sign is repr<CStruct> is export {
 }
 
 class EBook is repr<CStruct> is export {
-  HAS GObject $.parent;
+  HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
 class EBookClient is repr<CStruct> is export {
-  HAS EClient $.parent;
+  HAS EClient $!parent;
   has Pointer $!priv  ;
 }
 
@@ -1343,17 +1343,17 @@ class EBookClientClass is repr<CStruct> is export {
 }
 
 class EBookClientCursor is repr<CStruct> is export {
-  HAS GObject $.parent;
+  HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
 class EBookClientView is repr<CStruct> is export {
-  HAS GObject $.parent;
+  HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
 class EBookView is repr<CStruct> is export {
-  HAS GObject $.parent;
+  HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
@@ -1363,7 +1363,7 @@ class EDestination is repr<CStruct> is export {
 }
 
 class EVCard is repr<CStruct> is export {
-  HAS GObject $.parent;
+  HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
@@ -1377,17 +1377,17 @@ class EVCardClass is repr<CStruct> is export {
 }
 
 class EContact is repr<CStruct> is export {
-  HAS EVCard  $.parent;
+  HAS EVCard  $!parent;
   has Pointer $!priv  ;
 }
 
 class ESourceBackendSummarySetup is repr<CStruct> is export {
-  HAS ESourceBackend  $.parent;
+  HAS ESourceBackend  $!parent;
   has Pointer         $!priv  ;
 }
 
 class ESourceBackendSummarySetupClass is repr<CStruct> is export {
-  HAS ESourceBackendClass $.parent_class;
+  HAS ESourceBackendClass $.p1arent_class;
 }
 
 class EContactName is repr<CStruct> is export {
@@ -1498,7 +1498,7 @@ class EFileCache is repr<CStruct> is export {
 }
 
 class EFileCacheClass is repr<CStruct> is export {
-  HAS GObjectClass $!parent_class;
+  HAS GObjectClass $.parent_class;
 }
 
 class EOfflineListener is repr<CStruct> is export {
@@ -1512,7 +1512,7 @@ class EServerSideSource is repr<CStruct> is export {
 }
 
 class EServerSideSourceClass is repr<CStruct> is export {
-  HAS ESourceClass $!parent_class;
+  HAS ESourceClass $.parent_class;
 }
 
 class EServerSideSourceCredentialsProvider is repr<CStruct> is export {
@@ -1521,7 +1521,7 @@ class EServerSideSourceCredentialsProvider is repr<CStruct> is export {
 }
 
 class EServerSideSourceCredentialsProviderClass is repr<CStruct> is export {
-  HAS ESourceCredentialsProviderClass $!parent_class;
+  HAS ESourceCredentialsProviderClass $.parent_class;
 }
 
 class ESourceRegistryServer is repr<CStruct> is export {
@@ -1557,6 +1557,7 @@ class EWebDAVCollectionBackend is repr<CStruct> is export {
 	HAS ECollectionBackend $!parent;
 	has Pointer            $!priv  ; #= EWebDAVCollectionBackendPrivate
 }
+
 
 BEGIN {
 	buildAccessors($_) for EPhotoDataInlined,
