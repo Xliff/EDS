@@ -460,7 +460,7 @@ class Evolution::Book::Client::Cursor {
       $cancellable,
       $error
     );
-    set_error($error)
+    set_error($error);
 
     ( $n, ppr($out_contacts) );
   }
