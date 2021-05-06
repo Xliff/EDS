@@ -41,13 +41,13 @@ BEGIN my %unix-library-adjustments = (
 
   ebook-contacts => {
     Ubuntu => {
-      buster => {
+      groovy => {
         lib-append => '-1.2',
         version    => v3
       }
     },
 
-    Debian =>{
+    Debian => {
       buster => {
         lib-append => '-1.2',
         version    => v2
@@ -73,7 +73,7 @@ BEGIN my %unix-library-adjustments = (
 
   ebackend => {
     Ubuntu => {
-      buster => {
+      groovy => {
         lib-append => '-1.2',
         version    => v10
       }
