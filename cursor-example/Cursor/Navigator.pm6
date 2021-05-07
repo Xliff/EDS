@@ -7,7 +7,7 @@ class Cursor::Navigator {
   has $!index;
 
   # Should also handle coercion! ;D
-  has GTK::Scale $!scale handles<*>;
+  has GTK::Scale $!scale handles(*);
 
   has $!adj;
   has %!supplier;
