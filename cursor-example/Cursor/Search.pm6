@@ -7,7 +7,7 @@ use GTK::Builder;
 
 my $ui-def;
 
-constant UI-FILE = 'cursor-search.ui';
+constant SEARCH-UI-FILE = 'cursor-search.ui';
 
 our enum SearchType is export <
 	SEARCH_NAME
@@ -19,6 +19,7 @@ class Cursor::Search {
 	has            $!top          handles<
 																	primary-icon-activatable
 																	primary-icon-sensitive
+																	show
 																>;
   has            $!popup;
   has            $!name_radio;
@@ -34,7 +35,7 @@ class Cursor::Search {
 		# Replaces the need for a GObject signal!
 		$!sexp-supplier = Supplier.new;
 
-		my $ip = $*PROGRAM.add(UI-FILE);
+		my $ip = $*PROGRAM.add(SEARCH-UI-FILE);
 		$ui-def = $ip.slurp if $ip.e;
 
 		my $builder = GTK::Builder.new-from-string(
