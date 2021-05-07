@@ -2,23 +2,27 @@ use v6.c;
 
 use Evolution::Raw::Types;
 
+use GTK::Grid;
+
 use GTK::Builder;
 
-constant UI-FILE = 'cursor-slot.ui';
+constant SLOT-UI-FILE = 'cursor-slot.ui';
 
 my $ui-def;
 
 class Cursor::Slot {
-  has $!top;
-  has $!area;         # GtkGrid
-  has $!name_label;   # GtkLabel
-  has $!email_label;  # GtkLabel
-  has $!phone_label;  # GtkLabel
+  has GTK::Grid $!top           handles(*); # GtkGrid
+  has           $!area;                     # GtkGrid
+  has           $!name_label;               # GtkLabel
+  has           $!email_label;              # GtkLabel
+  has           $!phone_label;              # GtkLabel
+  has           $!label1;                   # GtkLabel
+  has           $!label2;                   # GtkLabel
 
-  has $!contact;       # EContact
+  has           $!contact;                  # EContact
 
   submethod BUILD (:$contact) {
-    my $ip = $*PROGRAM.add(UI-FILE);
+    my $ip = $*PROGRAM.add(SLOT-UI-FILE);
     $ui-def = $ip.slurp if $ip.e;
 
     my $builder = GTK::Builder.new-from-string(
@@ -26,21 +30,25 @@ class Cursor::Slot {
     );
 
     $!top = $builder.top-level;
-    for $builder.pairs.grep( .key ne $builder.top-level-id ) {
-      when .key eq 'area'             { $!area         = .value }
-      when .key eq 'name_label'       { $!name_label   = .value }
-      when .key eq 'emails_label'     { $!email_label = .value }
-      when .key eq 'telephone_label'  { $!phone_label = .value }
+    for $builder.pairs.grep( *.key ne $builder.top-level-id ) {
+      when .key eq 'area'              { $!area        = .value }
+      when .key eq 'emails_label'      { $!email_label = .value }
+      when .key eq 'label1'            { $!label1      = .value }
+      when .key eq 'label2'            { $!label2      = .value }
+      when .key eq 'name_label'        { $!name_label  = .value }
+      when .key eq 'telephones_label'  { $!phone_label = .value }
 
-      default { die "Do not have a control called { $_ } in Cursor::Slot!" }
+      default {
+        die "Do not have a control called '{ .key }' in Cursor::Slot!"
+      }
     }
     $!top.no-show-all = False;
     $!top.show-all;
 
-    $!contact = $contact;
+    $!contact = $contact if $contact;
   }
 
-  method new ($contact) {
+  method new ($contact?) {
     self.bless( :$contact );
   }
 
