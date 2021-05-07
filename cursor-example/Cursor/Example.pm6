@@ -6,6 +6,11 @@ use GLib::Source;
 use GLib::Timeout;
 
 use Cursor::Subs;
+use Cursor::Builder::Registry;
+
+use Cursor::Navigator;
+use Cursor::Search;
+use Cursor::Slot;
 
 enum TimeoutActivity (
   'TIMEOUT_NONE'          => 0,
@@ -21,7 +26,7 @@ constant TICK_TIMEOUT    = 100;
 
 my $ui-def;
 
-constant UI-FILE = 'cursor-search.ui';
+constant EXAMPLE-UI-FILE = 'cursor-search.ui';
 
 my %attr-attribute-alias;
 
@@ -102,7 +107,7 @@ class Cursor::Example does BuilderWidgets {
     # %!ui-attributes<alphabet_label>     := $!alphabet_label;
     # %!ui-attributes<navigator>          := $!navigator     ;
 
-    my $ip = $*PROGRAM.add(UI-FILE);
+    my $ip = $*PROGRAM.add(EXAMPLE-UI-FILE);
     $ui-def = $ip.slurp if $ip.e;
 
     my %controls;
@@ -110,20 +115,38 @@ class Cursor::Example does BuilderWidgets {
       GTK::Builder.templateToUI(
         $ui-def,
         dom-callback => sub ($dom) {
+          CONTROL {
+            when     CX::Warn { .message.say; .backtrace.concise.say; .resume }
+            default           { .rethrow }
+          }
+
           # Remove CursorSlot, CursorExample, CursorSearch and CursorNavigator
           # from the defintions in lieu of boxes/containers/bins (whatever is
           # the lightest) that will serve as proxy containers for these objects
           # when they are created. They will then be .add'ed to the proper
           # UI container
+          # CONTROL {
+          #   when CX::Warn { .say; .resume }
+          #   default       { .rethrow }
+          # }
 
           for $dom.find('//*[starts-with(@class,"Cursor")]') {
             my ($oldClass, $oldId) =
-              ( .getAttribute('class'), .getAttribute('id') ) given $dom;
+              ( .getAttribute('class'), .getAttribute('id') );
+
+            say "OLDCLASS: { $oldClass // '--undef--' }";
+            say "OLDID:    { $oldId    // '--undef--' }";
 
             $dom.setAttribute('class', 'GtkBin');
             $dom.setAttribute('id', $oldId ~ '_box');
 
-            my $control = ::($oldClass).new;
+            # cw: $oldClass needs to go through the Builder Registry for the
+            #     proper class name!
+            my $controlClass = Cursor::Builder::Registry.typeClass{$oldClass};
+            die "Cannot find a valid class for '$oldClass'!"
+              unless $controlClass;
+
+            my $control = ::($controlClass).new;
             $control.show;
             $control.name = $oldClass;
             %controls{$oldId} = $control;
@@ -135,6 +158,9 @@ class Cursor::Example does BuilderWidgets {
     $!top = $builder.top-level;
     %!ui-attributes{ getAttributeUIName( .key ) } := .value
       for $builder.pairs;
+
+    # Add custom controls to their containers.
+    %!ui-attributes{ .key ~ '_box'}.add( .value ) for %controls.pairs;
 
     # for $builder.pairs {
     #   when .key eq 'browse_up_button'    { $!up-button      = .value }
