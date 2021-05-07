@@ -70,7 +70,7 @@ multi sub getAttributeUIName ($n) {
 
 class Cursor::Example does BuilderWidgets {
 
-  has GTK::Window $!top             handles<*> is widget;
+  has GTK::Window $!top             handles(*) is widget;
   has             $!up-button                  is widget is builder-name<browse_up_button>;
   has             $!down-button                is widget is builder-name<browse_down_button>;
   has             $!progressbar                is widget;

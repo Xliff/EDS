@@ -4,6 +4,7 @@ use Evolution::Raw::Types;
 use GTK::Raw::Types;
 
 use GTK::Builder;
+use Evolution::Book::Query;
 
 my $ui-def;
 
@@ -17,6 +18,7 @@ our enum SearchType is export <
 
 class Cursor::Search {
 	has            $!top          handles<
+																	name
 																	primary-icon-activatable
 																	primary-icon-sensitive
 																	show
