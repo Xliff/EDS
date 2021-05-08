@@ -47,6 +47,7 @@ class ECalComponentText          is repr<CPointer> is export does GLib::Roles::P
 class EExtensible                is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ENamedParameters           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Service             is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ETimezoneCache             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EVCardAttribute            is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EVCardAttributeParam       is repr<CPointer> is export does GLib::Roles::Pointers { }
 
