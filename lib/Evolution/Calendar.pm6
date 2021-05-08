@@ -9,10 +9,14 @@ use Evolution::Raw::Calendar;
 use GLib::GList;
 use Evolution::Client;
 
+use Evolution::Roles::TimezoneCache;
+
 our subset ECalClientAncestry is export of Mu
-  where ECalClient | EClientAncestry;
+  where ECalClient | ETimezoneCache | EClientAncestry;
 
 class Evolution::Calendar is Evolution::Client {
+  also does Evolution::Roles::TimezoneCache;
+  
   has ECalClient $!ecal is implementor;
 
   submethod BUILD (:$calendar) {
@@ -28,12 +32,19 @@ class Evolution::Calendar is Evolution::Client {
         $_;
       }
 
+      when ETimezoneCache {
+        $to-parent = cast(EClient, $_);
+        $!etzc = $_;
+        cast(ECalClient, $_);
+      }
+
       default {
         $to-parent = $_;
         cast(ECalClient, $_);
       }
     }
     self.setEClient($to-parent);
+    self.roleInit-ETimezoneCache;
   }
 
   method Evolution::Raw::Definitions::ECalClient
