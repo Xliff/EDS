@@ -1558,6 +1558,15 @@ class EWebDAVCollectionBackend is repr<CStruct> is export {
 	has Pointer            $!priv  ; #= EWebDAVCollectionBackendPrivate
 }
 
+class ESourceCredentialsProviderImplClass is repr<CStruct> is export {
+  HAS EExtensionClass $.parent_class;
+  has Pointer         $.can_process;   #= gboolean (*can_process)   (ESourceCredentialsProviderImpl *provider_impl, ESource *source);
+  has Pointer         $.can_store;     #= gboolean (*can_store)     (ESourceCredentialsProviderImpl *provider_impl);
+  has Pointer         $.can_prompt;    #= gboolean (*can_prompt)    (ESourceCredentialsProviderImpl *provider_impl);
+  has Pointer         $.lookup_sync;   #= gboolean (*lookup_sync)   (ESourceCredentialsProviderImpl *provider_impl, ESource *source, GCancellable *cancellable, ENamedParameters **out_credentials, GError **error);
+  has Pointer         $.store_sync;    #= gboolean (*store_sync)    (ESourceCredentialsProviderImpl *provider_impl, ESource *source, const ENamedParameters *credentials, gboolean permanently, GCancellable *cancellable, GError **error);
+  has Pointer         $.delete_sync;   #= gboolean (*delete_sync)   (ESourceCredentialsProviderImpl *provider_impl, ESource *source, GCancellable *cancellable, GError **error);
+}
 
 BEGIN {
 	buildAccessors($_) for EPhotoDataInlined,
