@@ -12,6 +12,13 @@ use GLib::GList;
 role Evolution::Roles::TimezoneCache {
   has ETimezoneCache $!etzc;
 
+  method roleInit-ETimezoneCache {
+    return if $!etzc;
+
+    my \i = findProperImplementor(self.^attributes);
+    $!etzc = cast( ETimezoneCache, i.get_value(self) );
+  }
+
   method Evolution::Raw::Definitions::ETimezoneCache
   { $!etzc }
 
