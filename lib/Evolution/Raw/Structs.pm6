@@ -1715,10 +1715,6 @@ class ESubprocessCalFactoryClass is repr<CStruct> is export {
   has ESubprocessFactoryClass $!parent_class;
 }
 
-class EDataCal is repr<CStruct> is export {
-	HAS GObject $!parent;
-	has Pointer $!priv;
-}
 
 BEGIN {
 	buildAccessors($_) for EPhotoDataInlined,
