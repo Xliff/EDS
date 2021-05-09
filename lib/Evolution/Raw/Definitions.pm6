@@ -24,6 +24,7 @@ constant EListFreeFunc             is export := Pointer;
 constant ecal           is export = version-by-distro('ecal');
 constant ebook          is export = version-by-distro('ebook');
 constant ebook-contacts is export = version-by-distro('ebook-contacts');
+constant edata-cal      is export = version-by-distro('edata-cal');
 constant eds            is export = version-by-distro('edataserver');
 constant ebackend       is export = version-by-distro('ebackend');
 
