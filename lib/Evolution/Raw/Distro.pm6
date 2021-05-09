@@ -6,19 +6,18 @@ unit package Evolution::Raw::Distro;
 
 # Change listing to alpha by-key!
 BEGIN my %unix-library-adjustments = (
-
   ecal => {
     Ubuntu => {
       groovy => {
         lib-append => '-2.0',
-        version => 1
+        version    => 1
       }
     },
 
     Debian => {
       buster => {
         lib-append => '-1.2',
-        version => v19
+        version    => v19
       }
     }
   },
@@ -85,7 +84,7 @@ BEGIN my %unix-library-adjustments = (
         version    => v10
       }
     }
-  }
+  },
 
   edata-cal => {
     Ubuntu => {
@@ -95,7 +94,6 @@ BEGIN my %unix-library-adjustments = (
       }
     }
   }
-
 );
 
 multi sub version-by-distro ($lib) is export {
@@ -109,9 +107,13 @@ multi sub version-by-distro ($lib, :$windows is required) is export {
   # NYI! This is probably going to need a Cygwin and an MSVC check!
 }
 
-multi sub version-by-distro ($lib is copy, :$unix is required) is export {
+sub adjustments is export {
+  %unix-library-adjustments
+}
+
+multi sub version-by-distro ($prefix is copy, :$unix is required) is export {
   my $lr = qqx{which lsb_release}.chomp;
-  say "LIB: $lib\nLSB_RELEASE: $lr" if $DEBUG;
+  say "PREFIX: $prefix\nLSB_RELEASE: $lr" if $DEBUG;
   my ($distro, $codename) =
     ( qqx{$lr -d -s}.split(/\s/)[0], qqx{$lr -c -s} )».chomp;
 
@@ -121,11 +123,31 @@ multi sub version-by-distro ($lib is copy, :$unix is required) is export {
       %unix-library-adjustments.gist if $DEBUG;;
 
   say 'LIBRARY SETTING: ' ~
-          %unix-library-adjustments{$lib}.gist if $DEBUG;
+      %unix-library-adjustments{$prefix}.gist if $DEBUG;
 
   say 'DISTRO SETTING: ' ~
-          %unix-library-adjustments{$lib}{$distro}.gist if $DEBUG;
+      %unix-library-adjustments{$prefix}{$distro}.gist if $DEBUG;
 
-  $lib ~ (.<lib-append> // ''), (.<version> // v0)
-    given %unix-library-adjustments{$lib}{$distro}{$codename}
+  my ($lib, $lib-append, $version);
+
+  sub getDistroValue ($part) {
+    my $value;
+
+    given %unix-library-adjustments {
+      $value = .{$prefix}<DEFAULTS>{$part}
+        if .{$prefix}<DEFAULTS>{$part};
+      $value = .{$prefix}{$distro}<DEFAULTS>{$part}
+        if .{$prefix}{$distro}<DEFAULTS>{$part};
+      $value = .{$prefix}{$distro}{$codename}{$part}
+        if .{$prefix}{$distro}{$codename}{$part};
+    }
+
+    $value
+  }
+
+  $lib        = getDistroValue('lib');
+  $lib-append = getDistroValue('lib-append');
+  $version    = getDistroValue('version');
+
+  ($lib // $prefix) ~ ($lib-append // ''), ($version // v0);
 }
