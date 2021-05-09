@@ -87,6 +87,15 @@ BEGIN my %unix-library-adjustments = (
     }
   }
 
+  edata-cal => {
+    Ubuntu => {
+      groovy => {
+        lib-append => '-2.0',
+        version    => v1
+      }
+    }
+  }
+
 );
 
 multi sub version-by-distro ($lib) is export {
