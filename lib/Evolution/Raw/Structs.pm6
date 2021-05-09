@@ -8,6 +8,7 @@ use GLib::Raw::Object;
 use GLib::Raw::Structs;
 use GLib::Raw::Subs;
 use GLib::Class::TypeModule;
+use ICal::Raw::Enums;
 use GIO::Raw::Definitions;
 use SOUP::Raw::Definitions;
 use SOUP::Class::Auth;
@@ -1567,6 +1568,153 @@ class ESourceCredentialsProviderImplClass is repr<CStruct> is export {
   has Pointer         $.store_sync;    #= gboolean (*store_sync)    (ESourceCredentialsProviderImpl *provider_impl, ESource *source, const ENamedParameters *credentials, gboolean permanently, GCancellable *cancellable, GError **error);
   has Pointer         $.delete_sync;   #= gboolean (*delete_sync)   (ESourceCredentialsProviderImpl *provider_impl, ESource *source, GCancellable *cancellable, GError **error);
 }
+
+# libedata-cal
+
+class ECalBackendFactory is repr<CStruct> is export {
+  has EBackendFactory $!parent;
+  has Pointer         $!priv  ;
+}
+
+class EBackendFactoryClass is repr<CStruct> is export {
+  HAS EExtensionClass $.parent_class;
+
+  has Pointer  $.get_hash_key;                # const gchar *   (*get_hash_key)         (EBackendFactory *factory);
+  has Pointer  $.new_backend;                 # EBackend *      (*new_backend)          (EBackendFactory *factory, ESource *source);
+
+  has EModule  $.e_module;
+  has gboolean $.share_subprocess;
+
+  HAS gpointer @.reserved[15]      is CArray;
+};
+
+
+class ECalBackendFactoryClass is repr<CStruct> is export {
+  has EBackendFactoryClass $!parent_class  ;
+  has gchar                $!factory_name  ;
+  has icalcomponent_kind   $!component_kind;
+  has GType                $!backend_type  ;
+}
+
+class ECalBackendSExp is repr<CStruct> is export {
+  has GObject                $!parent;
+  has Pointer $!priv  ;
+}
+
+class ECalBackendSExpClass is repr<CStruct> is export {
+  has GObjectClass $!parent_class;
+}
+
+class ECalBackend is repr<CStruct> is export {
+  HAS EBackend $!parent;
+  has Pointer  $!priv;
+}
+
+class ECalBackendSync is repr<CStruct> is export {
+  has ECalBackend            $!parent;
+  has Pointer $!priv  ;
+}
+
+class ECalCache is repr<CStruct> is export {
+  has ECache           $!parent;
+  has Pointer $!priv  ;
+}
+
+class ECalMetaBackend is repr<CStruct> is export {
+  has ECalBackendSync        $!parent;
+  has Pointer $!priv  ;
+}
+
+class ECalMetaBackendInfo is repr<CStruct> is export {
+  has gchar $!uid     ;
+  has gchar $!revision;
+  has gchar $!object  ;
+  has gchar $!extra   ;
+}
+
+class EDataCalClass is repr<CStruct> is export {
+  has GObjectClass $!parent_class;
+}
+
+class EDataCalFactory is repr<CStruct> is export {
+  has EDataFactory           $!parent;
+  has Pointer $!priv  ;
+}
+
+class EDBusServerClass is repr<CStruct> is export {
+  HAS GObjectClass $.parent_class;
+
+  has Str          $.bus_name;
+  has Str          $.module_directory;
+
+  has Pointer      $.bus_acquired;           # void                (*bus_acquired)         (EDBusServer *server, GDBusConnection *connection);
+  has Pointer      $.bus_name_acquired;      # void                (*bus_name_acquired)    (EDBusServer *server, GDBusConnection *connection);
+  has Pointer      $.bus_name_lost;          # void                (*bus_name_lost)        (EDBusServer *server, GDBusConnection *connection);
+  has Pointer      $.run_server;             # EDBusServerExitCode (*run_server)           (EDBusServer *server);
+  has Pointer      $.quit_server;            # void                (*quit_server)          (EDBusServer *server, EDBusServerExitCode code);
+
+	has gpointer     @.reserved[14] is CArray;
+}
+
+class EDataFactoryClass is repr<CStruct> is export {
+  HAS EDBusServerClass $.parent_class;
+  has GType            $.backend_factory_type;
+  has Str              $.factory_object_path;
+  has Str              $.data_object_path_prefix;
+  has Str              $.subprocess_object_path_prefix;
+  has Str              $.subprocess_bus_name_prefix;
+
+  has Pointer          $.get_dbus_interface_skeleton;   # GDBusInterfaceSkeleton * (*get_dbus_interface_skeleton) (EDBusServer *server);
+  has Pointer          $.get_factory_name;              # const gchar *   (*get_factory_name)     (EBackendFactory *backend_factory);
+  has Pointer          $.complete_open;                 # void            (*complete_open)        (EDataFactory *data_factory, GDBusMethodInvocation *invocation, const gchar *object_path, const gchar *bus_name, const gchar *extension_name);
+  has Pointer          $.create_backend;                # EBackend *      (* create_backend)      (EDataFactory *data_factory, EBackendFactory *backend_factory, ESource *source);
+  has Pointer          $.open_backend;                  # gchar *         (* open_backend)        (EDataFactory *data_factory, EBackend *backend, GDBusConnection *connection, GCancellable *cancellable, GError **error);
+
+  HAS gpointer         @.reserved[13] is CArray;
+}
+
+
+class EDataCalFactoryClass is repr<CStruct> is export {
+  has EDataFactoryClass $!parent_class;
+}
+
+class EDataCalView is repr<CStruct> is export {
+  has GObject             $!parent;
+  has Pointer $!priv  ;
+}
+
+class EDataCalViewClass is repr<CStruct> is export {
+  has GObjectClass $!parent_class;
+}
+
+class EIntervalTree is repr<CStruct> is export {
+  has GObject              $!parent;
+  has Pointer $!priv  ;
+}
+
+class EIntervalTreeClass is repr<CStruct> is export {
+  has GObjectClass $!parent_class;
+}
+
+class ESubprocessCalFactory is repr<CStruct> is export {
+  has ESubprocessFactory $!parent;
+  has Pointer            $!priv  ;
+}
+
+class ESubprocessFactoryClass is repr<CStruct> is export {
+  HAS GObjectClass $.parent_class;
+  # Virtual Methods
+  has Pointer      $.ref_backend;     # EBackend * (*ref_backend)          (ESourceRegistry *registry, ESource *source, const gchar *backend_factory_type_name);
+  has Pointer      $.open_data;       # gchar *    (*open_data)            (ESubprocessFactory *subprocess_factory, EBackend *backend, GDBusConnection *connection, gpointer data, GCancellable *cancellable, GError **error);
+	# Signals
+  has Pointer      $.backend_created; # void       (*backend_created)      (ESubprocessFactory *subprocess_factory, EBackend *backend);
+  has Pointer      $.backend_closed;  # void       (*backend_closed)       (ESubprocessFactory *subprocess_factory, EBackend *backend);
+}
+
+class ESubprocessCalFactoryClass is repr<CStruct> is export {
+  has ESubprocessFactoryClass $!parent_class;
+}
+
 
 BEGIN {
 	buildAccessors($_) for EPhotoDataInlined,
