@@ -1715,6 +1715,33 @@ class ESubprocessCalFactoryClass is repr<CStruct> is export {
   has ESubprocessFactoryClass $!parent_class;
 }
 
+class ESExpResultValue is repr<CUnion> is export {
+  has GPtrArray $!ptrarray;
+  has gint      $.number   is rw;
+  has gchar     $!string;
+  has gint      $.boolean  is rw;
+  has time_t    $.time     is rw;
+
+	method ptrarray is rw {
+		Proxy.new:
+			FETCH => -> $                 { $!ptrarray       },
+			STORE => -> $, GPtrArray() $p { $!ptrarray := $p };
+	}
+
+	method string is rw {
+		Proxy.new:
+			FETCH => -> $,          { $!string       },
+			STORE => -> $, Str() $s { $!string := $s };
+	}
+}
+
+class ESExpResult is repr<CStruct> is export {
+	has ESExpResultType  $.type;
+	HAS ESExpResultValue $.value;
+	has gboolean         $.time_generator;
+	has time_t           $.occuring_start;
+	has time_t           $.occuring_end;
+}
 
 BEGIN {
 	buildAccessors($_) for EPhotoDataInlined,
