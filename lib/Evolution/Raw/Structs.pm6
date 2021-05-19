@@ -1743,6 +1743,11 @@ class ESExpResult is repr<CStruct> is export {
 	has time_t           $.occuring_end;
 }
 
+class EDataCal is repr<CStruct> is export {
+  HAS GObject $.parent;
+  has Pointer $!priv;
+}
+
 BEGIN {
 	buildAccessors($_) for EPhotoDataInlined,
 												 EPhotoData,
