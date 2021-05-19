@@ -1,12 +1,13 @@
 use v6.c;
 
+use NativeCall;
+
 use Evolution::Raw::Types;
-use Evolution::Raw::Backend::Calendar;
+use Evolution::Raw::Calendar::Backend;
 
 use ICal::Raw::Enums;
 use GLib::GList;
 use GLib::Queue;
-use GIO::SimpleAsyncResult;
 use Evolution::Backend;
 use Evolution::DataCal;
 use Evolution::DataCal::View;
@@ -15,8 +16,8 @@ use Evolution::Source::Registry;
 use GIO::Roles::ProxyResolver;
 use Evolution::Roles::TimezoneCache;
 
-our subset ECalendarBackendAncestry is export of Mu
-  where ECalendarBackend | ETimezoneCache | EDBusServerAncestry;
+our subset ECalBackendAncestry is export of Mu
+  where ECalBackend | ETimezoneCache | EBackendAncestry;
 
 class Evolution::Calendar::Backend is Evolution::Backend {
   also does Evolution::Roles::TimezoneCache;
@@ -27,11 +28,11 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     self.setECalendarBackend($calendar-backend) if $calendar-backend;
   }
 
-  method setECalendarBackend (ECalendarBackendAncestry $_) {
+  method setECalendarBackend (ECalBackendAncestry $_) {
     my $to-parent;
 
     $!ecb = do {
-      when ECalendarBackend {
+      when ECalBackend {
         $to-parent = cast(GObject, $_);
         $_;
       }
@@ -39,22 +40,22 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       when ETimezoneCache {
         $to-parent = cast(GObject, $_);
         $!etzc = $_;
-        cast(ECalendarBackend, $_);
+        cast(ECalBackend, $_);
       }
 
       default {
         $to-parent = $_;
-        cast(ECalendarBackend, $_);
+        cast(ECalBackend, $_);
       }
     }
     self.setEBackend($to-parent);
     self.roleInit-ETimezoneCache;
   }
 
-  method Evolution::Raw::Definitions::ECalendarBackend
+  method Evolution::Raw::Definitions::ECalBackend
   { $!ecb }
 
-  method new (ECalendarBackendAncestry $calendar-backend, :$ref = True) {
+  method new (ECalBackendAncestry $calendar-backend, :$ref = True) {
     return Nil unless $calendar-backend;
 
     my $o = self.bless( :$calendar-backend );
@@ -68,13 +69,13 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   multi method add_timezone (
                    $tzobject,
                    &callback,
-    gpointer       $user_data    = gpointer
+    gpointer       $user_data    = gpointer,
                    :$cancellable = GCancellable,
   ) {
     samewith(
       $tzobject,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -88,7 +89,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $!ecb,
       $tzobject,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -288,13 +289,13 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   proto method discard_alarm_sync (|)
   { * }
 
-  method discard_alarm_sync (
+  multi method discard_alarm_sync (
                             $uid,
                             $alarm_uid,
-    CArray[Pointer[GError]] $error        = gpointer
+    CArray[Pointer[GError]] $error        = gerror,
                             :$rid         = Str,
                             :$opflags     = 0,
-                            :$cancellable = GCancellable,
+                            :$cancellable = GCancellable
   ) {
     samewith(
       $uid,
@@ -305,13 +306,13 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $error
     );
   }
-  method discard_alarm_sync (
+  multi method discard_alarm_sync (
     Str()                   $uid,
     Str()                   $rid,
     Str()                   $alarm_uid,
     Int()                   $opflags,
     GCancellable()          $cancellable = GCancellable,
-    CArray[Pointer[GError]] $error       = gpointer
+    CArray[Pointer[GError]] $error       = gerror
   ) {
     my guint32 $o = $opflags;
 
@@ -452,7 +453,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     $q = $q ??
       ( $raw ?? $q !! GLib::Queue.new($q, :!ref) )
       !!
-      Nil
+      Nil;
 
     return $q unless $array || $raw.not;
 
@@ -489,7 +490,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   proto method get_free_busy (|)
   { * }
 
-  method get_free_busy (
+  multi method get_free_busy (
     Int()          $start,
     Int()          $end,
                    @users,
@@ -506,7 +507,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $user_data
     );
   }
-  method get_free_busy (
+  multi method get_free_busy (
     Int()          $start,
     Int()          $end,
     CArray[Str]    $users,
@@ -676,7 +677,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     samewith(
       $query,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -690,7 +691,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $!ecb,
       $query,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -699,7 +700,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   { * }
 
   multi method get_object_list_finish (
-    GAsyncResult()          $result
+    GAsyncResult()          $result,
     CArray[Pointer[GError]] $error  = gerror,
                             :$raw   = False
   ) {
@@ -777,7 +778,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
 
   multi method get_object_sync (
     Str()                   $uid,
-    CArray[Pointer[GError]] $error        = gerror
+    CArray[Pointer[GError]] $error        = gerror,
     Str()                   :$rid         = Str,
     GCancellable()          :$cancellable = GCancellable,
   ) {
@@ -823,9 +824,9 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     Str()          $tzid,
                    &callback,
     gpointer       $user_data    = gpointer,
-    GCancellable() :$cancellable = GCallable
+    GCancellable() :$cancellable = GCancellable
   ) {
-    samewith($tzid, $cancellable, $callback, $user_data);
+    samewith($tzid, $cancellable, &callback, $user_data);
   }
   multi method get_timezone (
     Str()          $tzid,
@@ -837,7 +838,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $!ecb,
       $tzid,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -904,7 +905,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     Str()            $calobjs,
                      &callback,
     gpointer         $user_data    = gpointer,
-    Int()            :$mod         = 0,
+    Int()            :$mod         = E_CAL_OBJ_MOD_THIS,
     Int()            :$opflags     = 0,
     GCancellable()   :$cancellable = GCancellable
  ) {
@@ -913,7 +914,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
      $mod,
      $opflags,
      $cancellable,
-     $callback,
+     &callback,
      $user_data
    );
  }
@@ -934,8 +935,8 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $m,
       $o,
       $cancellable,
-      $callback,
-      $user _data
+      &callback,
+      $user_data
     );
   }
 
@@ -955,7 +956,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   multi method modify_objects_sync (
     Str()                   $calobjs,
     CArray[Pointer[GError]] $error        = gerror,
-    Int()                   :$mod         = 0,
+    Int()                   :$mod         = E_CAL_OBJ_MOD_THIS,
     Int()                   :$opflags     = 0,
     GCancellable()          :$cancellable = GCancellable
   ) {
@@ -1031,16 +1032,14 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     gpointer       $user_data    = gpointer,
     GCancellable() :$cancellable = GCancellable
   ) {
-    samewith($cancellable, $callback, $user_data);
+    samewith($cancellable, &callback, $user_data);
   }
   multi method open (
     GCancellable() $cancellable,
                    &callback,
     gpointer       $user_data    = gpointer
   ) {
-    clear_error;
-    e_cal_backend_open($!ecb, $cancellable, $callback, $user_data);
-    set_error($error);
+    e_cal_backend_open($!ecb, $cancellable, &callback, $user_data);
   }
 
   method open_finish (
@@ -1096,9 +1095,9 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   multi method receive_objects (
     Str()          $calobj,
                    &callback,
-    gpointer       $user_data    = gpointer
+    gpointer       $user_data    = gpointer,
     Int()          :$opflags     = 0,
-    GCancellable() :$cancellable = GCancellable,
+    GCancellable() :$cancellable = GCancellable
   ) {
     samewith(
       $calobj,
@@ -1113,29 +1112,26 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     Int()          $opflags,
     GCancellable() $cancellable,
                    &callback,
-    gpointer       $user_data
+    gpointer       $user_data    = gpointer
   ) {
     my guint32 $o = $opflags;
 
-    clear_error;
-    my $rv = so e_cal_backend_receive_objects(
+    so e_cal_backend_receive_objects(
       $!ecb,
       $calobj,
       $o,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
-    set_error($error);
-    $rv;
   }
 
   method receive_objects_finish (
     GAsyncResult()          $result,
-    CArray[Pointer[GError]] $error   = gerrpr
+    CArray[Pointer[GError]] $error   = gerror
   ) {
     clear_error;
-    my $rv = so _cal_backend_receive_objects_finish($!ecb, $result, $error);
+    my $rv = so e_cal_backend_receive_objects_finish($!ecb, $result, $error);
     set_error($error);
     $rv;
   }
@@ -1222,14 +1218,14 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     GList()        $component_ids,
                    &callback,
     gpointer       $user_data      = gpointer,
-    Int()          :$mod           = 0,
+    Int()          :$mod           = E_CAL_OBJ_MOD_THIS,
     Int()          :$opflags       = 0,
     GCancellable() :$cancellable   = GCancellable
   ) {
     samewith(
       $component_ids,
-      $m,
-      $o,
+      $mod,
+      $opflags,
       $cancellable,
       &callback,
       $user_data
@@ -1246,8 +1242,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     my ECalObjModType $m = $mod;
     my guint32        $o = $opflags;
 
-    clear_error;
-    my $rv = so e_cal_backend_remove_objects(
+    so e_cal_backend_remove_objects(
       $!ecb,
       $component_ids,
       $m,
@@ -1256,8 +1251,6 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       &callback,
       $user_data
     );
-    set_error($error);
-    $rv;
   }
 
   method remove_objects_finish (
@@ -1305,12 +1298,12 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     gpointer       $user_data        = gpointer,
                    &user_data_free   = Callable,
     GCancellable() :$use_cancellable = GCancellable
-  {
+  ) {
     samewith(
       $use_cancellable,
-      $func,
+      &func,
       $user_data,
-      $user_data_free
+      &user_data_free
     );
   }
   multi method schedule_custom_operation (
@@ -1322,9 +1315,9 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     e_cal_backend_schedule_custom_operation(
       $!ecb,
       $use_cancellable,
-      $func,
+      &func,
       $user_data,
-      $user_data_free
+      &user_data_free
     );
   }
 
@@ -1334,11 +1327,11 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   multi method send_objects (
     Str()        $calobj,
                  &callback,
-    gpointer     $user_data    = gpointer
+    gpointer     $user_data    = gpointer,
     Int()        :$opflags     = 0,
     GCancellable :$cancellable = GCancellable
   ) {
-    samewith($calobj, $opflags, $cancellable, $callback, $user_data);
+    samewith($calobj, $opflags, $cancellable, &callback, $user_data);
   }
   multi method send_objects (
     Str()          $calobj,
@@ -1355,7 +1348,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $calobj,
       $o,
       $cancellable,
-      $callback,
+      &callback,
       $user_data
     );
   }
@@ -1405,7 +1398,8 @@ class Evolution::Calendar::Backend is Evolution::Backend {
     Str()                   $calobj,
     CArray[Pointer[GError]] $error        = gerror,
     Int()                   :$opflags     = 0,
-    GCancellable()          :$cancellable = GCancellable
+    GCancellable()          :$cancellable = GCancellable,
+                            :$raw         = False
   ) {
     my $rv = samewith(
       $calobj,
@@ -1416,10 +1410,10 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       :!all
     );
 
-    return Nil unless ($ou = $rv[1]);
+    return Nil unless ( my $ou = $rv[1] );
 
     # Transfer: Full -- $ou ostentiably belongs to the caller.
-    $ou
+    $ou ??
       ( $raw ?? $ou !! GLib::Queue.new($ou, :!ref) )
       !!
       Nil;
