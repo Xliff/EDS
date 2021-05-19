@@ -5,7 +5,7 @@ use NativeCall;
 use GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 
-unit package Evolution::Raw::Backend::Calendar;
+unit package Evolution::Raw::Calendar::Backend;
 
 ### /usr/include/evolution-data-server/libedata-cal/e-cal-backend.h
 

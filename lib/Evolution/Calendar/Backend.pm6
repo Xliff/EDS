@@ -18,7 +18,7 @@ use Evolution::Roles::TimezoneCache;
 our subset ECalendarBackendAncestry is export of Mu
   where ECalendarBackend | ETimezoneCache | EDBusServerAncestry;
 
-class Evolution::Backend::Calendar is Evolution::Backend {
+class Evolution::Calendar::Backend is Evolution::Backend {
   also does Evolution::Roles::TimezoneCache;
 
   has ECalBackend $!ecb is implementor;
@@ -1073,10 +1073,21 @@ class Evolution::Backend::Calendar is Evolution::Backend {
     my $sar = e_cal_backend_prepare_for_completion($!ecb, $o, $result_queue);
 
     # Transfer: full (newly created)
-    $sar ??
-      ( $raw ?? $sar !! GIO::SimpleAsyncResult.new($sar, :!ref) )
-      !!
-      Nil;
+
+    # cw: 2021-05-16
+    # The return value is an object that has been completely deprecated in ]
+    # GIO: a GSimpleAsyncResult. I could add support for it, but I suspect
+    # that effort may not be worth the time I will put in.
+    #
+    # It is so decided that I will NOT create a GIO::SimpleAsyncResult
+    # and just return the pointer for the caller to do with as they will.
+    # The raw functions used by GIO::SimpleAsyncResult will remain in
+    # p6-GIO, and remain an undocumented feature.
+    #
+    # $sar ??
+    #   ( $raw ?? $sar !! GIO::SimpleAsyncResult.new($sar, :!ref) )
+    #   !!
+    #   Nil;
   }
 
   proto method receive_objects (|)
