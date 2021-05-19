@@ -1,3 +1,5 @@
+*.dupe
+*.off
 *.swp
 *.pm6bak
 LastBuildResults
