@@ -2,8 +2,13 @@ use v6.c;
 
 use NativeCall;
 
+use ICal::Raw::Enums;
 use GLib::Raw::Definitions;
+use GLib::Raw::Structs;
+use GIO::Raw::Definitions;
 use Evolution::Raw::Definitions;
+use Evolution::Raw::Enums;
+use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Calendar::Backend;
 
@@ -13,7 +18,7 @@ sub e_cal_backend_add_timezone (
   ECalBackend  $backend,
   Str          $tzobject,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -62,7 +67,7 @@ sub e_cal_backend_create_objects (
   Str          $calobjs,
   guint32      $opflags,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -100,7 +105,7 @@ sub e_cal_backend_discard_alarm (
   Str          $alarm_uid,
   guint32      $opflags,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -159,7 +164,7 @@ sub e_cal_backend_get_attachment_uris (
   Str          $uid,
   Str          $rid,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -208,7 +213,7 @@ sub e_cal_backend_get_free_busy (
   time_t       $end,
   Str          $users,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -241,7 +246,7 @@ sub e_cal_backend_get_free_busy_sync (
 { * }
 
 sub e_cal_backend_get_kind (ECalBackend $backend)
-  returns ICalComponentKind
+  returns icalcomponent_kind
   is native(edata-cal)
   is export
 { * }
@@ -251,7 +256,7 @@ sub e_cal_backend_get_object (
   Str          $uid,
   Str          $rid,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -272,7 +277,7 @@ sub e_cal_backend_get_object_list (
   ECalBackend  $backend,
   Str          $query,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -324,7 +329,7 @@ sub e_cal_backend_get_timezone (
   ECalBackend  $backend,
   Str          $tzid,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -388,7 +393,7 @@ sub e_cal_backend_modify_objects (
   ECalObjModType $mod,
   guint32        $opflags,
   GCancellable   $cancellable,
-                 &callback (ECalBackend, GAsyncResult, pointer),
+                 &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer       $user_data
 )
   is native(edata-cal)
@@ -462,7 +467,7 @@ sub e_cal_backend_notify_property_changed (
 sub e_cal_backend_open (
   ECalBackend  $backend,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -504,7 +509,7 @@ sub e_cal_backend_receive_objects (
   Str          $calobj,
   guint32      $opflags,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -548,7 +553,7 @@ sub e_cal_backend_ref_proxy_resolver (ECalBackend $backend)
 sub e_cal_backend_refresh (
   ECalBackend  $backend,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
@@ -581,7 +586,7 @@ sub e_cal_backend_remove_objects (
   ECalObjModType $mod,
   guint32        $opflags,
   GCancellable   $cancellable,
-                 &callback (ECalBackend, GAsyncResult, pointer),
+                 &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer       $user_data
 )
   is native(edata-cal)
@@ -637,7 +642,7 @@ sub e_cal_backend_send_objects (
   Str          $calobj,
   guint32      $opflags,
   GCancellable $cancellable,
-               &callback (ECalBackend, GAsyncResult, pointer),
+               &callback (ECalBackend, GAsyncResult, gpointer),
   gpointer     $user_data
 )
   is native(edata-cal)
