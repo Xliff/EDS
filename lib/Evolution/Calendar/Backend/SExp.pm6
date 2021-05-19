@@ -5,7 +5,7 @@ use NativeCall;
 use Evolution::Raw::Types;
 use Evolution::Raw::Backend::SExp;
 
-class Evolution::Backend::SExp {
+class Evolution::Calendar::Backend::SExp {
   has ECalBackendSExp $!sexp;
 
   method new (Str() $value) {

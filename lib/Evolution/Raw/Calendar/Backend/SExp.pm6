@@ -6,7 +6,7 @@ use GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Backend::SExp;
+unit package Evolution::Raw::Calendar::Backend::SExp;
 
 ### /usr/include/evolution-data-server/libedata-cal/e-cal-backend-sexp.h
 
