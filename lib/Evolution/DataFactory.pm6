@@ -3,7 +3,7 @@ use v6.c;
 use NativeCall;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::Backend::DataFactory;
+use Evolution::Raw::DataFactory;
 
 use GLib::GList;
 use Evolution::Backend;
@@ -14,7 +14,7 @@ use Evolution::Source::Registry;
 our subset EDataFactoryAncestry is export of Mu
   where EDataFactory | EDBusServerAncestry;
 
-class Evolution::Backend::DataFactory is Evolution::DBus::Server {
+class Evolution::DataFactory is Evolution::DBus::Server {
   has EDataFactory $!edf;
 
   submethod BUILD (:$data-factory) {

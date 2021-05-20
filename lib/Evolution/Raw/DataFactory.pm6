@@ -8,7 +8,7 @@ use GIO::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Backend::DataFactory;
+unit package Evolution::Raw::DataFactory;
 
 ### /usr/include/evolution-data-server/libebackend/e-data-factory.h
 
