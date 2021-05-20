@@ -8,7 +8,7 @@ use Evolution::Raw::Source::RegistryServer;
 use GLib::GList;
 use Evolution::CollectionBackend;
 use Evolution::Backend::Factory;
-use Evolution::Backend::DataFactory;
+use Evolution::DataFactory;
 use Evolution::OAuth2::Services;
 use Evolution::Source;
 use Evolution::Source::CredentialsProvider;
@@ -16,7 +16,7 @@ use Evolution::Source::CredentialsProvider;
 our subset ESourceRegistryServerAncestry is export of Mu
   where ESourceRegistryServer | EDataFactory;
 
-class Evolution::Source::RegistryServer is Evolution::Backend::DataFactory {
+class Evolution::Source::RegistryServer is Evolution::DataFactory {
   has ESourceRegistryServer $!esrs;
 
   submethod BUILD (:$backend) {
