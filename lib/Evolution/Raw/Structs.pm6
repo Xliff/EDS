@@ -1406,9 +1406,25 @@ class EContactGeo is repr<CStruct> is export {
 }
 
 class EPhotoDataInlined is repr<CStruct> {
-  has gchar $!mime_type;
-  has gsize $.length     is rw;
-  has Str   $!data;
+  has Str           $!mime_type;
+  has gsize         $.length     is rw;
+  has CArray[uint8] $!data;
+
+	submethod BUILD {
+		$!mime_type //= '';
+	}
+
+	method data is rw {
+		Proxy.new:
+			FETCH => -> $     { $!data },
+			STORE => -> $, \v { $!data := v };
+	}
+
+	method mime_type is rw {
+		Proxy.new:
+			FETCH => -> $     { $!mime_type },
+			STORE => -> $, \v { $!mime_type := v // Str };
+	}
 }
 
 class EPhotoData is repr<CUnion> {
@@ -1417,7 +1433,7 @@ class EPhotoData is repr<CUnion> {
 }
 
 class EContactPhoto is repr<CStruct> is export {
-   has EContactPhotoType $.type;
+   has EContactPhotoType $.type is rw;
 	 HAS EPhotoData        $.data;
 }
 
@@ -1436,11 +1452,47 @@ class EContactDate is repr<CStruct> is export {
   has guint $.year  is rw;
   has guint $.month is rw;
   has guint $.day   is rw;
+
+	multi method new ($year, $month, $day, :international(:$intl) is required) {
+		self.bless(:$year, :$month, :$day);
+	}
+	multi method new ($day, $month, $year) {
+		self.bless(:$year, :$month, :$day);
+	}
+
 }
 
 class EContactCert is repr<CStruct> is export {
-  has gsize $.length is rw;
-  has Str   $!data;
+  has gsize         $.length is rw;
+  has CArray[uint8] $.data;
+
+	submethod BUILD (CArray[uint8] :$data = CArray[uint8], :$!length = 0) {
+		$!data := $data;
+	}
+
+  multi method new (Str $s, :$encoding = 'utf8') {
+  	samewith( $s.encode($encoding) );
+  }
+	multi method new (CArray[uint8] $ca) {
+		# cw: xxx - Check to insure .elems is available;
+		self.bless(
+		  data   => $ca,
+			length => $ca.elems
+		);
+	}
+  multi method new (Blob $b) {
+		self.bless(
+		  data   => CArray[uint8].new($b),
+			length => $b.bytes
+		);
+	}
+
+	method data is rw {
+		Proxy.new:
+			FETCH => -> $                   { $!data },
+			STORE => -> $, CArray[uint8] \v { $!data := v };
+	}
+	
 }
 
 class EContactClass is repr<CStruct> is export {
@@ -1749,8 +1801,10 @@ class EDataCal is repr<CStruct> is export {
 }
 
 BEGIN {
-	buildAccessors($_) for EPhotoDataInlined,
+	buildAccessors($_) for
 												 EPhotoData,
+												 #EPhotoDataInlined,
 	                       EContactAddress,
-												 EContactCert;
+												 #EContactCert,
+												 EContactName;
 }
