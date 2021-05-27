@@ -71,7 +71,7 @@ sub e_phone_number_from_string (
 
 sub e_phone_number_get_country_code (
   EPhoneNumber              $phone_number,
-  EPhoneNumberCountrySource $source
+  EPhoneNumberCountrySource $source        is rw
 )
   returns gint
   is native(ebook-contacts)
