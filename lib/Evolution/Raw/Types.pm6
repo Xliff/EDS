@@ -8,6 +8,7 @@ use Evolution::Raw::Exports;
 
 unit package Evolution::Raw::Types;
 
+need GLib::Compat::Definitions;
 need GLib::Raw::Definitions;
 need GLib::Raw::Enums;
 need GLib::Raw::Exceptions;
