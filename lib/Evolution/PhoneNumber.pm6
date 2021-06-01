@@ -19,8 +19,8 @@ class Evolution::PhoneNumber {
     # Wire in :$ref when we get GLib::Roles::Boxed!
     $phone ?? self.bless( :$phone ) !! Nil;
   }
-  multi method new (Str() $phone_number, Str() $region_code = Str) {
-    self.from-string($phone_number, $region_code);
+  multi method new (Str() $phone-number, Str() $region-code = Str) {
+    self.from-string($phone-number, $region-code);
   }
 
   multi method compare (Evolution::PhoneNumber:D: EPhoneNumber() $p2) {
@@ -107,7 +107,7 @@ class Evolution::PhoneNumber {
     is also<from-string>
   {
     clear_error;
-    my $phone = e_phone_number_from_string($!ep, $region_code, $error);
+    my $phone = e_phone_number_from_string($phone_number, $region_code, $error);
     set_error($error);
 
     $phone ??
@@ -126,7 +126,7 @@ class Evolution::PhoneNumber {
       country-code
     >
   {
-    samewith($s, :all);
+    samewith($, :all);
   }
   multi method get_country_code ($source is rw, :$all = False) {
     my EPhoneNumberCountrySource $s = 0;
@@ -197,7 +197,8 @@ class Evolution::PhoneNumber {
   {
     my EPhoneNumberFormat $f = $format;
 
-    e_phone_number_to_string($!ep, $format);
+    my $s = e_phone_number_to_string($!ep, $format);
+    $s;
   }
 
 }
