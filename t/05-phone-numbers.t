@@ -33,14 +33,14 @@ my @expected-matches = (
   E_PHONE_NUMBER_MATCH_NONE,
 
   # 617-4663489
-  E_PHONE_NUMBER_MATCH_NONE,
-  E_PHONE_NUMBER_MATCH_NATIONAL,
-  E_PHONE_NUMBER_MATCH_NATIONAL,
-  E_PHONE_NUMBER_MATCH_SHORT,
-  E_PHONE_NUMBER_MATCH_NONE,
-  E_PHONE_NUMBER_MATCH_NONE,
-  E_PHONE_NUMBER_MATCH_NONE,
-  E_PHONE_NUMBER_MATCH_NONE,
+  E_PHONE_NUMBER_MATCH_NONE,     # not-a-number
+  E_PHONE_NUMBER_MATCH_NATIONAL, # 1-617-4663489
+  E_PHONE_NUMBER_MATCH_NATIONAL, # 617-4663489
+  E_PHONE_NUMBER_MATCH_SHORT,    # 4663489
+  E_PHONE_NUMBER_MATCH_NONE,     # +1.408.845.5246
+  E_PHONE_NUMBER_MATCH_NONE,     # 4088455246
+  E_PHONE_NUMBER_MATCH_NONE,     # 8455246
+  E_PHONE_NUMBER_MATCH_NONE,     # 1-857-4663489
 
   # 4663489
   E_PHONE_NUMBER_MATCH_NONE,
@@ -168,17 +168,17 @@ sub test-parse-auto-region {
   is  $formatted,              '+12125423789',                           'Parsed object has the correct international format';
 }
 
-sub test-compare-numbers ($n1, $n2, $e, $expected) {
+sub test-compare-numbers ($n1, $n2, $e, $error-expected) {
   my $actual-match = Evolution::PhoneNumber.compare-strings($n1, $n2);
 
-  is $actual-match, $e,                                     "Actual match is { $e }";
-  if $expected.not {
-    nok $ERROR,                                             'Error was not expected!';
+  is $actual-match, $e,                                        "Actual match is { $e }";
+  if $error-expected.not {
+    nok $ERROR,                                                'Error was not expected!';
   } else {
-    ok  $ERROR,                                             'An expected error was encountered';
-    is  $ERROR.domain,  Evolution::PhoneNumber.error-quark, 'Error is in the E_PHONE_NUMBER_ERROR domain';
-    is  $ERROR.code,    E_PHONE_NUMBER_ERROR_NOT_A_NUMBER,  'Error is of the NOT_A_NUMBER variety';
-    ok  $ERROR.message,                                     'Error has an associated description';
+    ok  $ERROR,                                                'An expected error was encountered';
+    is  $ERROR.domain,  Evolution::PhoneNumber.error-quark,    'Error is in the E_PHONE_NUMBER_ERROR domain';
+    is  $ERROR.code,    E_PHONE_NUMBER_ERROR_NOT_A_NUMBER.Int, 'Error is of the NOT_A_NUMBER variety';
+    ok  $ERROR.message,                                        'Error has an associated description';
   }
 }
 
@@ -300,21 +300,18 @@ sub MAIN {
     test-parse-auto-region;
   };
 
-  # subtest 'ebook-phone-number/compare', {
-  #   # cw: This is how test-compare-numbers is to be invoked!
-  #   my $mcmi = +@match-candidates - 1;
-  #   for @expected-matches.rotor(+@match-candidates) -> $em {
-  #     for @match-candidates -> $m1 {
-  #       my $e-idx = 0;
-  #
-  #       for @match-candidates -> $m2 {
-  #         subtest "/ebook-phone-number/compare/$m1/$m2/{ $e-idx }-{ $mcmi }", {
-  #           test-compare-numbers($m1, $m2, $em[$e-idx], $e-idx.not);
-  #           $e-idx++;
-  #         }
-  #       }
-  #     }
-  #   }
-  # };
+  subtest 'ebook-phone-number/compare', {
+    my $mcmi           = +@match-candidates - 1;
+    my @number-matches = @expected-matches.rotor(+@match-candidates);
+    for @match-candidates.kv -> $e-idx, $m1 {
+      for (
+        @match-candidates Z @number-matches[$e-idx].Array
+      ).kv -> $i-idx, ($m2, $ev)  {
+        subtest "/ebook-phone-number/compare/$m1/$m2/{ $i-idx }-{ $mcmi }", {
+          test-compare-numbers($m1, $m2, $ev, ($e-idx && $i-idx).not );
+        }
+      }
+    }
+  };
 
 }
