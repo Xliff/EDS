@@ -100,6 +100,26 @@ class Evolution::Contact is Evolution::VCard {
     $pv[0];
   }
 
+  my \addresses =
+    (E_CONTACT_ADDRESS_HOME, E_CONTACT_ADDRESS_WORK, E_CONTACT_ADDRESS_OTHER);
+  multi method get(
+    EContactFieldEnum $a    where * = addresses.any,
+                      :$raw         = False
+  ) {
+    samewith($a.Int);
+  }
+  multi method get (
+    Int $a    where * == addresses».Int.any,
+        :$raw          = False
+  ) {
+    my $ret = cast( EContactAddress, e_contact_get($!c, $a.Int) );
+
+    $ret ??
+      ( $ret ?? $ret !! Evolution::Contact::Adderss.new($ret) )
+      !!
+      Nil;
+  }
+
   my \certs = (E_CONTACT_PGP_CERT, E_CONTACT_X509_CERT);
   multi method get (
     EContactFieldEnum $a    where * == certs.any,
