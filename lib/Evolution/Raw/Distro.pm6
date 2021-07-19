@@ -5,96 +5,162 @@ use GLib::Raw::Definitions;
 unit package Evolution::Raw::Distro;
 
 # Change listing to alpha by-key!
-BEGIN my %unix-library-adjustments = (
-  ecal => {
-    Ubuntu => {
-      groovy => {
-        lib-append => '-2.0',
-        version    => 1
-      }
-    },
-
-    Debian => {
-      buster => {
-        lib-append => '-1.2',
-        version    => v19
-      }
-    }
-  },
-
-  ebook => {
-    Ubuntu => {
-      groovy => {
-        lib-append => '-1.2',
-        version    => v25
-      }
-    },
-
-    Debian => {
-      buster => {
-        lib-append => '-1.2',
-        version    => v19
-      }
-    }
-  },
-
-  ebook-contacts => {
-    Ubuntu => {
-      groovy => {
-        lib-append => '-1.2',
-        version    => v3
-      }
-    },
-
-    Debian => {
-      buster => {
-        lib-append => '-1.2',
-        version    => v2
-      }
-    }
-  },
-
-  edataserver => {
-    Ubuntu => {
-      groovy => {
-        lib-append => '-1.2',
-        version    => v25
-      }
-    },
-
-    Debian =>{
-      buster => {
-        lib-append => '-1.2',
-        version    => v23
-      }
-    }
-  },
-
-  ebackend => {
-    Ubuntu => {
-      groovy => {
-        lib-append => '-1.2',
-        version    => v10
-      }
-    },
-
-    Debian =>{
-      buster => {
-        lib-append => '-1.2',
-        version    => v10
-      }
-    }
-  },
-
-  edata-cal => {
-    Ubuntu => {
-      groovy => {
+my %ecal-adjustments = do {
+  (
+    Ubuntu => (
+      groovy => my $ulatest = (
         lib-append => '-2.0',
         version    => v1
-      }
-    }
-  }
-);
+      ).Hash,
+
+      latest => $ulatest
+    ).Hash,
+
+    Debian => (
+      buster => my $dlatest = (
+        lib-append => '-1.2',
+        version    => v19
+      ).Hash,
+
+      latest => $dlatest
+    ).Hash
+  ).Hash;
+}
+
+my %ebook-adjustments = do {
+  (
+    Ubuntu => (
+      groovy => (
+        lib-append => '-1.2',
+        version    => v25
+      ).Hash,
+
+      hirsute => my $ulatest = (
+        lib-append => '-1.2',
+        version    => v25
+      ).Hash,
+
+      latest => $ulatest
+    ).Hash,
+
+    Debian => (
+      buster => my $dlatest = (
+        lib-append => '-1.2',
+        version    => v19
+      ).Hash,
+
+      latest => $dlatest
+    ).Hash
+  ).Hash;
+}
+
+my %ebook-contacts-adjustments = do {
+  (
+    Ubuntu => (
+      groovy => (
+        lib-append => '-1.2',
+        version    => v3
+      ).Hash,
+
+      hirsute => my $ulatest = (
+        lib-append => '-1.2',
+        version    => v3
+      ).Hash,
+
+      latest => $ulatest,
+    ).Hash,
+
+    Debian => (
+      buster => my $dlatest = (
+        lib-append => '-1.2',
+        version    => v2
+      ).Hash,
+
+      latest => $dlatest
+    ).Hash
+  ).Hash;
+}
+
+my %edataserver-adjustments = do {
+  (
+    Ubuntu => (
+      groovy => (
+        lib-append => '-1.2',
+        version    => v25
+      ).Hash,
+
+      hirsute => my $ulatest = (
+        lib-append => '-1.2',
+        version    => v26
+      ).Hash,
+
+      latest => $ulatest
+    ).Hash,
+
+    Debian =>(
+      buster => my $dlatest = (
+        lib-append => '-1.2',
+        version    => v23
+      ).Hash,
+
+      latest => $dlatest
+    ).Hash
+  ).Hash;
+}
+
+my %ebackend-adjustments = do {
+  (
+    Ubuntu => (
+      groovy => (
+        lib-append => '-1.2',
+        version    => v10
+      ).Hash,
+
+      hirsute => my $ulatest = (
+        lib-append => '-1.2',
+        version    => v10
+      ).Hash,
+
+      latest => $ulatest
+    ).Hash,
+
+    Debian => (
+      buster => my $dlatest = (
+        lib-append => '-1.2',
+        version    => v10
+      ).Hash,
+
+      latest => $dlatest
+    ).Hash
+  ).Hash;
+}
+
+my %edata-cal-adjustments = do {
+  (
+    Ubuntu => (
+      groovy => (
+        lib-append => '-2.0',
+        version    => v1
+      ).Hash,
+
+      hirsute => my $ulatest = (
+        lib-append => '-1.2',
+        version    => v10
+      ).Hash,
+
+      latest => $ulatest
+    ).Hash
+  ).Hash;
+}
+
+my %unix-library-adjustments = (
+  ecal           => %ecal-adjustments,
+  ebook          => %ebook-adjustments,
+  ebook-contacts => %ebook-contacts-adjustments,
+  edataserver    => %edataserver-adjustments,
+  ebackend       => %ebackend-adjustments,
+  edata-cal      => %edata-cal-adjustments
+).Hash;
 
 multi sub version-by-distro ($lib) is export {
   $*DISTRO.is-win ?? samewith($lib, :windows)
@@ -140,6 +206,10 @@ multi sub version-by-distro ($prefix is copy, :$unix is required) is export {
         if .{$prefix}{$distro}<DEFAULTS>{$part};
       $value = .{$prefix}{$distro}{$codename}{$part}
         if .{$prefix}{$distro}{$codename}{$part};
+
+      # cw: Only assign if no assignment
+      $value = .{$prefix}{$distro}<latest>{$part}
+        unless $value;
     }
 
     $value
