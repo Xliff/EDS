@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -42,6 +44,7 @@ class Evolution::Client {
   }
 
   method Evolution::Raw::Definitions::EClient
+    is also<EClient>
   { $!c }
 
   method new (EClientAncestry $client, :$ref = True) {
@@ -52,23 +55,25 @@ class Evolution::Client {
     $o;
   }
 
-  method cancel_all {
+  method cancel_all is also<cancel-all> {
     e_client_cancel_all($!c);
   }
 
-  method check_capability (Str() $capability) {
+  method check_capability (Str() $capability) is also<check-capability> {
     e_client_check_capability($!c, $capability);
   }
 
-  method check_refresh_supported {
+  method check_refresh_supported is also<check-refresh-supported> {
     e_client_check_refresh_supported($!c);
   }
 
-  method dup_bus_name {
+  method dup_bus_name is also<dup-bus-name> {
     e_client_dup_bus_name($!c);
   }
 
-  method error_create (Str() $custom_msg, :$raw = False) {
+  method error_create (Str() $custom_msg, :$raw = False)
+    is also<error-create>
+  {
     my $e = e_client_error_create($!c, $custom_msg);
 
     # Transfer: full (Implied)
@@ -82,13 +87,16 @@ class Evolution::Client {
   #   e_client_error_create_fmt($!c, $format);
   # }
 
-  method error_to_string (Evolution::Client:U: Int() $code) {
+  method error_to_string (Evolution::Client:U: Int() $code)
+    is also<error-to-string>
+  {
     my EClientError $c = $code;
 
     e_client_error_to_string($c);
   }
 
   proto method get_backend_property (|)
+      is also<get-backend-property>
   { * }
 
   multi method get_backend_property (
@@ -118,7 +126,9 @@ class Evolution::Client {
     GAsyncResult()          $result,
     Str()                   $prop_value,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<get-backend-property-finish>
+  {
     clear_error;
     my $rv = so e_client_get_backend_property_finish(
       $!c,
@@ -135,7 +145,9 @@ class Evolution::Client {
     Str()                   $prop_value,
     GCancellable()          $cancellable,
     CArray[Pointer[GError]] $error        = gerror
-  ) {
+  )
+    is also<get-backend-property-sync>
+  {
     clear_error;
     my $rv = so e_client_get_backend_property_sync(
       $!c,
@@ -148,7 +160,9 @@ class Evolution::Client {
     $rv;
   }
 
-  method get_capabilities (:$glist = False, :$raw = False) {
+  method get_capabilities (:$glist = False, :$raw = False)
+    is also<get-capabilities>
+  {
     returnGList(
       e_client_get_capabilities($!c),
       $glist,
@@ -156,7 +170,7 @@ class Evolution::Client {
     );
   }
 
-  method get_source (:$raw = False) {
+  method get_source (:$raw = False) is also<get-source> {
     my $s = e_client_get_source($!c);
 
     # Transfer: none
@@ -166,7 +180,7 @@ class Evolution::Client {
       Nil;
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type(
@@ -177,15 +191,15 @@ class Evolution::Client {
     );
   }
 
-  method is_online {
+  method is_online is also<is-online> {
     so e_client_is_online($!c);
   }
 
-  method is_opened {
+  method is_opened is also<is-opened> {
     so e_client_is_opened($!c);
   }
 
-  method is_readonly {
+  method is_readonly is also<is-readonly> {
     so e_client_is_readonly($!c);
   }
 
@@ -215,7 +229,9 @@ class Evolution::Client {
   method open_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<open-finish>
+  {
     clear_error;
     my $rv = so e_client_open_finish($!c, $result, $error);
     set_error($error);
@@ -226,7 +242,9 @@ class Evolution::Client {
     Int()                   $only_if_exists,
     GCancellable()          $cancellable,
     CArray[Pointer[GError]] $error           = gerror
-  ) {
+  )
+    is also<open-sync>
+  {
     my gboolean $o = $only_if_exists.so.Int;
 
     clear_error;
@@ -235,7 +253,7 @@ class Evolution::Client {
     $rv;
   }
 
-  method ref_main_context (:$raw = False) {
+  method ref_main_context (:$raw = False) is also<ref-main-context> {
     my $mc = e_client_ref_main_context($!c);
 
     # Transfer: full
@@ -263,7 +281,9 @@ class Evolution::Client {
   method refresh_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<refresh-finish>
+  {
     clear_error;
     my $rv = so e_client_refresh_finish($!c, $result, $error);
     set_error($error);
@@ -271,9 +291,11 @@ class Evolution::Client {
   }
 
   method refresh_sync (
-    GCancellable()          $cancellable,
-    CArray[Pointer[GError]] $error        = gerror
-  ) {
+    GCancellable()          $cancellable = GCancellable,
+    CArray[Pointer[GError]] $error       = gerror
+  )
+    is also<refresh-sync>
+  {
     clear_error;
     my $rv = so e_client_refresh_sync($!c, $cancellable, $error);
     set_error($error);
@@ -298,7 +320,9 @@ class Evolution::Client {
   method remove_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<remove-finish>
+  {
     clear_error;
     my $rv = so e_client_remove_finish($!c, $result, $error);
     set_error($error);
@@ -308,7 +332,9 @@ class Evolution::Client {
   method remove_sync (
     GCancellable()          $cancellable,
     CArray[Pointer[GError]] $error        = gerror
-  ) {
+  )
+    is also<remove-sync>
+  {
     clear_error;
     my $rv = so e_client_remove_sync($!c, $cancellable, $error);
     set_error($rv);
@@ -316,6 +342,7 @@ class Evolution::Client {
   }
 
   proto method retrieve_capabilities (|)
+      is also<retrieve-capabilities>
   { * }
 
   multi method retrieve_capabilities (
@@ -334,6 +361,7 @@ class Evolution::Client {
   }
 
   proto method retrieve_capabilities_finish (|)
+      is also<retrieve-capabilities-finish>
   { * }
 
   multi method retrieve_capabilities_finish (
@@ -365,6 +393,7 @@ class Evolution::Client {
   }
 
   proto method retrieve_capabilities_sync (|)
+      is also<retrieve-capabilities-sync>
   { * }
 
   multi method retrieve_capabilities_sync (
@@ -399,6 +428,7 @@ class Evolution::Client {
   }
 
   proto method retrieve_properties (|)
+      is also<retrieve-properties>
   { * }
 
   multi method retrieve_properties (
@@ -419,7 +449,9 @@ class Evolution::Client {
   method retrieve_properties_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<retrieve-properties-finish>
+  {
     clear_error;
     my $rv = so e_client_retrieve_properties_finish($!c, $result, $error);
     set_error($error);
@@ -429,11 +461,14 @@ class Evolution::Client {
   method retrieve_properties_sync (
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<retrieve-properties-sync>
+  {
     e_client_retrieve_properties_sync($!c, $cancellable, $error);
   }
 
   proto method set_backend_property (|)
+      is also<set-backend-property>
   { * }
 
   multi method set_backend_property (
@@ -465,7 +500,9 @@ class Evolution::Client {
   method set_backend_property_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error
-  ) {
+  )
+    is also<set-backend-property-finish>
+  {
     clear_error;
     my $rv = so e_client_set_backend_property_finish($!c, $result, $error);
     set_error($error);
@@ -477,7 +514,9 @@ class Evolution::Client {
     Str()                   $prop_value,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<set-backend-property-sync>
+  {
     clear_error;
     my $rv = so e_client_set_backend_property_sync(
       $!c,
@@ -490,7 +529,7 @@ class Evolution::Client {
     $rv;
   }
 
-  method set_bus_name (Str() $bus_name) {
+  method set_bus_name (Str() $bus_name) is also<set-bus-name> {
     e_client_set_bus_name($!c, $bus_name);
   }
 
@@ -500,6 +539,7 @@ class Evolution::Client {
     CArray[Pointer[GError]] $out_error
   )
     is DEPRECATED
+    is also<unwrap-dbus-error>
   {
     e_client_unwrap_dbus_error($!c, $dbus_error, $out_error);
   }
@@ -537,6 +577,7 @@ class Evolution::Client {
 
 
   proto method wait_for_connected (|)
+      is also<wait-for-connected>
   { * }
 
   multi method wait_for_connected (
@@ -567,7 +608,9 @@ class Evolution::Client {
   method wait_for_connected_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error  = gerror
-  ) {
+  )
+    is also<wait-for-connected-finish>
+  {
     clear_error;
     my $rv = e_client_wait_for_connected_finish($!c, $result, $error);
     set_error($error);
@@ -578,7 +621,9 @@ class Evolution::Client {
     Int()                   $timeout_seconds,
     GCancellable()          $cancellable,
     CArray[Pointer[GError]] $error            = gerror
-  ) {
+  )
+    is also<wait-for-connected-sync>
+  {
     my guint32 $t = $timeout_seconds;
 
     clear_error;
@@ -600,6 +645,7 @@ class Evolution::Client::Util {
   also does GLib::Roles::StaticClass;
 
   proto method unwrap_dbus_error (|)
+      is also<unwrap-dbus-error>
   { * }
 
   multi method unwrap_dbus_error (
