@@ -1,12 +1,15 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
-use ICal::Raw::Definitions;
+use ICal::GLib::Raw::Definitions;
 use Evolution::Raw::Types;
 use Evolution::Raw::Calendar;
 
 use GLib::GList;
+use ICal::GLib::Component;
 use Evolution::Client;
 
 use Evolution::Roles::TimezoneCache;
@@ -16,7 +19,7 @@ our subset ECalClientAncestry is export of Mu
 
 class Evolution::Calendar is Evolution::Client {
   also does Evolution::Roles::TimezoneCache;
-  
+
   has ECalClient $!ecal is implementor;
 
   submethod BUILD (:$calendar) {
@@ -48,6 +51,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   method Evolution::Raw::Definitions::ECalClient
+    is also<ECalClient>
   { $!ecal }
 
   method new (ECalClientAncestry $calendar, :$ref = True) {
@@ -59,10 +63,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method add_timezone (|)
+      is also<add-timezone>
   { * }
 
   multi method add_timezone (
-    icaltimezone() $zone,
+    ICalTimezone() $zone,
                    &callback,
     gpointer       $user_data    = gpointer,
     GCancellable() :$cancellable = GCancellable
@@ -70,7 +75,7 @@ class Evolution::Calendar is Evolution::Client {
     samewith($zone, $cancellable, &callback, $user_data);
   }
   multi method add_timezone (
-    icaltimezone() $zone,
+    ICalTimezone() $zone,
     GCancellable() $cancellable,
                    &callback,
     gpointer       $user_data    = gpointer
@@ -87,7 +92,9 @@ class Evolution::Calendar is Evolution::Client {
   method add_timezone_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<add-timezone-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_add_timezone_finish($!ecal, $result, $error);
     set_error($error);
@@ -95,10 +102,12 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   method add_timezone_sync (
-    icaltimezone()          $zone,
+    ICalTimezone()          $zone,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<add-timezone-sync>
+  {
     clear_error;
     my $rv = so e_cal_client_add_timezone_sync(
       $!ecal,
@@ -110,23 +119,23 @@ class Evolution::Calendar is Evolution::Client {
     $rv;
   }
 
-  method check_one_alarm_only {
+  method check_one_alarm_only is also<check-one-alarm-only> {
     so e_cal_client_check_one_alarm_only($!ecal);
   }
 
-  method check_organizer_must_accept {
+  method check_organizer_must_accept is also<check-organizer-must-accept> {
     so e_cal_client_check_organizer_must_accept($!ecal);
   }
 
-  method check_organizer_must_attend {
+  method check_organizer_must_attend is also<check-organizer-must-attend> {
     so e_cal_client_check_organizer_must_attend($!ecal);
   }
 
-  method check_recurrences_no_master {
+  method check_recurrences_no_master is also<check-recurrences-no-master> {
     so e_cal_client_check_recurrences_no_master($!ecal);
   }
 
-  method check_save_schedules {
+  method check_save_schedules is also<check-save-schedules> {
     so e_cal_client_check_save_schedules($!ecal);
   }
 
@@ -164,7 +173,9 @@ class Evolution::Calendar is Evolution::Client {
   method connect_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<connect-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_connect_finish($result, $error);
     set_error($error);
@@ -177,7 +188,9 @@ class Evolution::Calendar is Evolution::Client {
     Int()                   $wait_for_connected_seconds,
     GCancellable()          $cancellable                 = GCancellable,
     CArray[Pointer[GError]] $error                       = gerror
-  ) {
+  )
+    is also<connect-sync>
+  {
     my ECalClientSourceType $s = $source_type;
     my guint32              $w = $wait_for_connected_seconds;
 
@@ -194,10 +207,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method create_object (|)
+      is also<create-object>
   { * }
 
   multi method create_object (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $opflags,
                     &callback,
     gpointer        $user_data    = gpointer,
@@ -212,7 +226,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   multi method create_object (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $opflags,
     GCancellable()  $cancellable,
                     &callback,
@@ -231,6 +245,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method create_object_finish (|)
+      is also<create-object-finish>
   { * }
 
   multi method create_object_finish (
@@ -263,11 +278,12 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method create_object_sync (|)
+      is also<create-object-sync>
   { * }
 
   multi method create_object_sync (
-    icalcomponent()         $icalcomp,
-    Int()                   $opflags,
+    ICalComponent()         $icalcomp,
+    Int()                   $opflags      = E_CAL_OPERATION_FLAG_NONE,
     CArray[Pointer[GError]] $error        = gerror,
     GCancellable            :$cancellable = GCancellable
   ) {
@@ -285,7 +301,7 @@ class Evolution::Calendar is Evolution::Client {
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method create_object_sync (
-    icalcomponent()         $icalcomp,
+    ICalComponent()         $icalcomp,
     Int()                   $opflags,
     CArray[Str]             $out_uid,
     GCancellable()          $cancellable  = GCancellable,
@@ -309,6 +325,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method create_objects (|)
+      is also<create-objects>
   { * }
 
   multi method create_objects (
@@ -348,6 +365,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method create_objects_finish (|)
+      is also<create-objects-finish>
   { * }
 
   multi method create_objects_finish (
@@ -383,6 +401,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method create_objects_sync (|)
+      is also<create-objects-sync>
   { * }
 
   multi method create_objects_sync (
@@ -442,6 +461,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method discard_alarm (|)
+      is also<discard-alarm>
   { * }
 
   multi method discard_alarm (
@@ -489,7 +509,9 @@ class Evolution::Calendar is Evolution::Client {
   method discard_alarm_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error = gerror
-  ) {
+  )
+    is also<discard-alarm-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_discard_alarm_finish($!ecal, $result, $error);
     set_error($error);
@@ -503,7 +525,9 @@ class Evolution::Calendar is Evolution::Client {
     Int()                   $opflags,
     GCancellable()          $cancellable  = GCancellable,
     CArray[Pointer[GError]] $error        = gerror
-  ) {
+  )
+    is also<discard-alarm-sync>
+  {
     my guint32 $o = $opflags;
 
     clear_error;
@@ -520,13 +544,16 @@ class Evolution::Calendar is Evolution::Client {
     $rv;
   }
 
-  method error_to_string (Evolution::Calendar:U: Int() $code) {
+  method error_to_string (Evolution::Calendar:U: Int() $code)
+    is also<error-to-string>
+  {
     my ECalClientError $c = $code;
 
     e_cal_client_error_to_string($c);
   }
 
   proto method generate_instances (|)
+      is also<generate-instances>
   { * }
 
   multi method generate_instances (
@@ -568,10 +595,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method generate_instances_for_object (|)
+      is also<generate-instances-for-object>
   { * }
 
   multi method generate_instances_for_object (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $start,
     Int()           $end,
                     &cb,
@@ -590,7 +618,7 @@ class Evolution::Calendar is Evolution::Client {
     )
   }
   multi method generate_instances_for_object (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $start,
     Int()           $end,
     GCancellable()  $cancellable,
@@ -613,10 +641,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method generate_instances_for_object_sync (|)
+      is also<generate-instances-for-object-sync>
   { * }
 
   multi method generate_instances_for_object_sync (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $start,
     Int()           $end,
                     &cb,
@@ -633,7 +662,7 @@ class Evolution::Calendar is Evolution::Client {
     )
   }
   multi method generate_instances_for_object_sync (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $start,
     Int()           $end,
     GCancellable()  $cancellable,
@@ -654,6 +683,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method generate_instances_sync (|)
+      is also<generate-instances-sync>
   { * }
 
   multi method generate_instances_sync (
@@ -691,6 +721,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_attachment_uris (|)
+      is also<get-attachment-uris>
   { * }
 
   multi method get_attachment_uris (
@@ -726,6 +757,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_attachment_uris_finish (|)
+      is also<get-attachment-uris-finish>
   { * }
 
   multi method get_attachment_uris_finish (
@@ -778,6 +810,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_attachment_uris_sync (|)
+      is also<get-attachment-uris-sync>
   { * }
 
   multi method get_attachment_uris_sync (
@@ -831,11 +864,14 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_component_as_string (icalcomponent() $icalcomp) {
+  method get_component_as_string (ICalComponent() $icalcomp)
+    is also<get-component-as-string>
+  {
     e_cal_client_get_component_as_string($!ecal, $icalcomp);
   }
 
   proto method get_default_object (|)
+      is also<get-default-object>
   { * }
 
   multi method get_default_object (
@@ -859,6 +895,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_default_object_finish (|)
+      is also<get-default-object-finish>
   { * }
 
   multi method get_default_object_finish (
@@ -879,8 +916,8 @@ class Evolution::Calendar is Evolution::Client {
     clear_error;
 
     unless $out_icalcomp {
-      ($out_icalcomp = CArray[Pointer[icalcomponent]].new)[0] =
-        CArray[Pointer[icalcomponent]]
+      ($out_icalcomp = CArray[Pointer[ICalComponent]].new)[0] =
+        CArray[Pointer[ICalComponent]]
     }
     my $rv = so e_cal_client_get_default_object_finish(
       $!ecal,
@@ -904,6 +941,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_default_object_sync (|)
+      is also<get-default-object-sync>
   { * }
 
   multi method get_default_object_sync (
@@ -922,8 +960,8 @@ class Evolution::Calendar is Evolution::Client {
                                    :$all          =  False,
                                    :$raw          =  False
   ) {
-    ($out_icalcomp = CArray[Pointer[icalcomponent]].new)[0] =
-      Pointer[icalcomponent]
+    ($out_icalcomp = CArray[Pointer[ICalComponent]].new)[0] =
+      Pointer[ICalComponent]
     unless $out_icalcomp;
 
     clear_error;
@@ -946,8 +984,8 @@ class Evolution::Calendar is Evolution::Client {
     )
   }
 
-  method get_default_timezone (:$raw = False) {
-    #icaltimezone
+  method get_default_timezone (:$raw = False) is also<get-default-timezone> {
+    #ICalTimezone
     my $tz = e_cal_client_get_default_timezone($!ecal);
 
     $tz ??
@@ -955,6 +993,10 @@ class Evolution::Calendar is Evolution::Client {
       !!
       Nil;
   }
+
+  proto method get_free_busy (|)
+    is also<get-free-busy>
+  { * }
 
   multi method get_free_busy (
     Int()          $start,
@@ -995,6 +1037,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_free_busy_finish (|)
+      is also<get-free-busy-finish>
   { * }
 
   multi method get_free_busy_finish (
@@ -1043,6 +1086,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_free_busy_sync (|)
+      is also<get-free-busy-sync>
   { * }
 
   multi method get_free_busy_sync (
@@ -1111,11 +1155,12 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_local_attachment_store {
+  method get_local_attachment_store is also<get-local-attachment-store> {
     e_cal_client_get_local_attachment_store($!ecal);
   }
 
   proto method get_object (|)
+      is also<get-object>
   { * }
 
   multi method get_object (
@@ -1151,6 +1196,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_object_finish (|)
+      is also<get-object-finish>
   { * }
 
   multi method get_object_finish (
@@ -1169,7 +1215,7 @@ class Evolution::Calendar is Evolution::Client {
                             :$all          =  False,
                             :$raw          =  False
   ) {
-    ($out_icalcomp = CArray[icalcomponent].new)[0] = icalcomponent
+    ($out_icalcomp = CArray[ICalComponent].new)[0] = ICalComponent
       unless $out_icalcomp;
 
     clear_error;
@@ -1192,6 +1238,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_object_list (|)
+      is also<get-object-list>
   { * }
 
   multi method get_object_list (
@@ -1225,6 +1272,7 @@ class Evolution::Calendar is Evolution::Client {
   # ...
 
   proto method get_object_list_as_comps (|)
+      is also<get-object-list-as-comps>
   { * }
 
   multi method get_object_list_as_comps (
@@ -1256,6 +1304,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_object_list_as_comps_finish (|)
+      is also<get-object-list-as-comps-finish>
   { * }
 
   multi method get_object_list_as_comps_finish (
@@ -1302,6 +1351,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_object_list_as_comps_sync (|)
+      is also<get-object-list-as-comps-sync>
   { * }
 
   multi method get_object_list_as_comps_sync (
@@ -1360,6 +1410,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_object_list_finish (|)
+      is also<get-object-list-finish>
   { * }
 
   multi method get_object_list_finish (
@@ -1406,13 +1457,14 @@ class Evolution::Calendar is Evolution::Client {
         ppr($out_icalcomps),
         $glist,
         $raw,
-        icalcomponent,
-        ICal::Component
+        ICalComponent,
+        ICal::GLib::Component
       )
     );
   }
 
   proto method get_object_list_sync (|)
+      is also<get-object-list-sync>
   { * }
 
   multi method get_object_list_sync (
@@ -1463,13 +1515,14 @@ class Evolution::Calendar is Evolution::Client {
         ppr($out_icalcomps),
         $glist,
         $raw,
-        icalcomponent,
-        ICal::Component
+        ICalComponent,
+        ICal::GLib::Component
       )
     );
   }
 
   proto method get_object_sync (|)
+      is also<get-object-sync>
   { * }
 
   multi method get_object_sync (
@@ -1479,7 +1532,7 @@ class Evolution::Calendar is Evolution::Client {
     GCancellable()                 :$cancellable  = GCancellable,
                                    :$raw          = False
   ) {
-    (my $oi = CArray[Pointer[icalcomponent]])[0] = Pointer[icalcomponent];
+    (my $oi = CArray[Pointer[ICalComponent]])[0] = Pointer[ICalComponent];
 
     my $rv = samewith(
       $uid,
@@ -1496,7 +1549,7 @@ class Evolution::Calendar is Evolution::Client {
   multi method get_object_sync (
     Str()                          $uid,
     Str()                          $rid,
-    CArray[Pointer[icalcomponent]] $out_icalcomp,
+    CArray[Pointer[ICalComponent]] $out_icalcomp,
     GCancellable()                 $cancellable   = GCancellable,
     CArray[Pointer[GError]]        $error         = gerror,
                                    :$all          = False,
@@ -1526,6 +1579,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_objects_for_uid (|)
+      is also<get-objects-for-uid>
   { * }
   multi method get_objects_for_uid (
     Str()          $uid,
@@ -1556,6 +1610,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_objects_for_uid_finish (|)
+      is also<get-objects-for-uid-finish>
   { * }
 
   multi method get_objects_for_uid_finish (
@@ -1609,6 +1664,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_objects_for_uid_sync (|)
+      is also<get-objects-for-uid-sync>
   { * }
 
   multi method get_objects_for_uid_sync (
@@ -1666,11 +1722,12 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_source_type {
+  method get_source_type is also<get-source-type> {
     ECalClientSourceTypeEnum( e_cal_client_get_source_type($!ecal) );
   }
 
   proto method get_timezone (|)
+      is also<get-timezone>
   { * }
 
   multi method get_timezone (
@@ -1702,6 +1759,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_timezone_finish (|)
+      is also<get-timezone-finish>
   { * }
 
   multi method get_timezone_finish (
@@ -1709,7 +1767,7 @@ class Evolution::Calendar is Evolution::Client {
     CArray[Pointer[GError]]       $error   = gerror,
                                   :$raw    = False
   ) {
-    (my $oz = CArray[Pointer[icaltimezone]].new)[0] = Pointer[icaltimezone];
+    (my $oz = CArray[Pointer[ICalTimezone]].new)[0] = Pointer[ICalTimezone];
 
     my $rv = samewith(
       $result,
@@ -1723,7 +1781,7 @@ class Evolution::Calendar is Evolution::Client {
   }
   multi method get_timezone_finish (
     GAsyncResult()                $result,
-    CArray[Pointer[icaltimezone]] $out_zone,
+    CArray[Pointer[ICalTimezone]] $out_zone,
     CArray[Pointer[GError]]       $error     = gerror,
                                   :$all      = False,
                                   :$raw      = False
@@ -1750,6 +1808,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_timezone_sync (|)
+      is also<get-timezone-sync>
   { * }
 
   multi method get_timezone_sync (
@@ -1758,7 +1817,7 @@ class Evolution::Calendar is Evolution::Client {
     GCancellable()                :$cancellable = GCancellable,
                                   :$raw         = False
   ) {
-    (my $oz = CArray[Pointer[icaltimezone]].new)[0] = Pointer[icaltimezone];
+    (my $oz = CArray[Pointer[ICalTimezone]].new)[0] = Pointer[ICalTimezone];
 
     my $rv = samewith(
       $tzid,
@@ -1773,7 +1832,7 @@ class Evolution::Calendar is Evolution::Client {
   }
   multi method get_timezone_sync (
     Str()                         $tzid,
-    CArray[Pointer[icaltimezone]] $out_zone,
+    CArray[Pointer[ICalTimezone]] $out_zone,
     GCancellable()                $cancellable  = GCancellable,
     CArray[Pointer[GError]]       $error        = gerror,
                                   :$all         = False,
@@ -1801,7 +1860,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type(
@@ -1814,6 +1873,7 @@ class Evolution::Calendar is Evolution::Client {
 
 
   proto method get_view (|)
+      is also<get-view>
   { * }
 
   multi method get_view (
@@ -1839,6 +1899,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method get_view_finish (|)
+      is also<get-view-finish>
   { * }
 
   multi method get_view_finish (
@@ -1879,26 +1940,31 @@ class Evolution::Calendar is Evolution::Client {
      )
   }
 
+  proto method get_view_sync (|)
+    is also<get-view-sync>
+  { * }
+
   multi method get_view_sync (
     Str()                           $sexp,
     CArray[Pointer[GError]]         $error        = gerror,
     GCancellable()                  :$cancellable = GCancellable,
                                     :$raw         = False
   ) {
-    (my $ov = CArray[Pointer[ECalClientView]].new)[0] = Pointer[ECalClientView];
-
-    my $rv = samewith($sexp, $ov, $cancellable, $error, :all, :$raw);
+    my $rv = samewith($sexp, $, $cancellable, $error, :all, :$raw);
 
     $rv[0] ?? $rv[1] !! Nil;
   }
   multi method get_view_sync (
     Str()                           $sexp,
-    CArray[Pointer[ECalClientView]] $out_view,
-    GCancellable()                  $cancellable,
-    CArray[Pointer[GError]]         $error,
-                                    :$all         = False,
-                                    :$raw         = False
+                                    $out_view     is rw,
+    GCancellable()                  $cancellable  =  GCancellable,
+    CArray[Pointer[GError]]         $error        =  gerror,
+                                    :$all         =  False,
+                                    :$raw         =  False
   ) {
+    ($out_view = CArray[Pointer[ECalClientView]].new)[0] =
+      Pointer[ECalClientView];
+
     clear_error;
     my $rv = so e_cal_client_get_view_sync(
       $!ecal,
@@ -1922,10 +1988,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method modify_object (|)
+      is also<modify-object>
   { * }
 
   multi method modify_object (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $mod,
     Int()           $opflags,
                     &callback,
@@ -1942,7 +2009,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   multi method modify_object (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $mod,
     Int()           $opflags,
     GCancellable()  $cancellable,
@@ -1966,7 +2033,9 @@ class Evolution::Calendar is Evolution::Client {
   method modify_object_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<modify-object-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_modify_object_finish($!ecal, $result, $error);
     set_error($error);
@@ -1974,12 +2043,14 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   method modify_object_sync (
-    icalcomponent()         $icalcomp,
-    Int()                   $mod,
-    Int()                   $opflags,
+    ICalComponent()         $icalcomp,
+    Int()                   $mod         = E_CAL_OBJ_MOD_ALL,
+    Int()                   $opflags     = E_CAL_OPERATION_FLAG_NONE,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<modify-object-sync>
+  {
     my ECalObjModType $m = $mod;
     my guint32        $o = $opflags;
 
@@ -1997,6 +2068,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method modify_objects (|)
+      is also<modify-objects>
   { * }
 
   multi method modify_objects (
@@ -2041,7 +2113,9 @@ class Evolution::Calendar is Evolution::Client {
   method modify_objects_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<modify-objects-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_modify_objects_finish($!ecal, $result, $error);
     set_error($error);
@@ -2054,7 +2128,9 @@ class Evolution::Calendar is Evolution::Client {
     Int()                   $opflags,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<modify-objects-sync>
+  {
     my ECalObjModType $m = $mod;
     my guint32        $o = $opflags;
 
@@ -2069,10 +2145,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method receive_objects (|)
+      is also<receive-objects>
   { * }
 
   multi method receive_objects (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $opflags,
     GCancellable    $cancellable,
                     &callback,
@@ -2087,7 +2164,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   multi method receive_objects (
-    icalcomponent() $icalcomp,
+    ICalComponent() $icalcomp,
     Int()           $opflags,
     GCancellable    $cancellable,
                     &callback,
@@ -2108,7 +2185,9 @@ class Evolution::Calendar is Evolution::Client {
   method receive_objects_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<receive-objects-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_receive_objects_finish($!ecal, $result, $error);
     set_error($error);
@@ -2116,11 +2195,13 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   multi method receive_objects_sync (
-    icalcomponent()         $icalcomp,
+    ICalComponent()         $icalcomp,
     Int()                   $opflags,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<receive-objects-sync>
+  {
     my guint32 $o = $opflags;
 
     clear_error;
@@ -2136,6 +2217,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method remove_object (|)
+      is also<remove-object>
   { * }
 
   multi method remove_object (
@@ -2184,7 +2266,9 @@ class Evolution::Calendar is Evolution::Client {
   method remove_object_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<remove-object-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_remove_object_finish($!ecal, $result, $error);
     set_error($error);
@@ -2194,11 +2278,13 @@ class Evolution::Calendar is Evolution::Client {
   method remove_object_sync (
     Str()                   $uid,
     Str()                   $rid,
-    Int()                   $mod,
-    Int()                   $opflags,
+    Int()                   $mod         = E_CAL_OBJ_MOD_ALL,
+    Int()                   $opflags     = E_CAL_OPERATION_FLAG_NONE,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<remove-object-sync>
+  {
     my ECalObjModType $m = $mod;
     my guint32        $o = $opflags;
 
@@ -2217,6 +2303,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method remove_objects (|)
+      is also<remove-objects>
   { * }
 
   multi method remove_objects (
@@ -2261,7 +2348,9 @@ class Evolution::Calendar is Evolution::Client {
   method remove_objects_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error
-  ) {
+  )
+    is also<remove-objects-finish>
+  {
     clear_error;
     my $rv = so e_cal_client_remove_objects_finish($!ecal, $result, $error);
     set_error($error);
@@ -2274,7 +2363,9 @@ class Evolution::Calendar is Evolution::Client {
     Int()           $opflags,
     GCancellable()  $cancellable   = GCancellable,
     CArray[Pointer[GError]] $error = gerror
-  ) {
+  )
+    is also<remove-objects-sync>
+  {
     my ECalObjModType $m = $mod;
     my guint32        $o = $opflags;
 
@@ -2289,10 +2380,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method send_objects (|)
+      is also<send-objects>
   { * }
 
   multi method send_objects (
-    icalcomponent()  $icalcomp,
+    ICalComponent()  $icalcomp,
     Int()            $opflags,
                      &callback,
     gpointer         $user_data    = gpointer,
@@ -2307,7 +2399,7 @@ class Evolution::Calendar is Evolution::Client {
     );
   }
   multi method send_objects (
-    icalcomponent()  $icalcomp,
+    ICalComponent()  $icalcomp,
     Int()            $opflags,
     GCancellable()   $cancellable,
                      &callback,
@@ -2326,6 +2418,7 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method send_objects_finish (|)
+      is also<send-objects-finish>
   { * }
 
   multi method send_objects_finish (
@@ -2334,8 +2427,8 @@ class Evolution::Calendar is Evolution::Client {
                                    :gslist(:$glist)        = False,
                                    :$raw                   = False
   ) {
-    (my $ou  = CArray[Pointer[GSList]].new)[0]       = Pointer[GSList];
-    (my $omi = CArray[Pointer[icalcomponent]].new)[0] = Pointer[icalcomponent];
+    (my $ou  = CArray[Pointer[GSList]].new)[0]        = Pointer[GSList];
+    (my $omi = CArray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent];
 
     my $rv = samewith(
       $result,
@@ -2352,7 +2445,7 @@ class Evolution::Calendar is Evolution::Client {
   multi method send_objects_finish (
     GAsyncResult()                 $result,
     CArray[Pointer[GSList]]        $out_users,
-    CArray[Pointer[icalcomponent]] $out_modified_icalcomp,
+    CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
     CArray[Pointer[GError]]        $error,
                                    :gslist(:$glist)        = False,
                                    :$all                   = False,
@@ -2386,10 +2479,11 @@ class Evolution::Calendar is Evolution::Client {
   }
 
   proto method send_objects_sync (|)
+      is also<send-objects-sync>
   { * }
 
   multi method send_objects_sync (
-    icalcomponent()                $icalcomp,
+    ICalComponent()                $icalcomp,
     Int()                          $opflags,
     CArray[Pointer[GError]]        $error                  = gerror,
     GCancellable()                 :$cancellable           = GCancellable,
@@ -2397,7 +2491,7 @@ class Evolution::Calendar is Evolution::Client {
                                    :$raw                   = False
   ) {
     (my $ou  = CArray[Pointer[GSList]].new)[0]        = Pointer[GSList];
-    (my $omi = CArray[Pointer[icalcomponent]].new)[0] = Pointer[icalcomponent];
+    (my $omi = CArray[Pointer[ICalComponent]].new)[0] = Pointer[ICalComponent];
 
     my $rv = samewith(
       $icalcomp,
@@ -2414,10 +2508,10 @@ class Evolution::Calendar is Evolution::Client {
     $rv[0] ?? $rv.skip(1) !! Nil;
   }
   multi method send_objects_sync (
-    icalcomponent()                $icalcomp,
+    ICalComponent()                $icalcomp,
     Int()                          $opflags,
     CArray[Pointer[GSList]]        $out_users,
-    CArray[Pointer[icalcomponent]] $out_modified_icalcomp,
+    CArray[Pointer[ICalComponent]] $out_modified_icalcomp,
     GCancellable()                 $cancellable            = GCancellable,
     CArray[Pointer[GError]]        $error                  = gerror,
                                    :$all                   = False,
@@ -2452,7 +2546,9 @@ class Evolution::Calendar is Evolution::Client {
     )
   }
 
-  method set_default_timezone (icaltimezone() $zone) {
+  method set_default_timezone (ICalTimezone() $zone)
+    is also<set-default-timezone>
+  {
     e_cal_client_set_default_timezone($!ecal, $zone);
   }
 
