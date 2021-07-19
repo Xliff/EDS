@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -9,12 +11,14 @@ use GIO::DBus::Connection;
 use Evolution::Calendar;
 
 use GLib::Roles::Object;
+use Evolution::Roles::Signals::Calendar::View;
 
 our subset ECalClientViewAncestry is export of Mu
   where ECalClientView | GObject;
 
 class Evolution::Calendar::View {
   also does GLib::Roles::Object;
+  also does Evolution::Roles::Signals::Calendar::View;
 
   has ECalClientView $!ecv;
 
@@ -40,6 +44,7 @@ class Evolution::Calendar::View {
   }
 
   method Evolution::Raw::Definitions::ECalClientView
+    is also<ECalClientView>
   { $!ecv }
 
   method new (ECalClientViewAncestry $cal-view, :$ref = True) {
@@ -50,7 +55,37 @@ class Evolution::Calendar::View {
     $o;
   }
 
-  method get_connection (:$raw = False) {
+  # Is originally:
+  # ECalClientView, GError, gpointer --> void
+  method complete {
+    self.connect-complete($!ecv.p);
+  }
+
+  # Is originally:
+  # ECalClientView, gpointer, gpointer --> void
+  method objects-added {
+    self.connect-objects($!ecv.p, 'objects-added');
+  }
+
+  # Is originally:
+  # ECalClientView, gpointer, gpointer --> void
+  method objects-modified {
+    self.connect-objects($!ecv.p, 'objects-modified');
+  }
+
+  # Is originally:
+  # ECalClientView, gpointer, gpointer --> void
+  method objects-removed {
+    self.connect-objects($!ecv.p, 'objects-removed');
+  }
+
+  # Is originally:
+  # ECalClientView, guint, gchar, gpointer --> void
+  method progress {
+    self.connect-progress($!ecv);
+  }
+
+  method get_connection (:$raw = False) is also<get-connection> {
     my $c = e_cal_client_view_get_connection($!ecv);
 
     $c ??
@@ -59,15 +94,15 @@ class Evolution::Calendar::View {
       Nil;
   }
 
-  method get_object_path {
+  method get_object_path is also<get-object-path> {
     e_cal_client_view_get_object_path($!ecv);
   }
 
-  method is_running {
+  method is_running is also<is-running> {
     so e_cal_client_view_is_running($!ecv);
   }
 
-  method ref_client (:$raw = False) {
+  method ref_client (:$raw = False) is also<ref-client> {
     my $c = e_cal_client_view_ref_client($!ecv);
 
     # Transfer: full
@@ -78,6 +113,7 @@ class Evolution::Calendar::View {
   }
 
   proto method set_fields_of_interest (|)
+      is also<set-fields-of-interest>
   { * }
 
   multi method set_fields_of_interest (
@@ -102,7 +138,16 @@ class Evolution::Calendar::View {
     set_error($error);
   }
 
-  method set_flags (ECalClientViewFlags $flags, CArray[Pointer[GError]] $error) {
+  method reset_fields_of_interest is also<reset-fields-of-interest> {
+    self.set_fields_of_interest(GSList);
+  }
+
+  method set_flags (
+    ECalClientViewFlags     $flags,
+    CArray[Pointer[GError]] $error  = gerror
+  )
+    is also<set-flags>
+  {
     my ECalClientViewFlags $f = $flags;
 
     clear_error;
