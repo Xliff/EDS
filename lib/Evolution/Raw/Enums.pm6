@@ -1336,3 +1336,19 @@ our enum ESourcePermissionFlagsEnum is export (
   E_SOURCE_PERMISSION_WRITABLE  => 1 +< 0,
   E_SOURCE_PERMISSION_REMOVABLE => 1 +< 1,
 );
+
+# /usr/src/evolution-data-server-3.38.1/tests/test-server-utils/e-test-server-utils.h
+
+constant ETestServerFlags is export := guint32;
+our enum ETestServerFlagsEnum is export (
+  E_TEST_SERVER_KEEP_WORK_DIRECTORY => (1 +< 0),
+);
+
+constant ETestServiceType is export := guint32;
+our enum ETestServiceTypeEnum is export (
+  E_TEST_SERVER_NONE                    => 0,
+  'E_TEST_SERVER_ADDRESS_BOOK',
+  'E_TEST_SERVER_DIRECT_ADDRESS_BOOK',
+  'E_TEST_SERVER_CALENDAR',
+  'E_TEST_SERVER_DEPRECATED_ADDRESS_BOOK'
+);
