@@ -17,19 +17,21 @@ use Evolution::Raw::Enums;
 
 use GLib::Class::Object;
 
+use GLib::Roles::Pointers;
+
 unit package Evolution::Raw::Structs;
 
-class CamelAddress is repr<CStruct> is export {
+class CamelAddress is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject             $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelBlockFile is repr<CStruct> is export {
+class CamelBlockFile is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject               $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelBlockRoot is repr<CStruct> is export {
+class CamelBlockRoot is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str           $!version   ;
 	has guint32       $!flags     ;
 	has guint32       $!block_size;
@@ -37,17 +39,17 @@ class CamelBlockRoot is repr<CStruct> is export {
 	has camel_block_t $!last      ;
 }
 
-class CamelCertDB is repr<CStruct> is export {
+class CamelCertDB is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelCharset is repr<CStruct> is export {
+class CamelCharset is repr<CStruct> does GLib::Roles::Pointers is export {
 	has guint $!mask ;
 	has gint  $!level;
 }
 
-class CamelCipherCertInfo is repr<CStruct> is export {
+class CamelCipherCertInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str                  $!name           ;
 	has Str                  $!email          ;
 	has gpointer             $!cert_data      ;
@@ -56,46 +58,46 @@ class CamelCipherCertInfo is repr<CStruct> is export {
 	has GSList               $!properties     ;
 }
 
-class CamelCipherCertInfoProperty is repr<CStruct> is export {
+class CamelCipherCertInfoProperty is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str                $!name       ;
 	has gpointer             $!value      ;
 	has GDestroyNotify       $!value_free ;
 	has CamelCipherCloneFunc $!value_clone;
 }
 
-class CamelCipherContext is repr<CStruct> is export {
+class CamelCipherContext is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class camel_header_param is repr<CStruct> is export {
+class camel_header_param is repr<CStruct> does GLib::Roles::Pointers is export {
 	has camel_header_param $!next ;
 	has Str                $!name ;
 	has Str                $!value;
 }
 
-class CamelContentDisposition is repr<CStruct> is export {
+class CamelContentDisposition is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str                 $!disposition;
 	has camel_header_param  $!params     ;
 	has guint               $!refcount   ;
 }
 
-class CamelDB is repr<CStruct> is export {
+class CamelDB is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelDataCache is repr<CStruct> is export {
+class CamelDataCache is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelDataWrapper is repr<CStruct> is export {
+class CamelDataWrapper is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelFIRecord is repr<CStruct> is export {
+class CamelFIRecord is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str   $!folder_name  ;
 	has guint32 $!version      ;
 	has guint32 $!flags        ;
@@ -110,32 +112,32 @@ class CamelFIRecord is repr<CStruct> is export {
 	has Str     $!bdata        ;
 }
 
-class CamelFilterDriver is repr<CStruct> is export {
+class CamelFilterDriver is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelFilterInputStream is repr<CStruct> is export {
+class CamelFilterInputStream is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GFilterInputStream $!parent;
 	has Pointer            $!priv  ;
 }
 
-class CamelFilterOutputStream is repr<CStruct> is export {
+class CamelFilterOutputStream is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GFilterOutputStream $!parent;
 	has Pointer             $!priv  ;
 }
 
-class CamelObject is repr<CStruct> is export {
+class CamelObject is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelFolder is repr<CStruct> is export {
+class CamelFolder is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelObject  $!parent;
 	has Pointer      $!priv  ;
 }
 
-class CamelFolderChangeInfo is repr<CStruct> is export {
+class CamelFolderChangeInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has GPtrArray $!uid_added  ;
 	has GPtrArray $!uid_removed;
 	has GPtrArray $!uid_changed;
@@ -143,7 +145,7 @@ class CamelFolderChangeInfo is repr<CStruct> is export {
 	has Pointer   $!priv       ;
 }
 
-class CamelFolderInfo is repr<CStruct> is export {
+class CamelFolderInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has CamelFolderInfo      $!next        ;
 	has CamelFolderInfo      $!parent      ;
 	has CamelFolderInfo      $!child       ;
@@ -154,34 +156,34 @@ class CamelFolderInfo is repr<CStruct> is export {
 	has gint32               $!total       ;
 }
 
-class CamelFolderQuotaInfo is repr<CStruct> is export {
+class CamelFolderQuotaInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str                   $!name ;
 	has guint64               $!used ;
 	has guint64               $!total;
 	has CamelFolderQuotaInfo  $!next ;
 }
 
-class CamelFolderSearch is repr<CStruct> is export {
+class CamelFolderSearch is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelFolderSummary is repr<CStruct> is export {
+class CamelFolderSummary is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelGpgContext is repr<CStruct> is export {
+class CamelGpgContext is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelCipherContext $!parent;
 	has Pointer            $!priv  ;
 }
 
-class CamelHTMLParser is repr<CStruct> is export {
+class CamelHTMLParser is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelIndex is repr<CStruct> is export {
+class CamelIndex is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject        $!parent        ;
 	has Pointer        $!priv          ;
 	has Str            $!path          ;
@@ -192,13 +194,13 @@ class CamelIndex is repr<CStruct> is export {
 	has gpointer       $!normalize_data;
 }
 
-class CamelIndexCursor is repr<CStruct> is export {
+class CamelIndexCursor is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject    $!parent;
 	has Pointer    $!priv  ;
 	has CamelIndex $!index ;
 }
 
-class CamelIndexName is repr<CStruct> is export {
+class CamelIndexName is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject    $!parent;
 	has Pointer    $!priv  ;
 	has CamelIndex $!index ;
@@ -207,60 +209,60 @@ class CamelIndexName is repr<CStruct> is export {
 	has GHashTable $!words ;
 }
 
-class CamelInternetAddress is repr<CStruct> is export {
+class CamelInternetAddress is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelAddress $!parent;
 	has Pointer      $!priv  ;
 }
 
-class CamelKeyFile is repr<CStruct> is export {
+class CamelKeyFile is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelKeyRootBlock is repr<CStruct> is export {
+class CamelKeyRootBlock is repr<CStruct> does GLib::Roles::Pointers is export {
 	has camel_block_t $!first;
 	has camel_block_t $!last ;
 	has camel_key_t   $!free ;
 }
 
-class CamelKeyTable is repr<CStruct> is export {
+class CamelKeyTable is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelSettings is repr<CStruct> is export {
+class CamelSettings is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelService is repr<CStruct> is export {
+class CamelService is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelObject $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelStore is repr<CStruct> is export {
+class CamelStore is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelService $!parent;
 	has Pointer      $!priv  ;
 }
 
-class CamelStoreSettings is repr<CStruct> is export {
+class CamelStoreSettings is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelSettings $!parent;
 	has Pointer       $!priv  ;
 }
 
-class CamelLocalSettings is repr<CStruct> is export {
+class CamelLocalSettings is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStoreSettings $!parent;
 	has Pointer            $!priv  ;
 }
 
-class CamelLockHelperMsg is repr<CStruct> is export {
+class CamelLockHelperMsg is repr<CStruct> does GLib::Roles::Pointers is export {
 	has guint32 $!magic;
 	has guint32 $!seq  ;
 	has guint32 $!id   ;
 	has guint32 $!data ;
 }
 
-class CamelMIRecord is repr<CStruct> is export {
+class CamelMIRecord is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str      $!uid                  ;
 	has guint32  $!flags                ;
 	has guint32  $!msg_type             ;
@@ -289,19 +291,19 @@ class CamelMIRecord is repr<CStruct> is export {
 	has Str      $!bdata                ;
 }
 
-class CamelMedium is repr<CStruct> is export {
+class CamelMedium is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelDataWrapper $!parent;
 	has Pointer          $!priv  ;
 }
 
-class CamelContentType is repr<CStruct> is export {
+class CamelContentType is repr<CStruct> does GLib::Roles::Pointers is export {
   has Str                $!type;
   has Str                $!subtype;
   has camel_header_param $!params;
   has guint              $!refcount;
 }
 
-class CamelMessageContentInfo is repr<CStruct> is export {
+class CamelMessageContentInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has CamelMessageContentInfo $!next       ;
 	has CamelMessageContentInfo $!childs     ;
 	has CamelMessageContentInfo $!parent     ;
@@ -313,17 +315,17 @@ class CamelMessageContentInfo is repr<CStruct> is export {
 	has guint32                 $!size       ;
 }
 
-class CamelMessageInfo is repr<CStruct> is export {
+class CamelMessageInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelMessageInfoBase is repr<CStruct> is export {
+class CamelMessageInfoBase is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMessageInfo     $!parent;
 	has Pointer              $!priv;
 }
 
-class CamelMimeFilter is repr<CStruct> is export {
+class CamelMimeFilter is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject              $!parent  ;
 	has Pointer              $!priv    ;
 	has Str                  $!outreal ;
@@ -336,277 +338,277 @@ class CamelMimeFilter is repr<CStruct> is export {
 	has gsize                $!backlen ;
 }
 
-class CamelMimeFilterBasic is repr<CStruct> is export {
+class CamelMimeFilterBasic is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterBestenc is repr<CStruct> is export {
+class CamelMimeFilterBestenc is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterCRLF is repr<CStruct> is export {
+class CamelMimeFilterCRLF is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterCanon is repr<CStruct> is export {
+class CamelMimeFilterCanon is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterCharset is repr<CStruct> is export {
+class CamelMimeFilterCharset is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterEnriched is repr<CStruct> is export {
+class CamelMimeFilterEnriched is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterFrom is repr<CStruct> is export {
+class CamelMimeFilterFrom is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterGZip is repr<CStruct> is export {
+class CamelMimeFilterGZip is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterHTML is repr<CStruct> is export {
+class CamelMimeFilterHTML is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterIndex is repr<CStruct> is export {
+class CamelMimeFilterIndex is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterLinewrap is repr<CStruct> is export {
+class CamelMimeFilterLinewrap is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterPgp is repr<CStruct> is export {
+class CamelMimeFilterPgp is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterProgress is repr<CStruct> is export {
+class CamelMimeFilterProgress is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterToHTML is repr<CStruct> is export {
+class CamelMimeFilterToHTML is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterWindows is repr<CStruct> is export {
+class CamelMimeFilterWindows is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimeFilterYenc is repr<CStruct> is export {
+class CamelMimeFilterYenc is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimeFilter $!parent;
 	has Pointer         $!priv  ;
 }
 
-class CamelMimePart is repr<CStruct> is export {
+class CamelMimePart is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMedium   $!parent;
 	has Pointer       $!priv  ;
 }
 
-class CamelMimeMessage is repr<CStruct> is export {
+class CamelMimeMessage is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMimePart $!parent;
 	has Pointer       $!priv  ;
 }
 
-class CamelMimeParser is repr<CStruct> is export {
+class CamelMimeParser is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelMsg is repr<CStruct> is export {
+class CamelMsg is repr<CStruct> does GLib::Roles::Pointers is export {
 	has CamelMsgPort $.reply_port;
 	has gint         $!flags     ;
 }
 
-class CamelMultipart is repr<CStruct> is export {
+class CamelMultipart is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelDataWrapper $!parent;
 	has Pointer          $!priv  ;
 }
 
-class CamelMultipartEncrypted is repr<CStruct> is export {
+class CamelMultipartEncrypted is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMultipart $!parent;
 	has Pointer        $!priv  ;
 }
 
-class CamelMultipartSigned is repr<CStruct> is export {
+class CamelMultipartSigned is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMultipart $!parent;
 	has Pointer        $!priv  ;
 }
 
-class CamelNNTPAddress is repr<CStruct> is export {
+class CamelNNTPAddress is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelAddress   $!parent;
 	has Pointer        $!priv  ;
 }
 
-class CamelNullOutputStream is repr<CStruct> is export {
+class CamelNullOutputStream is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GOutputStream $!parent;
 	has Pointer       $!priv  ;
 }
 
-class CamelOfflineFolder is repr<CStruct> is export {
+class CamelOfflineFolder is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelFolder $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelOfflineSettings is repr<CStruct> is export {
+class CamelOfflineSettings is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStoreSettings $!parent;
 	has Pointer            $!priv  ;
 }
 
-class CamelOfflineStore is repr<CStruct> is export {
+class CamelOfflineStore is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStore $!parent;
 	has Pointer    $!priv  ;
 }
 
-class CamelOperation is repr<CStruct> is export {
+class CamelOperation is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GCancellable $!parent;
 	has Pointer      $!priv  ;
 }
 
-class CamelPartitionKey is repr<CStruct> is export {
+class CamelPartitionKey is repr<CStruct> does GLib::Roles::Pointers is export {
 	has camel_hash_t $!hashid;
 	has camel_key_t  $!keyid ;
 }
 
-class CamelPartitionMap is repr<CStruct> is export {
+class CamelPartitionMap is repr<CStruct> does GLib::Roles::Pointers is export {
 	has camel_hash_t  $!hashid ;
 	has camel_block_t $!blockid;
 }
 
-class CamelPartitionTable is repr<CStruct> is export {
+class CamelPartitionTable is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelSExp is repr<CStruct> is export {
+class CamelSExp is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelSMIMEContext is repr<CStruct> is export {
+class CamelSMIMEContext is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelCipherContext $!parent;
 	has Pointer            $!priv  ;
 }
 
-class CamelSasl is repr<CStruct> is export {
+class CamelSasl is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelSaslAnonymous is repr<CStruct> is export {
+class CamelSaslAnonymous is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
-class CamelSaslGssapi is repr<CStruct> is export {
+class CamelSaslGssapi is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
-class CamelSaslLogin is repr<CStruct> is export {
+class CamelSaslLogin is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
-class CamelSaslNTLM is repr<CStruct> is export {
+class CamelSaslNTLM is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
-class CamelSaslPlain is repr<CStruct> is export {
+class CamelSaslPlain is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelSasl $!parent;
 	has Pointer   $!priv  ;
 }
 
-class CamelSession is repr<CStruct> is export {
+class CamelSession is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelStoreSummary is repr<CStruct> is export {
+class CamelStoreSummary is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelStream is repr<CStruct> is export {
+class CamelStream is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelStreamBuffer is repr<CStruct> is export {
+class CamelStreamBuffer is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelStreamFilter is repr<CStruct> is export {
+class CamelStreamFilter is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelStreamFs is repr<CStruct> is export {
+class CamelStreamFs is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelStreamMem is repr<CStruct> is export {
+class CamelStreamMem is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelStreamNull is repr<CStruct> is export {
+class CamelStreamNull is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelStreamProcess is repr<CStruct> is export {
+class CamelStreamProcess is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStream $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelTextIndex is repr<CStruct> is export {
+class CamelTextIndex is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelIndex $!parent;
 	has Pointer    $!priv  ;
 }
 
-class CamelTextIndexCursor is repr<CStruct> is export {
+class CamelTextIndexCursor is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelIndexCursor $!parent;
 	has Pointer          $!priv  ;
 }
 
-class CamelTextIndexKeyCursor is repr<CStruct> is export {
+class CamelTextIndexKeyCursor is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelIndexCursor $!parent;
 	has Pointer          $!priv  ;
 }
 
-class CamelTextIndexName is repr<CStruct> is export {
+class CamelTextIndexName is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelIndexName $!parent;
 	has Pointer        $!priv  ;
 }
 
-class CamelTransport is repr<CStruct> is export {
+class CamelTransport is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelService $!parent;
 	has Pointer      $!priv  ;
 }
 
-class CamelURL is repr<CStruct> is export {
+class CamelURL is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str   $!protocol;
 	has Str   $!user    ;
 	has Str   $!authmech;
@@ -618,119 +620,124 @@ class CamelURL is repr<CStruct> is export {
 	has Str   $!fragment;
 }
 
-class CamelVeeFolder is repr<CStruct> is export {
+class CamelVeeFolder is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelFolder $!parent;
 	has Pointer     $!priv  ;
 }
 
-class CamelVTrashFolder is repr<CStruct> is export {
+class CamelVTrashFolder is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelVeeFolder $!parent;
 	has Pointer        $!priv  ;
 }
 
-class CamelVeeDataCache is repr<CStruct> is export {
+class CamelVeeDataCache is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelVeeMessageInfo is repr<CStruct> is export {
+class CamelVeeMessageInfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelMessageInfo $!parent;
 	has Pointer          $!priv  ;
 }
 
-class CamelVeeMessageInfoData is repr<CStruct> is export {
+class CamelVeeMessageInfoData is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelVeeStore is repr<CStruct> is export {
+class CamelVeeStore is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelStore $!parent;
 	has Pointer    $!priv  ;
 }
 
-class CamelVeeSubfolderData is repr<CStruct> is export {
+class CamelVeeSubfolderData is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class CamelVeeSummary is repr<CStruct> is export {
+class CamelVeeSummary is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS CamelFolderSummary $!parent;
 	has Pointer            $!priv  ;
 }
 
-class EClient is repr<CStruct> is export {
+class EClient is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ECalClient is repr<CStruct> is export {
+class ECalClient is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS EClient $!parent;
 	has Pointer $!priv  ;
 }
 
-class ECalClientView is repr<CStruct> is export {
+class ECalClientView is repr<CStruct> does GLib::Roles::Pointers is export {
 	has GObject $!object;
 	has Pointer $!priv  ;
 }
 
-class ECalComponent is repr<CStruct> is export {
+class ECalComponent is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ECalComponentClass is repr<CStruct> is export {
+class ECalComponentId is repr<CStruct> does GLib::Roles::Pointers is export {
+  has Str $!uid;
+  has Str $!rid;
+}
+
+class ECalComponentClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObjectClass $.parent_class;
 }
 
-class ECancellableLocksBase is repr<CStruct> is export {
+class ECancellableLocksBase is repr<CStruct> does GLib::Roles::Pointers is export {
 	has GMutex $!cond_mutex;
 	has GCond  $!cond      ;
 }
 
-class ECancellableMutex is repr<CStruct> is export {
+class ECancellableMutex is repr<CStruct> does GLib::Roles::Pointers is export {
 	has ECancellableLocksBase $!base ;
 	has GMutex                $!mutex;
 }
 
-class ECancellableRecMutex is repr<CStruct> is export {
+class ECancellableRecMutex is repr<CStruct> does GLib::Roles::Pointers is export {
 	has ECancellableLocksBase $!base     ;
 	has GRecMutex             $!rec_mutex;
 }
 
-class EClientErrorsList is repr<CStruct> is export {
+class EClientErrorsList is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str  $!name    ;
 	has gint $!err_code;
 }
 
-class ECredentials is repr<CStruct> is export {
+class ECredentials is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Pointer $!priv;
 }
 
-class EExtensibleInterface is repr<CStruct> is export {
+class EExtensibleInterface is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GTypeInterface $!parent_interface;
 }
 
-class EExtension is repr<CStruct> is export {
+class EExtension is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class EExtensionClass is repr<CStruct> is export {
+class EExtensionClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObjectClass $.parent_class   ;
 	has GType        $!extensible_type;
 }
 
-class EFreeFormExpSymbol is repr<CStruct> is export {
+class EFreeFormExpSymbol is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str                       $!names     ;
 	has Str                       $!hint      ;
 	has EFreeFormExpBuildSexpFunc $!build_sexp;
 }
 
-class EIterator is repr<CStruct> is export {
+class EIterator is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 }
 
-class EList is repr<CStruct> is export {
+class EList is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject       $!parent   ;
 	has GList         $!list     ;
 	has GList         $!iterators;
@@ -739,17 +746,17 @@ class EList is repr<CStruct> is export {
 	has gpointer      $!closure  ;
 }
 
-class EListClass is repr<CStruct> is export {
+class EListClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObjectClass $.parent_class;
 }
 
-class EListIterator is repr<CStruct> is export {
+class EListIterator is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS EIterator $!parent  ;
 	has EList     $!list    ;
 	has GList     $!iterator;
 }
 
-class EIteratorClass is repr<CStruct> is export {
+class EIteratorClass is repr<CStruct> does GLib::Roles::Pointers is export {
    HAS GObjectClass $.parent_class;
 
    # Signals
@@ -767,79 +774,79 @@ class EIteratorClass is repr<CStruct> is export {
    has Pointer $!is_valid;   # gboolean        (*is_valid)             (EIterator *iterator);
 };
 
-class EListIteratorClass is repr<CStruct> is export {
+class EListIteratorClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS EIteratorClass $.parent_class;
 }
 
-class EModule is repr<CStruct> is export {
+class EModule is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GTypeModule $!parent;
 	has Pointer     $!priv  ;
 }
 
-class EModuleClass is repr<CStruct> is export {
+class EModuleClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GTypeModuleClass $.parent_class;
 }
 
-class ENetworkMonitor is repr<CStruct> is export {
+class ENetworkMonitor is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ENetworkMonitorClass is repr<CStruct> is export {
+class ENetworkMonitorClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObjectClass $.parent_class;
 }
 
-class EOAuth2Services is repr<CStruct> is export {
+class EOAuth2Services is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv;
 }
 
-class EOAuth2ServicesClass is repr<CStruct> is export {
+class EOAuth2ServicesClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent_class;
 
   # Padding for future expansion
   HAS gpointer     @!reserved[10] is CArray;
 }
 
-class EProxy is repr<CStruct> is export {
+class EProxy is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class EReminderWatcher is repr<CStruct> is export {
+class EReminderWatcher is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject                 $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESExp is repr<CStruct> is export {
+class ESExp is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject      $!parent_object;
 	has Pointer $!priv         ;
 }
 
-class ESExpClass is repr<CStruct> is export {
+class ESExpClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObjectClass $.parent_class;
 }
 
-class ESoupAuthBearer is repr<CStruct> is export {
+class ESoupAuthBearer is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS SoupAuth               $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESoupAuthBearerClass is repr<CStruct> is export {
+class ESoupAuthBearerClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS SoupAuthClass $.parent_class;
 }
 
-class ESoupSession is repr<CStruct> is export {
+class ESoupSession is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS SoupSession         $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESourceExtension is repr<CStruct> is export {
+class ESourceExtension is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv;
 }
 
-class ESourceExtensionClass is repr<CStruct> is export {
+class ESourceExtensionClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent_class;
   has Str          $!name;
 
@@ -850,12 +857,12 @@ class ESourceExtensionClass is repr<CStruct> is export {
 	}
 }
 
-class ESource is repr<CStruct> is export {
+class ESource is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESourceClass is repr<CStruct> is export {
+class ESourceClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent;
 
   # Signals
@@ -886,348 +893,348 @@ class ESourceClass is repr<CStruct> is export {
   HAS gpointer @.reserved[6] is CArray;
 }
 
-class ESourceBackend is repr<CStruct> is export {
+class ESourceBackend is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceBackendClass is repr<CStruct> is export {
+class ESourceBackendClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceAddressBook is repr<CStruct> is export {
+class ESourceAddressBook is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackend $!parent;
 	has Pointer        $!priv  ;
 }
 
-class ESourceAddressBookClass is repr<CStruct> is export {
+class ESourceAddressBookClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackendClass $.parent_class;
 }
 
-class ESourceAlarms is repr<CStruct> is export {
+class ESourceAlarms is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension  $!parent;
 	has Pointer           $!priv  ;
 }
 
-class ESourceAlarmsClass is repr<CStruct> is export {
+class ESourceAlarmsClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceAuthentication is repr<CStruct> is export {
+class ESourceAuthentication is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceAuthenticationClass is repr<CStruct> is export {
+class ESourceAuthenticationClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceAutocomplete is repr<CStruct> is export {
+class ESourceAutocomplete is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceAutocompleteClass is repr<CStruct> is export {
+class ESourceAutocompleteClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceAutoconfig is repr<CStruct> is export {
+class ESourceAutoconfig is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv;
 }
 
-class ESourceAutoconfigClass is repr<CStruct> is export {
+class ESourceAutoconfigClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceSelectable is repr<CStruct> is export {
+class ESourceSelectable is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackend $!parent;
 	has Pointer        $!priv;
 }
 
-class ESourceSelectableClass is repr<CStruct> is export {
+class ESourceSelectableClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackendClass $.parent_class;
 }
 
-class ESourceCalendar is repr<CStruct> is export {
+class ESourceCalendar is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceSelectable  $!parent;
 	has Pointer            $!priv;
 }
 
-class ESourceCalendarClass is repr<CStruct> is export {
+class ESourceCalendarClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceSelectableClass $.parent_class;
 }
 
-class ESourceCamel is repr<CStruct> is export {
+class ESourceCamel is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceCamelClass is repr<CStruct> is export {
+class ESourceCamelClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class ;
 	has GType                 $!settings_type;
 }
 
-class ESourceCollection is repr<CStruct> is export {
+class ESourceCollection is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackend $!parent;
 	has Pointer        $!priv  ;
 }
 
-class ESourceCollectionClass is repr<CStruct> is export {
+class ESourceCollectionClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackendClass $.parent_class;
 }
 
-class ESourceContacts is repr<CStruct> is export {
+class ESourceContacts is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceContactsClass is repr<CStruct> is export {
+class ESourceContactsClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceCredentialsProvider is repr<CStruct> is export {
+class ESourceCredentialsProvider is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESourceCredentialsProviderImpl is repr<CStruct> is export {
+class ESourceCredentialsProviderImpl is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS EExtension $!parent;
 	has Pointer    $!priv  ;
 }
 
-class ESourceCredentialsProviderImplPassword is repr<CStruct> is export {
+class ESourceCredentialsProviderImplPassword is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceCredentialsProviderImpl $!parent;
 	has Pointer                        $!priv  ;
 }
 
-class ESourceCredentialsProviderClass is repr<CStruct> is export {
+class ESourceCredentialsProviderClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent_class;
   has Pointer      $!ref_source;   #= ESource *       (*ref_source)   (ESourceCredentialsProvider *provider, const gchar *uid);
 }
 
-# class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> is export {
+# class ESourceCredentialsProviderImplPasswordClass is repr<CStruct> does GLib::Roles::Pointers is export {
 # 	HAS ESourceCredentialsProviderImplClass $.parent_class;
 # }
 
-class ESourceGoa is repr<CStruct> is export {
+class ESourceGoa is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceGoaClass is repr<CStruct> is export {
+class ESourceGoaClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceLDAP is repr<CStruct> is export {
+class ESourceLDAP is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceLDAPClass is repr<CStruct> is export {
+class ESourceLDAPClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceLocal is repr<CStruct> is export {
+class ESourceLocal is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceLocalClass is repr<CStruct> is export {
+class ESourceLocalClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceMDN is repr<CStruct> is export {
+class ESourceMDN is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceMDNClass is repr<CStruct> is export {
+class ESourceMDNClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceMailAccount is repr<CStruct> is export {
+class ESourceMailAccount is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackend $!parent;
 	has Pointer        $!priv  ;
 }
 
-class ESourceMailAccountClass is repr<CStruct> is export {
+class ESourceMailAccountClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackendClass $.parent_class;
 }
 
-class ESourceMailComposition is repr<CStruct> is export {
+class ESourceMailComposition is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceMailCompositionClass is repr<CStruct> is export {
+class ESourceMailCompositionClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceMailIdentity is repr<CStruct> is export {
+class ESourceMailIdentity is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceMailIdentityClass is repr<CStruct> is export {
+class ESourceMailIdentityClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceMailSignature is repr<CStruct> is export {
+class ESourceMailSignature is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceMailSignatureClass is repr<CStruct> is export {
+class ESourceMailSignatureClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceMailSubmission is repr<CStruct> is export {
+class ESourceMailSubmission is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceMailSubmissionClass is repr<CStruct> is export {
+class ESourceMailSubmissionClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceMailTransport is repr<CStruct> is export {
+class ESourceMailTransport is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackend $!parent;
 	has Pointer        $!priv  ;
 }
 
-class ESourceMailTransportClass is repr<CStruct> is export {
+class ESourceMailTransportClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceBackendClass $.parent_class;
 }
 
-class ESourceMemoList is repr<CStruct> is export {
+class ESourceMemoList is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceSelectable $!parent;
 	has Pointer           $!priv  ;
 }
 
-class ESourceMemoListClass is repr<CStruct> is export {
+class ESourceMemoListClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceSelectableClass $.parent_class;
 }
 
-class ESourceOffline is repr<CStruct> is export {
+class ESourceOffline is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension  $!parent;
 	has Pointer           $!priv  ;
 }
 
-class ESourceOfflineClass is repr<CStruct> is export {
+class ESourceOfflineClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceOpenPGP is repr<CStruct> is export {
+class ESourceOpenPGP is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceOpenPGPClass is repr<CStruct> is export {
+class ESourceOpenPGPClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceProxy is repr<CStruct> is export {
+class ESourceProxy is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceProxyClass is repr<CStruct> is export {
+class ESourceProxyClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceRefresh is repr<CStruct> is export {
+class ESourceRefresh is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceRefreshClass is repr<CStruct> is export {
+class ESourceRefreshClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceRegistry is repr<CStruct> is export {
+class ESourceRegistry is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESourceRegistryWatcher is repr<CStruct> is export {
+class ESourceRegistryWatcher is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class ESourceResource is repr<CStruct> is export {
+class ESourceResource is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceResourceClass is repr<CStruct> is export {
+class ESourceResourceClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceRevisionGuards is repr<CStruct> is export {
+class ESourceRevisionGuards is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceRevisionGuardsClass is repr<CStruct> is export {
+class ESourceRevisionGuardsClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceSMIME is repr<CStruct> is export {
+class ESourceSMIME is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceSMIMEClass is repr<CStruct> is export {
+class ESourceSMIMEClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceSecurity is repr<CStruct> is export {
+class ESourceSecurity is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceSecurityClass is repr<CStruct> is export {
+class ESourceSecurityClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceTaskList is repr<CStruct> is export {
+class ESourceTaskList is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceSelectable $!parent;
 	has Pointer           $!priv  ;
 }
 
-class ESourceTaskListClass is repr<CStruct> is export {
+class ESourceTaskListClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceSelectableClass $.parent_class;
 }
 
-class ESourceUoa is repr<CStruct> is export {
+class ESourceUoa is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceUoaClass is repr<CStruct> is export {
+class ESourceUoaClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceWeather is repr<CStruct> is export {
+class ESourceWeather is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceWeatherClass is repr<CStruct> is export {
+class ESourceWeatherClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class ESourceWebdav is repr<CStruct> is export {
+class ESourceWebdav is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtension $!parent;
 	has Pointer          $!priv  ;
 }
 
-class ESourceWebdavClass is repr<CStruct> is export {
+class ESourceWebdavClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESourceExtensionClass $.parent_class;
 }
 
-class EUri is repr<CStruct> is export {
+class EUri is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str   $!protocol;
 	has Str   $!user    ;
 	has Str   $!authmech;
@@ -1240,7 +1247,7 @@ class EUri is repr<CStruct> is export {
 	has Str   $!fragment;
 }
 
-class EWebDAVAccessControlEntry is repr<CStruct> is export {
+class EWebDAVAccessControlEntry is repr<CStruct> does GLib::Roles::Pointers is export {
 	has EWebDAVACEPrincipalKind $!principal_kind;
 	has Str                     $!principal_href;
 	has guint32                 $!flags         ;
@@ -1248,7 +1255,7 @@ class EWebDAVAccessControlEntry is repr<CStruct> is export {
 	has GSList                  $!privileges    ;
 }
 
-class EWebDAVDiscoveredSource is repr<CStruct> is export {
+class EWebDAVDiscoveredSource is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str     $!href        ;
 	has guint32 $!supports    ;
 	has Str     $!display_name;
@@ -1256,7 +1263,7 @@ class EWebDAVDiscoveredSource is repr<CStruct> is export {
 	has Str     $!color       ;
 }
 
-class EWebDAVPrivilege is repr<CStruct> is export {
+class EWebDAVPrivilege is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str                  $!ns_uri     ;
 	has Str                  $!name       ;
 	has Str                  $!description;
@@ -1264,14 +1271,14 @@ class EWebDAVPrivilege is repr<CStruct> is export {
 	has EWebDAVPrivilegeHint $!hint       ;
 }
 
-class EWebDAVPropertyChange is repr<CStruct> is export {
+class EWebDAVPropertyChange is repr<CStruct> does GLib::Roles::Pointers is export {
 	has EWebDAVPropertyChangeKind $!kind  ;
 	has Str                       $!ns_uri;
 	has Str                       $!name  ;
 	has Str                       $!value ;
 }
 
-class EWebDAVResource is repr<CStruct> is export {
+class EWebDAVResource is repr<CStruct> does GLib::Roles::Pointers is export {
 	has EWebDAVResourceKind $!kind          ;
 	has guint32             $!supports      ;
 	has Str                 $!href          ;
@@ -1285,17 +1292,17 @@ class EWebDAVResource is repr<CStruct> is export {
 	has Str                 $!color         ;
 }
 
-class EWebDAVSession is repr<CStruct> is export {
+class EWebDAVSession is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ESoupSession $!parent;
 	has Pointer      $!priv  ;
 }
 
-class EXmlDocument is repr<CStruct> is export {
+class EXmlDocument is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
 }
 
-class addrinfo is repr<CStruct> is export {
+class addrinfo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has gint     $!ai_flags    ;
 	has gint     $!ai_family   ;
 	has gint     $!ai_socktype ;
@@ -1306,69 +1313,69 @@ class addrinfo is repr<CStruct> is export {
 	has addrinfo $!ai_next     ;
 }
 
-class camel_search_word is repr<CStruct> is export {
+class camel_search_word is repr<CStruct> does GLib::Roles::Pointers is export {
 	has camel_search_word_t $!type;
 	has Str                 $!word;
 }
 
-class camel_search_words is repr<CStruct> is export {
+class camel_search_words is repr<CStruct> does GLib::Roles::Pointers is export {
 	has gint                $!len  ;
 	has camel_search_word_t $!type ;
 	has camel_search_word   $!words;
 }
 
-class encrypt is repr<CStruct> is export {
+class encrypt is repr<CStruct> does GLib::Roles::Pointers is export {
 	has CamelCipherValidityEncrypt $!status     ;
 	has Str                        $!description;
 	has GQueue                     $!encrypters ;
 }
 
-class sign is repr<CStruct> is export {
+class sign is repr<CStruct> does GLib::Roles::Pointers is export {
 	has CamelCipherValiditySign $!status     ;
 	has Str                     $!description;
 	has GQueue                  $!signers    ;
 }
 
-class EBook is repr<CStruct> is export {
+class EBook is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
-class EBookClient is repr<CStruct> is export {
+class EBookClient is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EClient $!parent;
   has Pointer $!priv  ;
 }
 
-class EBookClientClass is repr<CStruct> is export {
+class EBookClientClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS Pointer $.parent_class; # EClientClass
 }
 
-class EBookClientCursor is repr<CStruct> is export {
+class EBookClientCursor is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
-class EBookClientView is repr<CStruct> is export {
+class EBookClientView is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
-class EBookView is repr<CStruct> is export {
+class EBookView is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
-class EDestination is repr<CStruct> is export {
+class EDestination is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $.object;
   has Pointer $!priv  ;
 }
 
-class EVCard is repr<CStruct> is export {
+class EVCard is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ;
 }
 
-class EVCardClass is repr<CStruct> is export {
+class EVCardClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObjectClass $.parent_class;
 	has Pointer      $!reserved0;    #= &(void);
 	has Pointer      $!reserved1;    #= &(void);
@@ -1377,21 +1384,21 @@ class EVCardClass is repr<CStruct> is export {
 	has Pointer      $!reserved4;    #= &(void);
 }
 
-class EContact is repr<CStruct> is export {
+class EContact is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EVCard  $!parent;
   has Pointer $!priv  ;
 }
 
-class ESourceBackendSummarySetup is repr<CStruct> is export {
+class ESourceBackendSummarySetup is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS ESourceBackend  $!parent;
   has Pointer         $!priv  ;
 }
 
-class ESourceBackendSummarySetupClass is repr<CStruct> is export {
+class ESourceBackendSummarySetupClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS ESourceBackendClass $.p1arent_class;
 }
 
-class EContactName is repr<CStruct> is export {
+class EContactName is repr<CStruct> does GLib::Roles::Pointers is export {
 	# cw: Needs accessors!
   has Str $!family;
   has Str $!given;
@@ -1400,7 +1407,7 @@ class EContactName is repr<CStruct> is export {
   has Str $!suffixes;
 }
 
-class EContactGeo is repr<CStruct> is export {
+class EContactGeo is repr<CStruct> does GLib::Roles::Pointers is export {
 	has gdouble $.latitude  is rw;
 	has gdouble $.longitude is rw;
 }
@@ -1432,12 +1439,12 @@ class EPhotoData is repr<CUnion> {
 	has Str               $!uri;
 }
 
-class EContactPhoto is repr<CStruct> is export {
+class EContactPhoto is repr<CStruct> does GLib::Roles::Pointers is export {
    has EContactPhotoType $.type is rw;
 	 HAS EPhotoData        $.data;
 }
 
-class EContactAddress is repr<CStruct> is export {
+class EContactAddress is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Str $!address_format; #= the two letter country code that determines the format/meaning of the following fields
 	has Str $!po;
 	has Str $!ext;
@@ -1448,7 +1455,7 @@ class EContactAddress is repr<CStruct> is export {
 	has Str $!country;
 }
 
-class EContactDate is repr<CStruct> is export {
+class EContactDate is repr<CStruct> does GLib::Roles::Pointers is export {
   has guint $.year  is rw;
   has guint $.month is rw;
   has guint $.day   is rw;
@@ -1462,7 +1469,7 @@ class EContactDate is repr<CStruct> is export {
 
 }
 
-class EContactCert is repr<CStruct> is export {
+class EContactCert is repr<CStruct> does GLib::Roles::Pointers is export {
   has gsize         $.length is rw;
   has CArray[uint8] $.data;
 
@@ -1492,10 +1499,10 @@ class EContactCert is repr<CStruct> is export {
 			FETCH => -> $                   { $!data },
 			STORE => -> $, CArray[uint8] \v { $!data := v };
 	}
-	
+
 }
 
-class EContactClass is repr<CStruct> is export {
+class EContactClass is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS EVCardClass $.parent_class;
 	has Pointer     $!reserved0;    #= &(void)
 	has Pointer     $!reserved1;    #= &(void)
@@ -1506,112 +1513,112 @@ class EContactClass is repr<CStruct> is export {
 
 # libebackend
 
-class EBackend is repr<CStruct> is export {
+class EBackend is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= EBackendPrivate
 }
 
-class EBackendFactory is repr<CStruct> is export {
+class EBackendFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EExtension $!parent;
   has Pointer    $!priv  ; #= EBackendFactoryPrivate
 }
 
-class ECache is repr<CStruct> is export {
+class ECache is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= ECachePrivate
 }
 
-class ECollectionBackend is repr<CStruct> is export {
+class ECollectionBackend is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EBackend $!parent;
   has Pointer  $!priv  ; #= ECollectionBackendPrivate
 }
 
-class ECollectionBackendFactory is repr<CStruct> is export {
+class ECollectionBackendFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EBackendFactory $!parent;
   has Pointer         $!priv  ; #= ECollectionBackendFactoryPrivate
 }
 
-class EDBusServer is repr<CStruct> is export {
+class EDBusServer is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= EDBusServerPrivate
 }
 
-class EDataFactory is repr<CStruct> is export {
+class EDataFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EDBusServer $!parent;
   has Pointer     $!priv  ; #= EDataFactoryPrivate
 }
 
-class EDbHash is repr<CStruct> is export {
+class EDbHash is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS Pointer $!priv; #= EDbHashPrivate
 }
 
-class EFileCache is repr<CStruct> is export {
+class EFileCache is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= EFileCachePrivate
 }
 
-class EFileCacheClass is repr<CStruct> is export {
+class EFileCacheClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent_class;
 }
 
-class EOfflineListener is repr<CStruct> is export {
+class EOfflineListener is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= EOfflineListenerPrivate
 }
 
-class EServerSideSource is repr<CStruct> is export {
+class EServerSideSource is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS ESource $!parent;
   has Pointer $!priv  ; #= EServerSideSourcePrivate
 }
 
-class EServerSideSourceClass is repr<CStruct> is export {
+class EServerSideSourceClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS ESourceClass $.parent_class;
 }
 
-class EServerSideSourceCredentialsProvider is repr<CStruct> is export {
+class EServerSideSourceCredentialsProvider is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS ESourceCredentialsProvider $!parent;
   has Pointer                    $!priv  ; #= EServerSideSourceCredentialsProviderPrivate
 }
 
-class EServerSideSourceCredentialsProviderClass is repr<CStruct> is export {
+class EServerSideSourceCredentialsProviderClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS ESourceCredentialsProviderClass $.parent_class;
 }
 
-class ESourceRegistryServer is repr<CStruct> is export {
+class ESourceRegistryServer is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EDataFactory $!parent;
   has Pointer      $!priv  ; #= ESourceRegistryServerPrivate
 }
 
-class ESubprocessFactory is repr<CStruct> is export {
+class ESubprocessFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= ESubprocessFactoryPrivate
 }
 
-class EUserPrompter is repr<CStruct> is export {
+class EUserPrompter is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= EUserPrompterPrivate
 }
 
-class EUserPrompterClass is repr<CStruct> is export {
+class EUserPrompterClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $!parent;
 }
 
-class EUserPrompterServer is repr<CStruct> is export {
+class EUserPrompterServer is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EDBusServer $!parent;
   has Pointer     $!priv  ; #= EUserPrompterServerPrivate
 }
 
-class EUserPrompterServerExtension is repr<CStruct> is export {
+class EUserPrompterServerExtension is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EExtension $!parent;
   has Pointer    $!priv  ; #= EUserPrompterServerExtensionPrivate
 }
 
-class EWebDAVCollectionBackend is repr<CStruct> is export {
+class EWebDAVCollectionBackend is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS ECollectionBackend $!parent;
 	has Pointer            $!priv  ; #= EWebDAVCollectionBackendPrivate
 }
 
-class ESourceCredentialsProviderImplClass is repr<CStruct> is export {
+class ESourceCredentialsProviderImplClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EExtensionClass $.parent_class;
   has Pointer         $.can_process;   #= gboolean (*can_process)   (ESourceCredentialsProviderImpl *provider_impl, ESource *source);
   has Pointer         $.can_store;     #= gboolean (*can_store)     (ESourceCredentialsProviderImpl *provider_impl);
@@ -1623,12 +1630,12 @@ class ESourceCredentialsProviderImplClass is repr<CStruct> is export {
 
 # libedata-cal
 
-class ECalBackendFactory is repr<CStruct> is export {
+class ECalBackendFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   has EBackendFactory $!parent;
   has Pointer         $!priv  ;
 }
 
-class EBackendFactoryClass is repr<CStruct> is export {
+class EBackendFactoryClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EExtensionClass $.parent_class;
 
   has Pointer  $.get_hash_key;                # const gchar *   (*get_hash_key)         (EBackendFactory *factory);
@@ -1641,59 +1648,59 @@ class EBackendFactoryClass is repr<CStruct> is export {
 };
 
 
-class ECalBackendFactoryClass is repr<CStruct> is export {
+class ECalBackendFactoryClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has EBackendFactoryClass $!parent_class  ;
   has gchar                $!factory_name  ;
   has icalcomponent_kind   $!component_kind;
   has GType                $!backend_type  ;
 }
 
-class ECalBackendSExp is repr<CStruct> is export {
+class ECalBackendSExp is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObject                $!parent;
   has Pointer $!priv  ;
 }
 
-class ECalBackendSExpClass is repr<CStruct> is export {
+class ECalBackendSExpClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObjectClass $!parent_class;
 }
 
-class ECalBackend is repr<CStruct> is export {
+class ECalBackend is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EBackend $!parent;
   has Pointer  $!priv;
 }
 
-class ECalBackendSync is repr<CStruct> is export {
+class ECalBackendSync is repr<CStruct> does GLib::Roles::Pointers is export {
   has ECalBackend            $!parent;
   has Pointer $!priv  ;
 }
 
-class ECalCache is repr<CStruct> is export {
+class ECalCache is repr<CStruct> does GLib::Roles::Pointers is export {
   has ECache           $!parent;
   has Pointer $!priv  ;
 }
 
-class ECalMetaBackend is repr<CStruct> is export {
+class ECalMetaBackend is repr<CStruct> does GLib::Roles::Pointers is export {
   has ECalBackendSync        $!parent;
   has Pointer $!priv  ;
 }
 
-class ECalMetaBackendInfo is repr<CStruct> is export {
+class ECalMetaBackendInfo is repr<CStruct> does GLib::Roles::Pointers is export {
   has gchar $!uid     ;
   has gchar $!revision;
   has gchar $!object  ;
   has gchar $!extra   ;
 }
 
-class EDataCalClass is repr<CStruct> is export {
+class EDataCalClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObjectClass $!parent_class;
 }
 
-class EDataCalFactory is repr<CStruct> is export {
+class EDataCalFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   has EDataFactory           $!parent;
   has Pointer $!priv  ;
 }
 
-class EDBusServerClass is repr<CStruct> is export {
+class EDBusServerClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent_class;
 
   has Str          $.bus_name;
@@ -1708,7 +1715,7 @@ class EDBusServerClass is repr<CStruct> is export {
 	has gpointer     @.reserved[14] is CArray;
 }
 
-class EDataFactoryClass is repr<CStruct> is export {
+class EDataFactoryClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS EDBusServerClass $.parent_class;
   has GType            $.backend_factory_type;
   has Str              $.factory_object_path;
@@ -1726,34 +1733,34 @@ class EDataFactoryClass is repr<CStruct> is export {
 }
 
 
-class EDataCalFactoryClass is repr<CStruct> is export {
+class EDataCalFactoryClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has EDataFactoryClass $!parent_class;
 }
 
-class EDataCalView is repr<CStruct> is export {
+class EDataCalView is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObject             $!parent;
   has Pointer $!priv  ;
 }
 
-class EDataCalViewClass is repr<CStruct> is export {
+class EDataCalViewClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObjectClass $!parent_class;
 }
 
-class EIntervalTree is repr<CStruct> is export {
+class EIntervalTree is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObject              $!parent;
   has Pointer $!priv  ;
 }
 
-class EIntervalTreeClass is repr<CStruct> is export {
+class EIntervalTreeClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has GObjectClass $!parent_class;
 }
 
-class ESubprocessCalFactory is repr<CStruct> is export {
+class ESubprocessCalFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   has ESubprocessFactory $!parent;
   has Pointer            $!priv  ;
 }
 
-class ESubprocessFactoryClass is repr<CStruct> is export {
+class ESubprocessFactoryClass is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObjectClass $.parent_class;
   # Virtual Methods
   has Pointer      $.ref_backend;     # EBackend * (*ref_backend)          (ESourceRegistry *registry, ESource *source, const gchar *backend_factory_type_name);
@@ -1763,11 +1770,11 @@ class ESubprocessFactoryClass is repr<CStruct> is export {
   has Pointer      $.backend_closed;  # void       (*backend_closed)       (ESubprocessFactory *subprocess_factory, EBackend *backend);
 }
 
-class ESubprocessCalFactoryClass is repr<CStruct> is export {
+class ESubprocessCalFactoryClass is repr<CStruct> does GLib::Roles::Pointers is export {
   has ESubprocessFactoryClass $!parent_class;
 }
 
-class ESExpResultValue is repr<CUnion> is export {
+class ESExpResultValue is repr<CUnion> does GLib::Roles::Pointers is export {
   has GPtrArray $!ptrarray;
   has gint      $.number   is rw;
   has gchar     $!string;
@@ -1787,7 +1794,7 @@ class ESExpResultValue is repr<CUnion> is export {
 	}
 }
 
-class ESExpResult is repr<CStruct> is export {
+class ESExpResult is repr<CStruct> does GLib::Roles::Pointers is export {
 	has ESExpResultType  $.type;
 	HAS ESExpResultValue $.value;
 	has gboolean         $.time_generator;
@@ -1795,7 +1802,50 @@ class ESExpResult is repr<CStruct> is export {
 	has time_t           $.occuring_end;
 }
 
-class EDataCal is repr<CStruct> is export {
+# &ESExpFunc(ESExp, gint, CArray[Pointer[ESExpResult]], gpointer)
+# &ESExpFuncI(ESExp, gint, CArray[Pointer[ESExpTerm]], gpointer)
+
+class ESExpFunc is repr<CUnion> is export {
+  has Pointer $!func;  #= fp:ESExpFunc
+  has Pointer $!ifunc; #= fp:ESExpIFunc
+}
+
+class ESExpSymbol is repr<CStruct> is export {
+  has gint       $.type is rw; #= vv:(ESEXP_TERM_FUNC, ESEXP_TERM_VAR)
+  has Str        $!name      ;
+  has gpointer   $!data      ;
+  HAS ESExpFunc  $!f         ;
+}
+
+my %terms-cache;
+class ESExpTermValue is repr<CUnion> is export {
+  has Str          $.string  is rw;
+  has gint         $.number  is rw;
+  has gint         $.boolean is rw;
+  has time_t       $.time    is rw;
+  HAS ESExpFunc    $.func         ;
+  has ESExpSymbol  $!var          ;
+}
+
+class ESExpTerm is repr<CStruct> is export {
+  has ESExpTermType  $.type    is rw;
+  HAS ESExpTermValue $.value        ;
+}
+
+class ESExpValueFunc {
+  has ESExpSymbol                $!sym            ;
+  has CArray[Pointer[ESExpTerm]] $!terms          ; #= sa:$!termcount
+  has gint                       $.termcount is rw;
+
+  method terms {
+    unless %terms-cache{ self.WHERE } {
+      %terms-cache{ self.WHERE } = SizedCArray.new($!terms, $!termcount);
+    }
+    %terms-cache{ self.WHERE }
+  }
+}
+
+class EDataCal is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $.parent;
   has Pointer $!priv;
 }
@@ -1806,5 +1856,6 @@ BEGIN {
 												 #EPhotoDataInlined,
 	                       EContactAddress,
 												 #EContactCert,
-												 EContactName;
+												 EContactName,
+                         ECalComponentId;
 }
