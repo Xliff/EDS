@@ -37,7 +37,7 @@ class ECalComponentAlarms        is repr<CPointer> is export does GLib::Roles::P
 class ECalComponentAlarmTrigger  is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAttendee      is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentDateTime      is repr<CPointer> is export does GLib::Roles::Pointers { }
-class ECalComponentId            is repr<CPointer> is export does GLib::Roles::Pointers { }
+#class ECalComponentId            is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentOrganizer     is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentParameterBag  is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentPeriod        is repr<CPointer> is export does GLib::Roles::Pointers { }
@@ -45,6 +45,7 @@ class ECalComponentPrivate       is repr<CPointer> is export does GLib::Roles::P
 class ECalComponentPropertyBag   is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentRange         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentText          is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECollator                  is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EExtensible                is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ENamedParameters           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Service             is repr<CPointer> is export does GLib::Roles::Pointers { }
@@ -148,3 +149,18 @@ constant EVC_PARENT_CL             = 'X-EVOLUTION-PARENT-UID';
 constant EVC_CL_UID                = 'X-EVOLUTION-CONTACT-LIST-UID';
 constant EVC_X_DEST_EMAIL          = 'X-EVOLUTION-DEST-EMAIL';
 constant EVC_X_DEST_NAME           = 'X-EVOLUTION-DEST-NAME';
+
+sub e-test-utils is export {
+  state $libname = do {
+    my ($arch, $os, $ext) = resources-info;
+    my $libkey = "lib/{ $arch }/{ $os }/e-test-utils.{ $ext }";
+    say "Using '$libkey' as tree support library." if $DEBUG;
+    $libname = %?RESOURCES{$libkey}.absolute;
+  }
+
+  $libname;
+}
+
+# BEGIN {
+#   constant e-test-utils is export = e-test-utils-location;
+# }
