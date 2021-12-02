@@ -1528,6 +1528,11 @@ class EBackendFactory is repr<CStruct> does GLib::Roles::Pointers is export {
   has Pointer    $!priv  ; #= EBackendFactoryPrivate
 }
 
+class EBookBackend is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS EBackend $!parent;
+  has Pointer  $!priv;
+}
+
 class ECache is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= ECachePrivate
@@ -1546,6 +1551,11 @@ class ECollectionBackendFactory is repr<CStruct> does GLib::Roles::Pointers is e
 class EDBusServer is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= EDBusServerPrivate
+}
+
+class EDataBookView is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS GObject $!parent;
+  has Pointer $!priv;
 }
 
 class EDataFactory is repr<CStruct> does GLib::Roles::Pointers is export {
