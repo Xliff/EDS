@@ -6,13 +6,13 @@ use GLib::Raw::Definitions;
 use GLib::Raw::Structs;
 use GLib::Raw::Object;
 use GIO::Raw::Definitions;
-use ICal::Raw::Definitions;         # cw: -XXX- TO BE REMOVED! 
+use ICal::Raw::Definitions;         # cw: -XXX- TO BE REMOVED!
 use ICal::GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Calendar;
+unit package Evolution::Raw::Calendar::Client;
 
 ### /usr/include/evolution-data-server/libecal/e-cal-client.h
 

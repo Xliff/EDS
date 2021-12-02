@@ -17,7 +17,7 @@ use Evolution::Roles::TimezoneCache;
 our subset ECalClientAncestry is export of Mu
   where ECalClient | ETimezoneCache | EClientAncestry;
 
-class Evolution::Calendar is Evolution::Client {
+class Evolution::Calendar::Client is Evolution::Client {
   also does Evolution::Roles::TimezoneCache;
 
   has ECalClient $!ecal is implementor;
@@ -544,7 +544,7 @@ class Evolution::Calendar is Evolution::Client {
     $rv;
   }
 
-  method error_to_string (Evolution::Calendar:U: Int() $code)
+  method error_to_string (Evolution::Calendar::Client:U: Int() $code)
     is also<error-to-string>
   {
     my ECalClientError $c = $code;
