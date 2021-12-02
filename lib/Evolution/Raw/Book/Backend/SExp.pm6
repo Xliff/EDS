@@ -5,6 +5,7 @@ use NativeCall;
 use GLib::Raw::Definitions;
 use GLib::Raw::Enums;
 use Evolution::Raw::Definitions;
+use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Book::Backend::SExp;
 
