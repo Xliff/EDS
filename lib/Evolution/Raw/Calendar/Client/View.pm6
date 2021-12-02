@@ -9,7 +9,7 @@ use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 use Evolution::Raw::Enums;
 
-unit package Evolution::Raw::Calendar::View;
+unit package Evolution::Raw::Calendar::Client::View;
 
 ### /usr/include/evolution-data-server/libecal/e-cal-client-view.h
 

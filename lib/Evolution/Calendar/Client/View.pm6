@@ -5,20 +5,20 @@ use Method::Also;
 use NativeCall;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::Calendar::View;
+use Evolution::Raw::Calendar::Client::View;
 
 use GIO::DBus::Connection;
 use Evolution::Calendar;
 
 use GLib::Roles::Object;
-use Evolution::Roles::Signals::Calendar::View;
+use Evolution::Roles::Signals::Calendar::Client::View;
 
 our subset ECalClientViewAncestry is export of Mu
   where ECalClientView | GObject;
 
-class Evolution::Calendar::View {
+class Evolution::Calendar::Client::View {
   also does GLib::Roles::Object;
-  also does Evolution::Roles::Signals::Calendar::View;
+  also does Evolution::Roles::Signals::Calendar::Client::View;
 
   has ECalClientView $!ecv;
 
@@ -58,25 +58,25 @@ class Evolution::Calendar::View {
   # Is originally:
   # ECalClientView, GError, gpointer --> void
   method complete {
-    self.connect-complete($!ecv.p);
+    self.connect-error($!ecv.p, 'complete');
   }
 
   # Is originally:
   # ECalClientView, gpointer, gpointer --> void
   method objects-added {
-    self.connect-objects($!ecv.p, 'objects-added');
+    self.connect-pointer`($!ecv.p, 'objects-added');
   }
 
   # Is originally:
   # ECalClientView, gpointer, gpointer --> void
   method objects-modified {
-    self.connect-objects($!ecv.p, 'objects-modified');
+    self.connect-pointer($!ecv.p, 'objects-modified');
   }
 
   # Is originally:
   # ECalClientView, gpointer, gpointer --> void
   method objects-removed {
-    self.connect-objects($!ecv.p, 'objects-removed');
+    self.connect-pointer($!ecv.p, 'objects-removed');
   }
 
   # Is originally:
