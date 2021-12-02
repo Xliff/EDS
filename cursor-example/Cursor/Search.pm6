@@ -6,6 +6,8 @@ use GTK::Raw::Types;
 use GTK::Builder;
 use Evolution::Book::Query;
 
+use GTK::Builder::Roles::Widget;
+
 my $ui-def;
 
 constant SEARCH-UI-FILE = 'cursor-search.ui';
@@ -16,17 +18,17 @@ our enum SearchType is export <
 	SEARCH_EMAIL
 >;
 
-class Cursor::Search {
-	has            $!top          handles<
-																	name
-																	primary-icon-activatable
-																	primary-icon-sensitive
-																	show
-																>;
-  has            $!popup;
-  has            $!name_radio;
-  has            $!phone_radio;
-  has            $!email_radio;
+class Cursor::Search does GTK::Builder::Roles::Widget {
+	has GTK::SearchEntry $!top         is parent-widget handles<
+																       name
+																       primary-icon-activatable
+																       primary-icon-sensitive
+																       show
+																     >;
+  has                  $!popup;
+  has                  $!name_radio  is widget;
+  has                  $!phone_radio is widget;
+  has                  $!email_radio is widget;
 
   has SearchType $!type;
   has Str        $!sexp;
@@ -104,13 +106,16 @@ class Cursor::Search {
 		});
   }
 
-	method GTK::Raw::Definitions::GtkWidget
-	{ $!top }
-
 	method sexp         { $!sexp }
 
 	method sexp-changed { $!sexp-supplier.Supply }
 
+  # -XXX-
+  # cw: Although role puns this, we're still suffering from the Method::Also
+  #     no-aliases-from-role bug.
+  method GTK::Raw::Definitions::GtkWidget { $!top.GtkWidget }
+  method GtkWidget                        { $!top.GtkWidget }
+  
 }
 
 BEGIN {

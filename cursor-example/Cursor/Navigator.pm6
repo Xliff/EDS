@@ -2,12 +2,14 @@ use GTK::Raw::Types;
 
 use GTK::Scale;
 
-class Cursor::Navigator {
+use GTK::Builder::Roles::Widget;
+
+class Cursor::Navigator does GTK::Builder::Roles::Widget {
   has @!alphabet;
   has $!index;
 
   # Should also handle coercion! ;D
-  has GTK::Scale $!scale handles(*);
+  has GTK::Scale $!scale handles(*) is parent-widget;
 
   has $!adj;
   has %!supplier;

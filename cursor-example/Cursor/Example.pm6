@@ -26,53 +26,15 @@ constant TICK_TIMEOUT    = 100;
 
 my $ui-def;
 
-constant EXAMPLE-UI-FILE = 'cursor-search.ui';
+constant EXAMPLE-UI-FILE = 'cursor-example.ui';
 
-my %attr-attribute-alias;
+use GTK::Builder::Roles::Widget;
 
-# This might be a lot more graceful if the attributes that DO NOT have
-# their associated control named after themselves, have a mechanism
-# to determine their alias.
-#
-#
-role WidgetRole { }
-#
-role BuilderWidgets {
-  method widget-attributes {
-    self.^attributes.grep( * ~~ WidgetRole )
-  }
+class Cursor::Example does GTK::Builder::Roles::Widget {
 
-  method builder-names {
-    state %anti-attr-attribute-name;
-
-    INIT {
-      my %aliases = %attr-attribute-alias.antipairs.Hash;
-      %anti-attr-attribute-name{ $_ } = %aliases{$_} // $_
-        for %attr-attribute-alias.keys;
-    }
-
-    %anti-attr-attribute-name.Map
-  }
-}
-#
-multi sub trait_mod:<is> (Attribute $a, :$widget is required) {
-  $a but WidgetRole;
-}
-#
-multi sub trait_mod:<is> (Attribute $a, :$builder-name is required) {
-  %attr-attribute-alias{ $a.name.substr(2) } =
-    $builder-name ~~ Positional ?? $builder-name[0] !! $builder-name
-}
-# And then:
-multi sub getAttributeUIName ($n) {
-  %attr-attribute-alias{$n}.defined ?? %attr-attribute-alias{$n} !! $n
-}
-
-class Cursor::Example does BuilderWidgets {
-
-  has GTK::Window $!top             handles(*) is widget;
-  has             $!up-button                  is widget is builder-name<browse_up_button>;
-  has             $!down-button                is widget is builder-name<browse_down_button>;
+  has GTK::Window $!top             handles(*) is parent-widget;
+  has             $!up-button                  is widget         is builder-name<browse_up_button>;
+  has             $!down-button                is widget         is builder-name<browse_down_button>;
   has             $!progressbar                is widget;
   has             $!alphabet-label             is widget;
   has             $!search                     is widget;
@@ -130,26 +92,70 @@ class Cursor::Example does BuilderWidgets {
           #   default       { .rethrow }
           # }
 
-          for $dom.find('//*[starts-with(@class,"Cursor")]') {
+          for $dom.root.find('//*[starts-with(@class,"Cursor")]') -> $e {
             my ($oldClass, $oldId) =
-              ( .getAttribute('class'), .getAttribute('id') );
+              ( .getAttribute('class'), .getAttribute('id') ) given $e;
 
             say "OLDCLASS: { $oldClass // '--undef--' }";
             say "OLDID:    { $oldId    // '--undef--' }";
-
-            $dom.setAttribute('class', 'GtkBin');
-            $dom.setAttribute('id', $oldId ~ '_box');
 
             # cw: $oldClass needs to go through the Builder Registry for the
             #     proper class name!
             my $controlClass = Cursor::Builder::Registry.typeClass{$oldClass};
             die "Cannot find a valid class for '$oldClass'!"
               unless $controlClass;
-
+            # cw: We need the implementor (not the object) name
             my $control = ::($controlClass).new;
+
+            my $parent = $control.parent-class.^name;
+            say "Control Parent: { $parent }";
+            # cw: *_box objects should use the simplest container available,
+            #     For now, this is GtkBox
+            my $newClassName = 'GtkBox';
+            # cw: Since we are using a GtkBox as single-child-only, the
+            #     orientation can be arbitrary, so let's pick
+            #     HORIZONTAL. Also set border-width and spacing to 0.
+            for <orientation    horizontal>,
+                <border_width   0         >,
+                <spacing        0         >
+            {
+              my $newProperty = $dom.createElement('property');
+              $newProperty.setAttribute('name', .[0]);
+              $newProperty.appendText( .[1] );
+              $e.addChild($newProperty);
+            }
+
+            # draw_value / has_origin are invalid GtkBuilder Propertyies and
+            # must be removed.
+            # cw: What do they do? They need to be implemented Raku-Side.
+            for <draw_value has_origin> {
+              if $e.find('.//property[@name="' ~ $_ ~ '"]') -> $ce {
+                $e.removeChild( $ce[0] );
+              }
+            }
+
+            given $e.name {
+              when 'object' {
+                # cw: Not enough. Now custom classes need to register their
+                #     proper parent, since it may not exist, here.
+                $e.setAttribute('class', $newClassName);
+                $e.setAttribute('id', $oldId ~ '_box');
+              }
+
+              default {
+                next;
+              }
+            }
+
             $control.show;
             $control.name = $oldClass;
             %controls{$oldId} = $control;
+          }
+
+          # Remove 'index-changed' signal, since it is implemented via
+          # Raku, and not GTK
+          if $dom.root.find('//signal[@name="index-changed"]') -> $ce {
+            $ce[0].parent.removeChild( $ce[0] );
           }
         }
       )
@@ -160,8 +166,13 @@ class Cursor::Example does BuilderWidgets {
       for $builder.pairs;
 
     # Add custom controls to their containers.
-    %!ui-attributes{ .key ~ '_box'}.add( .value ) for %controls.pairs;
+    # Note that ::Roles::Widget objects may not inherit from GTK::Widget and
+    #           must be coerced manually.
+    %!ui-attributes{ .key ~ '_box'}.add(
+      .value ~~ GTK::Builder::Roles::Widget ?? .value.GtkWidget !! .value
+    ) for %controls.pairs;
 
+    # cw: Now we have something much nicer!
     # for $builder.pairs {
     #   when .key eq 'browse_up_button'    { $!up-button      = .value }
     #   when .key eq 'browse_down_button'  { $!down-button    = .value }
@@ -169,6 +180,9 @@ class Cursor::Example does BuilderWidgets {
     #   when .key eq 'alphabet_label'      { $!alphabet_label = .value }
     #   when .key eq 'navigator'           { $!navigator      = .value }
     # }
+    self.assign-attributes($builder);
+
+    # cw: -XXX- Are the attributes actually getting set?
 
     $!up-button.button-press.tap(-> *@a {
       self.load-page if self.move-cursor(E_BOOK_CURSOR_ORIGIN_CURRENT, -1);
@@ -254,9 +268,6 @@ class Cursor::Example does BuilderWidgets {
     $!top.no-show-all = False;
     $!top.show-all;
   }
-
-  method GTK::Raw::Definitions::Widget
-  { $!top }
 
   method new ($vcard-path) {
     self.bless( :$vcard-path );

@@ -10,14 +10,16 @@ constant SLOT-UI-FILE = 'cursor-slot.ui';
 
 my $ui-def;
 
-class Cursor::Slot {
-  has GTK::Grid $!top           handles(*); # GtkGrid
-  has           $!area;                     # GtkGrid
-  has           $!name_label;               # GtkLabel
-  has           $!email_label;              # GtkLabel
-  has           $!phone_label;              # GtkLabel
-  has           $!label1;                   # GtkLabel
-  has           $!label2;                   # GtkLabel
+use GTK::Builder::Roles::Widget;
+
+class Cursor::Slot does GTK::Builder::Roles::Widget {
+  has GTK::Grid $!top           handles(*) is parent-widget; # GtkGrid
+  has           $!area                     is widget;        # GtkGrid
+  has           $!name_label               is widget;        # GtkLabel
+  has           $!email_label              is widget;        # GtkLabel
+  has           $!phone_label              is widget;        # GtkLabel
+  has           $!label1                   is widget;        # GtkLabel
+  has           $!label2                   is widget;        # GtkLabel
 
   has           $!contact;                  # EContact
 
@@ -51,9 +53,6 @@ class Cursor::Slot {
   method new ($contact?) {
     self.bless( :$contact );
   }
-
-  method GTK::Raw::Definitions::GtkWidget
-  { $!area.GtkWidet }
 
   method make-string-from-list ($contact, $field) {
     my $v = do if $contact.get($field) -> $dl {
