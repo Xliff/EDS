@@ -660,6 +660,11 @@ class CamelVeeSummary is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Pointer            $!priv  ;
 }
 
+class EBookBackendSExp is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS GObject $!parent;
+  has Pointer $!priv;
+}
+
 class EClient is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GObject $!parent;
 	has Pointer $!priv  ;
