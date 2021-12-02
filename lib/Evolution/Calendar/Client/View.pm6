@@ -8,7 +8,7 @@ use Evolution::Raw::Types;
 use Evolution::Raw::Calendar::Client::View;
 
 use GIO::DBus::Connection;
-use Evolution::Calendar;
+use Evolution::Calendar::Client;
 
 use GLib::Roles::Object;
 use Evolution::Roles::Signals::Calendar::Client::View;
@@ -86,12 +86,11 @@ class Evolution::Calendar::Client::View {
   }
 
   method get_connection (:$raw = False) is also<get-connection> {
-    my $c = e_cal_client_view_get_connection($!ecv);
-
-    $c ??
-      ( $raw ?? $c !! GIO::DBus::Connection.new($1) )
-      !!
-      Nil;
+    propReturnObject(
+      e_cal_client_view_get_connection($!ecv),
+      $raw,
+      |GIO::DBus::Connection.getTypePair
+    )
   }
 
   method get_object_path is also<get-object-path> {
@@ -106,10 +105,11 @@ class Evolution::Calendar::Client::View {
     my $c = e_cal_client_view_ref_client($!ecv);
 
     # Transfer: full
-    $c ??
-      ( $raw ?? $c !! Evolution::Calendar.new($c, :!ref) )
-      !!
-      Nil;
+    propReturnObject(
+      e_cal_client_view_ref_client($!ecv).
+      $raw,
+      |Evolution::Calendar.getTypePair,
+    )
   }
 
   proto method set_fields_of_interest (|)
@@ -118,7 +118,7 @@ class Evolution::Calendar::Client::View {
 
   multi method set_fields_of_interest (
                             @fields_of_interest,
-    CArray[Pointer[GError]] $error              = gerror
+    CArray[Pointer[GError]] $error               = gerror
   ) {
     samewith(
       GLib::GSList.new(@fields_of_interest),
@@ -127,7 +127,7 @@ class Evolution::Calendar::Client::View {
   }
   multi method set_fields_of_interest (
     GSList()                $fields_of_interest,
-    CArray[Pointer[GError]] $error              = gerror
+    CArray[Pointer[GError]] $error               = gerror
   ) {
     clear_error;
     e_cal_client_view_set_fields_of_interest(

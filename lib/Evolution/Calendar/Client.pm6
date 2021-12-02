@@ -6,7 +6,7 @@ use NativeCall;
 
 use ICal::GLib::Raw::Definitions;
 use Evolution::Raw::Types;
-use Evolution::Raw::Calendar;
+use Evolution::Raw::Calendar::Client;
 
 use GLib::GList;
 use ICal::GLib::Component;
