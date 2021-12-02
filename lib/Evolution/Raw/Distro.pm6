@@ -32,12 +32,12 @@ my %ebook-adjustments = do {
     Ubuntu => (
       groovy => (
         lib-append => '-1.2',
-        version    => v25
+        version    => v19
       ).Hash,
 
       hirsute => my $ulatest = (
         lib-append => '-1.2',
-        version    => v25
+        version    => v20
       ).Hash,
 
       latest => $ulatest
@@ -52,6 +52,26 @@ my %ebook-adjustments = do {
       latest => $dlatest
     ).Hash
   ).Hash;
+}
+
+my %edata-book-adjustments = do {
+  Ubuntu => (
+    groovy => (
+      lib-append => '-1.2',
+      version    => v25
+    ).Hash,
+
+    hirsute => (
+      lib-append => '-1.2',
+      version    => v25
+    ).Hash,
+
+    ionic => my $ulatest = (
+      lib-append => '-1.2',
+      version    => v26
+    ).Hash
+  )
+
 }
 
 my %ebook-contacts-adjustments = do {
@@ -156,6 +176,7 @@ my %edata-cal-adjustments = do {
 my %unix-library-adjustments = (
   ecal           => %ecal-adjustments,
   ebook          => %ebook-adjustments,
+  edata-book     => %edata-book-adjustments,
   ebook-contacts => %ebook-contacts-adjustments,
   edataserver    => %edataserver-adjustments,
   ebackend       => %ebackend-adjustments,
