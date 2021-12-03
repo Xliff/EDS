@@ -1553,6 +1553,11 @@ class EDBusServer is repr<CStruct> does GLib::Roles::Pointers is export {
   has Pointer $!priv  ; #= EDBusServerPrivate
 }
 
+class EDataBookCursor is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS GObject $!parent;
+  has Pointer $!priv;
+}
+
 class EDataBookView is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv;
