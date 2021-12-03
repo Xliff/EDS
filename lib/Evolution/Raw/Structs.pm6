@@ -718,6 +718,11 @@ class ECredentials is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Pointer $!priv;
 }
 
+class EDataBookDirect is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS GObject $!parent;
+  has Pointer $!priv;
+}
+
 class EExtensibleInterface is repr<CStruct> does GLib::Roles::Pointers is export {
 	HAS GTypeInterface $!parent_interface;
 }
