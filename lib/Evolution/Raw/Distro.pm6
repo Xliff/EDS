@@ -8,8 +8,11 @@ unit package Evolution::Raw::Distro;
 my %ecal-adjustments = do {
   (
     Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-2.0'
+      ),
+
       groovy => my $ulatest = (
-        lib-append => '-2.0',
         version    => v1
       ).Hash,
 
@@ -17,8 +20,11 @@ my %ecal-adjustments = do {
     ).Hash,
 
     Debian => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       buster => my $dlatest = (
-        lib-append => '-1.2',
         version    => v19
       ).Hash,
 
@@ -30,13 +36,15 @@ my %ecal-adjustments = do {
 my %ebook-adjustments = do {
   (
     Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       groovy => (
-        lib-append => '-1.2',
         version    => v19
       ).Hash,
 
       hirsute => my $ulatest = (
-        lib-append => '-1.2',
         version    => v20
       ).Hash,
 
@@ -44,8 +52,11 @@ my %ebook-adjustments = do {
     ).Hash,
 
     Debian => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       buster => my $dlatest = (
-        lib-append => '-1.2',
         version    => v19
       ).Hash,
 
@@ -56,18 +67,19 @@ my %ebook-adjustments = do {
 
 my %edata-book-adjustments = do {
   Ubuntu => (
+    DEFAULTS => (
+      lib-append => '-1.2'
+    ),
+
     groovy => (
-      lib-append => '-1.2',
       version    => v25
     ).Hash,
 
     hirsute => (
-      lib-append => '-1.2',
       version    => v25
     ).Hash,
 
     ionic => my $ulatest = (
-      lib-append => '-1.2',
       version    => v26
     ).Hash
   )
@@ -77,13 +89,15 @@ my %edata-book-adjustments = do {
 my %ebook-contacts-adjustments = do {
   (
     Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       groovy => (
-        lib-append => '-1.2',
         version    => v3
       ).Hash,
 
       hirsute => my $ulatest = (
-        lib-append => '-1.2',
         version    => v3
       ).Hash,
 
@@ -91,8 +105,11 @@ my %ebook-contacts-adjustments = do {
     ).Hash,
 
     Debian => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       buster => my $dlatest = (
-        lib-append => '-1.2',
         version    => v2
       ).Hash,
 
@@ -104,22 +121,31 @@ my %ebook-contacts-adjustments = do {
 my %edataserver-adjustments = do {
   (
     Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
+      focal => (
+        version => v24
+      ),
+
       groovy => (
-        lib-append => '-1.2',
-        version    => v25
+        version => v25
       ).Hash,
 
       hirsute => my $ulatest = (
-        lib-append => '-1.2',
-        version    => v26
+        version => v26
       ).Hash,
 
       latest => $ulatest
     ).Hash,
 
-    Debian =>(
+    Debian => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       buster => my $dlatest = (
-        lib-append => '-1.2',
         version    => v23
       ).Hash,
 
@@ -131,13 +157,15 @@ my %edataserver-adjustments = do {
 my %ebackend-adjustments = do {
   (
     Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       groovy => (
-        lib-append => '-1.2',
         version    => v10
       ).Hash,
 
       hirsute => my $ulatest = (
-        lib-append => '-1.2',
         version    => v10
       ).Hash,
 
@@ -145,8 +173,11 @@ my %ebackend-adjustments = do {
     ).Hash,
 
     Debian => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
       buster => my $dlatest = (
-        lib-append => '-1.2',
         version    => v10
       ).Hash,
 
@@ -158,13 +189,15 @@ my %ebackend-adjustments = do {
 my %edata-cal-adjustments = do {
   (
     Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-2.0'
+      ),
+
       groovy => (
-        lib-append => '-2.0',
         version    => v1
       ).Hash,
 
       hirsute => my $ulatest = (
-        lib-append => '-1.2',
         version    => v10
       ).Hash,
 
