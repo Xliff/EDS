@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -15,7 +17,47 @@ class Evolution::Source::Backend::SummarySetup
 {
   has ESourceBackendSummarySetup $!ebss;
 
+  submethod BUILD ( :$e-source-summary-setup ) {
+    self.setESourceBackendSummarySetup($e-source-summary-setup)
+      if $e-source-summary-setup;
+  }
+
+  method setESourceBackendSummarySetup (
+    ESourceBackendSummarySetupAncestry $_
+  ) {
+    my $to-parent;
+
+    $!ebss = do {
+      when ESourceBackendSummarySetup {
+        $to-parent = cast(ESourceExtension, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(ESourceBackendSummarySetup, $_);
+      }
+    }
+    self.setESourceExtension($to-parent);
+  }
+
+  method Evolution::Raw::Definitions::ESourceBackendSummarySetup
+    is also<ESourceBackendSummarySetup>
+  { $!ebss }
+
+  method new (
+    ESourceBackendSummarySetupAncestry  $e-source-summary-setup,
+                                       :$ref                     = True
+  ) {
+    return Nil unless $e-source-summary-setup;
+
+    my $o = self.bless( :$e-source-summary-setup );
+    $o.ref if $ref;
+    $o;
+  }
+
   proto method get_indexed_fields (|)
+    is also<get-indexed-fields>
   { * }
 
   multi method get_indexed_fields (@types) {
@@ -38,6 +80,7 @@ class Evolution::Source::Backend::SummarySetup
   }
 
   proto method get_summary_fields (|)
+    is also<get-summary-fields>
   { * }
 
   multi method get_summary_fields {
@@ -51,7 +94,7 @@ class Evolution::Source::Backend::SummarySetup
     CArrayToArray($it, $n);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type(
@@ -63,10 +106,15 @@ class Evolution::Source::Backend::SummarySetup
   }
 
   proto method set_indexed_fieldsv (|)
+    is also<set-indexed-fieldsv>
   { * }
 
-  # is also<set_index_fields>
-  multi method set_indexed_fieldsv (@fields, @types) {
+  multi method set_indexed_fieldsv (@fields, @types)
+    is also<
+      set_index_fields
+      set-index-fields
+    >
+  {
     die "Array size mismatch when setting indexed fields in { self.^name }"
       unless +@fields == +@types;
 
@@ -92,10 +140,16 @@ class Evolution::Source::Backend::SummarySetup
   }
 
   proto method set_summary_fieldsv (|)
+    is also<set-summary-fieldsv>
   { * }
 
   # is also<set_summary_fields>
-  multi method set_summary_fieldsv (@fields) {
+  multi method set_summary_fieldsv (@fields)
+    is also<
+      set_summary_fields
+      set-summary-fields
+    >
+  {
     samewith(
       ArrayToCArray(EContactField, @fields),
       @fields.elems
