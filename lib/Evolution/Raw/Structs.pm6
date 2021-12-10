@@ -660,6 +660,31 @@ class CamelVeeSummary is repr<CStruct> does GLib::Roles::Pointers is export {
 	has Pointer            $!priv  ;
 }
 
+class EbSqlSearchData is repr<CStruct> does GLib::Roles::Pointers is export {
+  has Str $!uid;
+  has Str $!vcard;
+  has Str $!extra;
+
+  method uid is rw {
+    Proxy.new:
+      FETCH => -> $     { $!uid      },
+      STORE => -> $, \v { $!uid := v };
+  }
+
+  method vcard is rw {
+    Proxy.new:
+      FETCH => -> $     { $!vcard      },
+      STORE => -> $, \v { $!vcard := v };
+  }
+
+  method extra is rw {
+    Proxy.new:
+      FETCH => -> $     { $!extra      },
+      STORE => -> $, \v { $!extra := v };
+  }
+
+}
+
 class EBookBackendSExp is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv;
