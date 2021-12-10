@@ -1563,6 +1563,11 @@ class EBookBackend is repr<CStruct> does GLib::Roles::Pointers is export {
   has Pointer  $!priv;
 }
 
+class EBookSqlite is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS GObject $!parent;
+  has Pointer $!priv;
+}
+
 class ECache is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv  ; #= ECachePrivate
@@ -1591,6 +1596,11 @@ class EDataBook is repr<CStruct> does GLib::Roles::Pointers is export {
 class EDataBookCursor is repr<CStruct> does GLib::Roles::Pointers is export {
   HAS GObject $!parent;
   has Pointer $!priv;
+}
+
+class EDataBookCursorSqlite is repr<CStruct> does GLib::Roles::Pointers is export {
+  HAS EDataBookCursor $!parent;
+  has Pointer         $!priv;
 }
 
 class EDataBookView is repr<CStruct> does GLib::Roles::Pointers is export {
