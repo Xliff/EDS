@@ -31,7 +31,7 @@ constant ebackend       is export = version-by-distro('ebackend');
 
 class CamelMsgPort               is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookQuery                 is repr<CPointer> is export does GLib::Roles::Pointers { }
-class EBookSqlCursor             is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EbSqlCursor                is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarm         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarmInstance is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarmRepeat   is repr<CPointer> is export does GLib::Roles::Pointers { }
