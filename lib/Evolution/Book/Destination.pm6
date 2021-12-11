@@ -16,7 +16,7 @@ our subset EDestinationAncestry is export of Mu
 class Evolution::Book::Destination {
   also does GLib::Roles::Object;
 
-  has EDestination $!ed;
+  has EDestination $!ed is implementor;
 
   submethod BUILD (:$destination) {
     self.setEDestination($destination) if $destination;
