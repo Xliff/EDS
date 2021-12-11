@@ -14,7 +14,7 @@ use Evolution::Source;
 use Evolution::Source::CredentialsProvider;
 
 our subset ESourceRegistryServerAncestry is export of Mu
-  where ESourceRegistryServer | EDataFactory;
+  where ESourceRegistryServer | EDataFactoryAncestry;
 
 class Evolution::Source::RegistryServer is Evolution::DataFactory {
   has ESourceRegistryServer $!esrs;
