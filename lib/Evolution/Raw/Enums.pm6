@@ -260,6 +260,12 @@ our enum CamelLockTypeEnum is export <
   CAMEL_LOCK_WRITE
 >;
 
+our constant EbSqlLockType is export := guint32;
+our enum EbSqlLockTypeEnum is export <
+  EBSQL_LOCK_READ
+  EBSQL_LOCK_WRITE
+>;
+
 constant CamelMemPoolFlags is export := guint32;
 our enum CamelMemPoolFlagsEnum is export (
   'CAMEL_MEMPOOL_ALIGN_STRUCT',
@@ -1055,6 +1061,13 @@ our enum EBookCursorOriginEnum is export <
   E_BOOK_CURSOR_ORIGIN_END
 >;
 
+constant EbSqlCursorOrigin is export := guint32;
+our enum EbSqlCursorOriginEnum is export <
+  EBSQL_CURSOR_ORIGIN_CURRENT
+  EBSQL_CURSOR_ORIGIN_BEGIN
+  EBSQL_CURSOR_ORIGIN_END
+>;
+
 constant EBookCursorSortType is export := guint32;
 our enum EBookCursorSortTypeEnum is export (
   E_BOOK_CURSOR_SORT_ASCENDING  => 0,
@@ -1066,6 +1079,26 @@ our enum EBookCursorStepFlagsEnum is export (
   E_BOOK_CURSOR_STEP_MOVE  => (1 +< 0),
   E_BOOK_CURSOR_STEP_FETCH => (1 +< 1),
 );
+
+constant EbSqlChangeType is export := guint32;
+our enum EbSqlChangeTypeEnum is export <
+  EBSQL_CHANGE_CONTACT_ADDED
+  EBSQL_CHANGE_LOCALE_CHANGED
+  EBSQL_CHANGE_LAST
+>;
+
+constant EbSqlCursorStepFlags is export := guint32;
+our enum EbSqlCursorStepFlagsEnum is export (
+  EBSQL_CURSOR_STEP_MOVE  => (1 +< 0),
+  EBSQL_CURSOR_STEP_FETCH => (1 +< 1),
+);
+
+constant EbSqlUnlockAction is export := guint32;
+enum  EbSqlUnlockActionEnum is export <
+  EBSQL_UNLOCK_NONE
+  EBSQL_UNLOCK_COMMIT
+  EBSQL_UNLOCK_ROLLBACK
+>;
 
 constant EBookIndexType is export := guint32;
 our enum EBookIndexTypeEnum is export (
