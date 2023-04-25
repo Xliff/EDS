@@ -16,6 +16,8 @@ need GLib::Raw::Object;
 need GLib::Raw::Structs;
 need GLib::Raw::Subs;
 need GLib::Raw::Struct_Subs;
+need GLib::Raw::Traits;
+need GLib::Roles::Implementor;
 need GLib::Roles::Pointers;
 need ATK::Raw::Definitions;
 need ATK::Raw::Enums;
