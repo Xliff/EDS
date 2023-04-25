@@ -2,3 +2,4 @@ prefix=Evolution
 modules=Evolution::Raw::Types
 backups=backup,bitbucket,google-backup
 exec=edsexec
+include-directory=/usr/include/evolution-data-server
