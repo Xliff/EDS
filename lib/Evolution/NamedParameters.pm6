@@ -21,6 +21,7 @@ class Evolution::NamedParameters {
   }
 
   method Evolution::Raw::Structs::ENamedParameters
+    is also<ENamedParameters>
   { $!eds-np }
 
   method Array {
@@ -112,7 +113,7 @@ class Evolution::NamedParameters {
   }
 
   method to_strv is also<to-strv> {
-    e_named_parameters_to_strv($!eds-np);
+    ArrayToCArray(Str, e_named_parameters_to_strv($!eds-np), :null);
   }
 
 
@@ -123,7 +124,7 @@ class Evolution::NamedParameters {
   method SET-POS (\k, \v) is also<SET_POS> {
     self.set( self.get_name(k), v );
   }
-  
+
   method of { Str }
 
   # ==== Associative ==== #
