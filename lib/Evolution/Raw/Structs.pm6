@@ -1915,6 +1915,30 @@ class EDataCal is repr<CStruct> does GLib::Roles::Pointers is export {
   has Pointer $!priv;
 }
 
+class EbSdbSearchData is repr<CStruct> does GLib::Roles::Pointers is export {
+	has Str $!vcard;
+	has Str $!uid;
+	has Str $!bdata;
+
+	method vcard is rw {
+		Proxy.new:
+			FETCH => -> $           { $!vcard      },
+			STORE => -> $, Str() \v { $!vcard := v };
+  }
+
+	method uid is rw {
+		Proxy.new:
+			FETCH => -> $           { $!uid      },
+			STORE => -> $, Str() \v { $!uid := v };
+  }
+
+	method bdata is rw {
+		Proxy.new:
+			FETCH => -> $           { $!bdata      },
+			STORE => -> $, Str() \v { $!bdata := v };
+  }
+}
+
 BEGIN {
 	buildAccessors($_) for
 												 EPhotoData,
