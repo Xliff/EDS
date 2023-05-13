@@ -1,6 +1,8 @@
 use v6.c;
 
+use Method::Also;
 use NativeCall;
+
 
 use GLib::Raw::Traits;
 use Evolution::Raw::Types;
@@ -14,10 +16,49 @@ use Evolution::Source;
 
 use GLib::Roles::Implementor;
 
+our subset ESoupSessionAncestry is export of Mu
+  where ESoupSession | SoupSessionAncestry;
+
 class Evolution::Soup::Session is SOUP::Session {
   has ESoupSession $!eds-ss is implementor;
 
-  method new (ESource() $source) {
+  submethod BUILD ( :$e-soup-session ) {
+    self.setESoupSession($e-soup-session) if $e-soup-session
+  }
+
+  method setESoupSession (ESoupSessionAncestry $_) {
+    my $to-parent;
+
+    $!eds-ss = do {
+      when ESoupSession {
+        $to-parent = cast(SoupSession, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(ESoupSession, $_);
+      }
+    }
+    self.setSoupSession($to-parent);
+  }
+
+  method Evolution::Raw::Definitions::ESoupSession
+    is also<ESoupSession>
+  { $!eds-ss }
+
+  multi method new (
+    $e-soup-session where * ~~ ESoupSessionAncestry,
+
+    :$ref = True
+  ) {
+    return unless $e-soup-session;
+
+    my $o = self.bless( :$e-soup-session );
+    $o.ref if $ref;
+    $o;
+  }
+  multi method new (ESource() $source) {
     my $e-soup-session = e_soup_session_new($source);
 
     $e-soup-session ?? self.bless( $e-soup-session ) !! Nil;
@@ -28,7 +69,9 @@ class Evolution::Soup::Session is SOUP::Session {
     Str()                   $method,
     Str()                   $uri_string,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<new-message>
+  {
     my $e-soup-session = e_soup_session_new_message(
       $session,
       $method,
@@ -44,7 +87,9 @@ class Evolution::Soup::Session is SOUP::Session {
     Str()                   $method,
     GUri()                  $uri,
     CArray[Pointer[GError]] $error     = gerror
-  ) {
+  )
+    is also<new-message-from-uri>
+  {
     my $e-soup-session = e_soup_session_new_message_from_uri(
       $session,
       $method,
@@ -60,7 +105,9 @@ class Evolution::Soup::Session is SOUP::Session {
     gpointer                $read_bytes,
     Int()                   $bytes_length,
     CArray[Pointer[GError]] $error         = gerror
-  ) {
+  )
+    is also<check-result>
+  {
     my gsize $b = $bytes_length;
 
     clear_error;
@@ -75,7 +122,7 @@ class Evolution::Soup::Session is SOUP::Session {
     $rv;
   }
 
-  method dup_credentials ( :$raw = False ) {
+  method dup_credentials ( :$raw = False ) is also<dup-credentials> {
     propReturnObject(
       e_soup_session_dup_credentials($!eds-ss),
       $raw,
@@ -83,25 +130,27 @@ class Evolution::Soup::Session is SOUP::Session {
     );
   }
 
-  method error_quark is static {
+  method error_quark is static is also<error-quark> {
     e_soup_session_error_quark();
   }
 
-  method get_authentication_requires_credentials {
+  method get_authentication_requires_credentials
+    is also<get-authentication-requires-credentials>
+  {
     so e_soup_session_get_authentication_requires_credentials($!eds-ss);
   }
 
-  method get_force_http1 {
+  method get_force_http1 is also<get-force-http1> {
     so e_soup_session_get_force_http1($!eds-ss);
   }
 
-  method get_log_level ( :$enum = True ) {
+  method get_log_level ( :$enum = True ) is also<get-log-level> {
     my $sll = e_soup_session_get_log_level($!eds-ss);
     return $sll unless $enum;
     SoupLoggerLogLevel($sll);
   }
 
-  method get_source ( :$raw = False ) {
+  method get_source ( :$raw = False ) is also<get-source> {
     propReturnObject(
       e_soup_session_get_source($!eds-ss),
       $raw,
@@ -110,6 +159,7 @@ class Evolution::Soup::Session is SOUP::Session {
   }
 
   proto method get_ssl_error_details (|)
+    is also<get-ssl-error-details>
   { * }
 
   multi method get_ssl_error_details {
@@ -136,13 +186,14 @@ class Evolution::Soup::Session is SOUP::Session {
     $all.not ?? $rv !! ( ppr($out_certificate_pem), $out_certificate_errors );
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_soup_session_get_type, $n, $t );
   }
 
   proto method handle_authentication_failure (|)
+    is also<handle-authentication-failure>
   { * }
 
   multi method handle_authentication_failure (
@@ -202,7 +253,9 @@ class Evolution::Soup::Session is SOUP::Session {
     SoupMessage()           $message,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<prepare-message-send-sync>
+  {
     clear_error;
     my $p = e_soup_session_prepare_message_send_sync(
       $!eds-ss,
@@ -215,6 +268,7 @@ class Evolution::Soup::Session is SOUP::Session {
   }
 
   proto method send_message (|)
+    is also<send-message>
   { * }
 
   multi method send_message (
@@ -256,6 +310,7 @@ class Evolution::Soup::Session is SOUP::Session {
   }
 
   proto method send_message_finish (|)
+    is also<send-message-finish>
   { * }
 
   multi method send_message_finish (
@@ -299,7 +354,9 @@ class Evolution::Soup::Session is SOUP::Session {
     GCancellable()           $cancellable = GCancellable,
     CArray[Pointer[GError]]  $error       = gerror,
                             :$raw         = False
-  ) {
+  )
+    is also<send-message-simple-sync>
+  {
     clear_error;
     my $ba = e_soup_session_send_message_simple_sync(
       $!eds-ss,
@@ -317,7 +374,9 @@ class Evolution::Soup::Session is SOUP::Session {
     GCancellable()            $cancellable = GCancellable,
     CArray[Pointer[GError]]   $error       = gerror,
                              :$raw         = False
-  ) {
+  )
+    is also<send-message-sync>
+  {
     clear_error;
     my $is = e_soup_session_send_message_sync(
       $!eds-ss,
@@ -330,17 +389,19 @@ class Evolution::Soup::Session is SOUP::Session {
     propReturnObject( $is, $raw, |GIO::InputStream.getTypePair )
   }
 
-  method set_credentials (ENamedParameters() $credentials) {
+  method set_credentials (ENamedParameters() $credentials)
+    is also<set-credentials>
+  {
     e_soup_session_set_credentials($!eds-ss, $credentials);
   }
 
-  method set_force_http1 (Int() $force_http1) {
+  method set_force_http1 (Int() $force_http1) is also<set-force-http1> {
     my gboolean $f = $force_http1.so.Int;
 
     e_soup_session_set_force_http1($!eds-ss, $f);
   }
 
-  method setup_logging (Str() $logging_level) {
+  method setup_logging (Str() $logging_level) is also<setup-logging> {
     e_soup_session_setup_logging($!eds-ss, $logging_level);
   }
 
