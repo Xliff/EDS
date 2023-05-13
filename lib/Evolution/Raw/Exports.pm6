@@ -11,5 +11,6 @@ BEGIN {
     Evolution::Raw::Definitions
     Evolution::Raw::Enums
     Evolution::Raw::Structs
+    Evolution::Raw::Subs
   >;
 }

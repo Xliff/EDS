@@ -36,6 +36,7 @@ need Evolution::Raw::Constants;
 need Evolution::Raw::Definitions;
 need Evolution::Raw::Enums;
 need Evolution::Raw::Structs;
+need Evolution::Raw::Subs;
 
 BEGIN {
   glib-re-export($_) for |@glib-exports,
