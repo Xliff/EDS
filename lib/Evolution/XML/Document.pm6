@@ -1,12 +1,13 @@
 use v6.c;
 
+use Method::Also;
+
 use LibXML::Raw;
 use Evolution::Raw::Types;
 use Evolution::Raw::XML::Document;
 
 use GLib::Roles::Object;
 use GLib::Roles::Implementor;
-
 
 our subset EXmlDocumentAncestry is export of Mu
   where EXmlDocument | GObject;
@@ -38,6 +39,7 @@ class Evolution::XML::Document {
   }
 
   method Evolution::Raw::Definitions::EXmlDocument
+    is also<EXmlDocument>
   { $!eds-xd }
 
   multi method new (
@@ -58,110 +60,129 @@ class Evolution::XML::Document {
     $e-xml-doc ?? self.bless( :$e-xml-doc ) !! Nil;
   }
 
-  method add_attribute (Str() $ns_href, Str() $name, Str() $value) {
+  method add_attribute (Str() $ns_href, Str() $name, Str() $value)
+    is also<add-attribute>
+  {
     e_xml_document_add_attribute($!eds-xd, $ns_href, $name, $value);
   }
 
-  method add_attribute_double (Str() $ns_href, Str() $name, Num() $value) {
+  method add_attribute_double (Str() $ns_href, Str() $name, Num() $value)
+    is also<add-attribute-double>
+  {
     my gdouble $v = $value;
 
     e_xml_document_add_attribute_double($!eds-xd, $ns_href, $name, $v);
   }
 
-  method add_attribute_int (Str() $ns_href, Str() $name, Int() $value) {
+  method add_attribute_int (Str() $ns_href, Str() $name, Int() $value)
+    is also<add-attribute-int>
+  {
     my gint64 $v = $value;
 
     e_xml_document_add_attribute_int($!eds-xd, $ns_href, $name, $v);
   }
 
-  method add_attribute_time (Str() $ns_href, Str() $name, Int() $value) {
+  method add_attribute_time (Str() $ns_href, Str() $name, Int() $value)
+    is also<add-attribute-time>
+  {
     my time_t $v = $value;
 
     e_xml_document_add_attribute_time($!eds-xd, $ns_href, $name, $v);
   }
 
-  method add_attribute_time_ical (Str() $ns_href, Str() $name, Int() $value) {
+  method add_attribute_time_ical (Str() $ns_href, Str() $name, Int() $value)
+    is also<add-attribute-time-ical>
+  {
     my time_t $v = $value;
 
     e_xml_document_add_attribute_time_ical($!eds-xd, $ns_href, $name, $v);
   }
 
-  method add_empty_element (Str() $ns_href, Str() $name) {
+  method add_empty_element (Str() $ns_href, Str() $name)
+    is also<add-empty-element>
+  {
     e_xml_document_add_empty_element($!eds-xd, $ns_href, $name);
   }
 
-  method add_namespaces (Str() $ns_prefix, Str() $ns_href) {
+  method add_namespaces (Str() $ns_prefix, Str() $ns_href)
+    is also<add-namespaces>
+  {
     e_xml_document_add_namespaces($!eds-xd, $ns_prefix, $ns_href);
   }
 
-  method end_element {
+  method end_element is also<end-element> {
     e_xml_document_end_element($!eds-xd);
   }
 
-  method get_content (Int() $out_length) {
-    my gsize $o = $out_length;
+  proto method get_content (|)
+    is also<get-content>
+  { * }
+
+  multi method get_content {
+    samewith($);
+  }
+  multi method get_content ($out_length is rw) {
+    my gsize $o = 0;
 
     e_xml_document_get_content($!eds-xd, $o);
+    $out_length = $o;
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_xml_document_get_type, $n, $t );
   }
 
-  method get_xmldoc ( :$raw = False ) {
+  method get_xmldoc ( :$raw = False ) is also<get-xmldoc> {
     propReturnObject(
       e_xml_document_get_xmldoc($!eds-xd),
       $raw,
       xmlDoc,
       LibXML::Document,
-
-      construct => -> $raw, :$ref {
-        my $o = LibXML::Document.new( :$raw ),
-        $o.ref if $ref,
-        $o
-      }
+      construct         => &create-xml-document
     )
   }
 
-  method start_element (Str() $ns_href, Str() $name) {
+  method start_element (Str() $ns_href, Str() $name) is also<start-element> {
     e_xml_document_start_element($!eds-xd, $ns_href, $name);
   }
 
-  method start_text_element (Str() $ns_href, Str() $name) {
+  method start_text_element (Str() $ns_href, Str() $name)
+    is also<start-text-element>
+  {
     e_xml_document_start_text_element($!eds-xd, $ns_href, $name);
   }
 
-  method write_base64 (Str() $value, Int() $len) {
+  method write_base64 (Str() $value, Int() $len) is also<write-base64> {
     my gint $l = $len;
 
     e_xml_document_write_base64($!eds-xd, $value, $l);
   }
 
-  method write_buffer (Str() $value, Int() $len) {
+  method write_buffer (Str() $value, Int() $len) is also<write-buffer> {
     my gint $l = $len;
 
     e_xml_document_write_buffer($!eds-xd, $value, $l);
   }
 
-  method write_double (Num() $value) {
+  method write_double (Num() $value) is also<write-double> {
     my gdouble $v = $value;
 
     e_xml_document_write_double($!eds-xd, $v);
   }
 
-  method write_int (Int() $value) {
+  method write_int (Int() $value) is also<write-int> {
     my gint64 $v = $value;
 
     e_xml_document_write_int($!eds-xd, $v);
   }
 
-  method write_string (Str() $value) {
+  method write_string (Str() $value) is also<write-string> {
     e_xml_document_write_string($!eds-xd, $value);
   }
 
-  method write_time (Int() $value) {
+  method write_time (Int() $value) is also<write-time> {
     my time_t $v = $value;
 
     e_xml_document_write_time($!eds-xd, $v);
