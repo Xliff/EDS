@@ -935,6 +935,24 @@ our enum EWebDAVDiscoverSupportsEnum is export (
   E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   =>          ( E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1 ) +< 1,
 );
 
+constant EWebDAVListFlags := guint32;
+our enum EWebDAVListFlagsEnum is export (
+  E_WEBDAV_LIST_ALL               => 0x00FFFFFF,
+  E_WEBDAV_LIST_NONE              => 0,
+  E_WEBDAV_LIST_SUPPORTS          => 1,
+  E_WEBDAV_LIST_ETAG              => 1 +< 1,
+  E_WEBDAV_LIST_DISPLAY_NAME      => 1 +< 2,
+  E_WEBDAV_LIST_CONTENT_TYPE      => 1 +< 3,
+  E_WEBDAV_LIST_CONTENT_LENGTH    => 1 +< 4,
+  E_WEBDAV_LIST_CREATION_DATE     => 1 +< 5,
+  E_WEBDAV_LIST_LAST_MODIFIED     => 1 +< 6,
+  E_WEBDAV_LIST_DESCRIPTION       => 1 +< 7,
+  E_WEBDAV_LIST_COLOR             => 1 +< 8,
+  E_WEBDAV_LIST_ORDER             => 1 +< 9,
+  E_WEBDAV_LIST_ONLY_CALENDAR     => 1 +< 28,
+  E_WEBDAV_LIST_ONLY_ADDRESSBOOK  => 1 +< 29
+);
+
 constant EWebDAVLockScope is export := guint32;
 our enum EWebDAVLockScopeEnum is export <
   E_WEBDAV_LOCK_EXCLUSIVE
@@ -1384,4 +1402,28 @@ our enum ETestServiceTypeEnum is export (
   'E_TEST_SERVER_DIRECT_ADDRESS_BOOK',
   'E_TEST_SERVER_CALENDAR',
   'E_TEST_SERVER_DEPRECATED_ADDRESS_BOOK'
+);
+
+
+constant EBookSDBError is export := guint32;
+our enum EBookSDBErrorEnum is export <
+  E_BOOK_SDB_ERROR_CONSTRAINT
+  E_BOOK_SDB_ERROR_CONTACT_NOT_FOUND
+  E_BOOK_SDB_ERROR_OTHER
+  E_BOOK_SDB_ERROR_NOT_SUPPORTED
+  E_BOOK_SDB_ERROR_INVALID_QUERY
+  E_BOOK_SDB_ERROR_END_OF_LIST
+>;
+
+constant EbSdbCursorOrigin is export := guint32;
+our enum EbSdbCursorOriginEnum is export (
+   'EBSDB_CURSOR_ORIGIN_CURRENT' => 0,
+   'EBSDB_CURSOR_ORIGIN_BEGIN',
+   'EBSDB_CURSOR_ORIGIN_END'
+);
+
+constant EbSdbCursorStepFlags is export := guint32;
+our enum EbSdbCursorStepFlagsEnum is export (
+  EBSDB_CURSOR_STEP_MOVE  =>  1,
+  EBSDB_CURSOR_STEP_FETCH => (1 +< 1)
 );
