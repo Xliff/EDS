@@ -9,7 +9,7 @@ use SOUP::Auth;
 our subset ESoupAuthBearerAncestry is export of Mu
   where ESoupAuthBearer | SoupAuth;
 
-class Evolution::SOUP::AuthBearer is SOUP::Auth {
+class Evolution::Soup::AuthBearer is SOUP::Auth {
   has ESoupAuthBearer $!esab;
 
   submethod BUILD (:$auth-bearer) {
