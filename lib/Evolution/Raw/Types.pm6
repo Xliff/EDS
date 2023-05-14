@@ -1,6 +1,7 @@
 use v6;
 
 use GLib::Raw::Exports;
+use ICal::GLib::Raw::Exports;
 use ATK::Raw::Exports;
 use GIO::Raw::Exports;
 use SOUP::Raw::Exports;
@@ -32,6 +33,8 @@ need GIO::Raw::Exports;
 need SOUP::Raw::Definitions;
 need SOUP::Raw::Enums;
 need SOUP::Raw::Subs;
+need ICal::GLib::Raw::Definitions;
+need ICal::GLib::Raw::Enums;
 need Evolution::Raw::Constants;
 need Evolution::Raw::Definitions;
 need Evolution::Raw::Enums;
@@ -43,5 +46,6 @@ BEGIN {
                          |@atk-exports,
                          |@gio-exports,
                          |@soup-exports,
+                         |@ical-glib-exports,
                          |@evolution-exports;
 }
