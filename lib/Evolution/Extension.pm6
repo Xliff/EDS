@@ -66,7 +66,7 @@ class Evolution::Extension {
 }
 
 
-### /usr/include/evolution-data-server/libedataserver/e-extension.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-extension.h
 
 sub e_extension_get_extensible (EExtension $extension)
   returns EExtensible

@@ -89,7 +89,7 @@ class Evolution::Data::Book::Direct {
 }
 
 
-### /usr/include/evolution-data-server/libedata-book/e-data-book-direct.h
+### /usr/src/evolution-data-server-3.48.0/src/libedata-book/e-data-book-direct.h
 
 sub e_data_book_direct_get_type ()
   returns GType

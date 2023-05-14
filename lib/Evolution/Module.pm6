@@ -101,7 +101,7 @@ class Evolution::Module is GLib::Object::TypeModule {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-module.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-module.h
 
 sub e_module_get_filename (EModule $module)
   returns Str
