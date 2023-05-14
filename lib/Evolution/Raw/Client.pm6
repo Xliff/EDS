@@ -14,7 +14,7 @@ unit package Evolution::Raw::Client;
 
 our $E_CLIENT_ERROR is export;
 
-### /usr/include/evolution-data-server/libedataserver/e-client.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-client.h
 
 sub e_client_cancel_all (EClient $client)
   is native(eds)
