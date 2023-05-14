@@ -62,7 +62,7 @@ class Evolution::Soup::AuthBearer is SOUP::Auth {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-soup-auth-bearer.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-soup-auth-bearer.h
 
 sub e_soup_auth_bearer_get_type ()
   returns GType

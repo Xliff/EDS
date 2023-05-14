@@ -169,7 +169,7 @@ class Evolution::OAuth2::Support {
   }
 }
 
-### /usr/include/evolution-data-server/libebackend/e-oauth2-support.h
+### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-oauth2-support.h
 
 sub e_oauth2_support_get_access_token (
   EOAuth2Support $support,

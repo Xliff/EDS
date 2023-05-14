@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Extension;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-extension.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-extension.h
 
 sub e_source_extension_get_source (ESourceExtension $extension)
   returns ESource

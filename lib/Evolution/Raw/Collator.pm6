@@ -8,7 +8,7 @@ use Evolution::Raw::Definitions;
 
 unit package Evolution::Raw::Collator;
 
-### /usr/include/evolution-data-server/libedataserver/e-collator.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-collator.h
 
 sub e_collator_collate (
   ECollator               $collator,

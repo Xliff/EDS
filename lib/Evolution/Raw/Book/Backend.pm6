@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Book::Backend;
 
-### /usr/include/evolution-data-server/libedata-book/e-book-backend.h
+### /usr/src/evolution-data-server-3.48.0/src/libedata-book/e-book-backend.h
 
 sub e_book_backend_add_view (EBookBackend $backend, EDataBookView $view)
   is native(edata-book)

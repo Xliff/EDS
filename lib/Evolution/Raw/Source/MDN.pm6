@@ -67,7 +67,7 @@ class Evolution::Source::MDN is Evolution::Source::Extension {
 }
 
 
-### /usr/include/evolution-data-server/libedataserver/e-source-mdn.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mdn.h
 
 sub e_source_mdn_get_response_policy (ESourceMDN $extension)
   returns EMdnResponsePolicy

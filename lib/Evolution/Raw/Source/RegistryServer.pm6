@@ -11,7 +11,7 @@ use Evolution::Raw::Enums;
 
 unit package Evolution::Raw::Source::RegistryServer;
 
-### /usr/include/evolution-data-server/libebackend/e-source-registry-server.h
+### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-source-registry-server.h
 
 sub e_source_registry_server_add_source (
   ESourceRegistryServer $server,

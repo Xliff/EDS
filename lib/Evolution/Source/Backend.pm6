@@ -155,7 +155,7 @@ class Evolution::Source::MailTransportAncestry is Evolution::Source::Backend {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-backend.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-backend.h
 
 sub e_source_backend_dup_backend_name (ESourceBackend $extension)
   returns Str

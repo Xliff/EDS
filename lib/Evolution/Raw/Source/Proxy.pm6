@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Proxy;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-proxy.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-proxy.h
 
 sub e_source_proxy_dup_autoconfig_url (ESourceProxy $extension)
   returns Str

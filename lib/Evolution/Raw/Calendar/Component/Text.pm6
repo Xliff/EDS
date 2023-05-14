@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Calendar::Component;
 
-### /usr/include/evolution-data-server/libecal/e-cal-component-text.h
+### /usr/src/evolution-data-server-3.48.0/src/libecal/e-cal-component-text.h
 
 sub e_cal_component_text_copy (ECalComponentText $text)
   returns ECalComponentText

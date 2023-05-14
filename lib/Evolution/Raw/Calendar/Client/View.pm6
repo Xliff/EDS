@@ -11,7 +11,7 @@ use Evolution::Raw::Enums;
 
 unit package Evolution::Raw::Calendar::Client::View;
 
-### /usr/include/evolution-data-server/libecal/e-cal-client-view.h
+### /usr/src/evolution-data-server-3.48.0/src/libecal/e-cal-client-view.h
 
 sub e_cal_client_view_get_connection (ECalClientView $client_view)
   returns GDBusConnection

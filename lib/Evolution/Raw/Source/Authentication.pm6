@@ -7,7 +7,7 @@ use GIO::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-authentication.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-authentication.h
 
 sub e_source_authentication_dup_credential_name (
   ESourceAuthentication $extension

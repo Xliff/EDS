@@ -76,7 +76,7 @@ class Evolution::Source::RevisionGuards is Evolution::Source::Extension {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-revision-guards.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-revision-guards.h
 
 sub e_source_revision_guards_get_enabled (ESourceRevisionGuards $extension)
   returns uint32

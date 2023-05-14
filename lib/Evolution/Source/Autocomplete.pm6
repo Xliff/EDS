@@ -68,7 +68,7 @@ class Evolution::Source::Autocomplete is Evolution::Source::Extension {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-autocomplete.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-autocomplete.h
 
 sub e_source_autocomplete_get_include_me (ESourceAutocomplete $extension)
   returns uint32

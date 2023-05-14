@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::CollectionBackend;
 
-### /usr/include/evolution-data-server/libebackend/e-collection-backend.h
+### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-collection-backend.h
 
 sub e_collection_backend_authenticate_children (
   ECollectionBackend $backend,

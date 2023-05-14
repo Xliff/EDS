@@ -78,7 +78,7 @@ class Evolution::Source::Resource is Evolution::Source::Extension {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-resource.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-resource.h
 
 sub e_source_resource_dup_identity (ESourceResource $extension)
   returns Str

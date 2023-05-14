@@ -9,7 +9,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Book::Backend::SExp;
 
-### /usr/include/evolution-data-server/libedata-book/e-book-backend-sexp.h
+### /usr/src/evolution-data-server-3.48.0/src/libedata-book/e-book-backend-sexp.h
 
 sub e_book_backend_sexp_get_type ()
   returns GType

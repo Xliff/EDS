@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::DataCal::View;
 
-### /usr/include/evolution-data-server/libedata-cal/e-data-cal-view.h
+### /usr/src/evolution-data-server-3.48.0/src/libedata-cal/e-data-cal-view.h
 
 sub e_data_cal_view_component_matches (
   EDataCalView  $view,

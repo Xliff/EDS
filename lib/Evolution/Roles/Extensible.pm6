@@ -90,7 +90,7 @@ class Evolution::Extensible {
   }
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-extensible.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-extensible.h
 
 sub e_extensible_get_type ()
   returns GType

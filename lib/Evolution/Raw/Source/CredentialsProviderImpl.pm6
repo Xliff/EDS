@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::CredentialsProviderImpl;
 
-### /usr/include/evolution-data-server/libeds/e-source-credentials-provider-impl.h
+### /usr/src/evolution-data-server-3.48.0/src/libeds/e-source-credentials-provider-impl.h
 
 sub e_source_credentials_provider_impl_can_process (
   ESourceCredentialsProviderImpl $provider_impl,

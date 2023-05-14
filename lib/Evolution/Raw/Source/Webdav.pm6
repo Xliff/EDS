@@ -12,7 +12,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Webdav;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-webdav.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-webdav.h
 
 sub e_source_webdav_dup_color (ESourceWebdav $extension)
   returns Str

@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::OpenPGP;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-openpgp.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-openpgp.h
 
 sub e_source_openpgp_dup_key_id (
 	ESourceOpenPGP $extension

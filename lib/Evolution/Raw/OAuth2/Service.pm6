@@ -12,7 +12,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::OAuth2::Service;
 
-### /usr/include/evolution-data-server/libeds/e-oauth2-service.h
+### /usr/src/evolution-data-server-3.48.0/src/libeds/e-oauth2-service.h
 
 sub e_oauth2_service_can_process (EOAuth2Service $service, ESource $source)
   returns uint32

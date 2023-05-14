@@ -9,7 +9,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::MailAccount;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-mail-account.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mail-account.h
 
 sub e_source_mail_account_dup_archive_folder (ESourceMailAccount $extension)
   returns Str

@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 unit package Evolution::Raw::Source::Backend::SummarySetup;
 
 
-### /usr/include/evolution-data-server/libebook-contacts/e-source-backend-summary-setup.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook-contacts/e-source-backend-summary-setup.h
 
 sub e_source_backend_summary_setup_get_indexed_fields (
   ESourceBackendSummarySetup $extension,

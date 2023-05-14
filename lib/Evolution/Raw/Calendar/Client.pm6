@@ -14,7 +14,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Calendar::Client;
 
-### /usr/include/evolution-data-server/libecal/e-cal-client.h
+### /usr/src/evolution-data-server-3.48.0/src/libecal/e-cal-client.h
 
 sub e_cal_client_add_timezone (
   ECalClient   $client,

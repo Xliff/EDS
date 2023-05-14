@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Goa;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-goa.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-goa.h
 
 sub e_source_goa_dup_account_id (ESourceGoa $extension)
   returns Str

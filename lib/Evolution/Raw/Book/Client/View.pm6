@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Book::Client::View;
 
-### /usr/include/evolution-data-server/libebook/e-book-client-view.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook/e-book-client-view.h
 
 sub e_book_client_view_get_client (EBookClientView $client_view)
   returns EBookClient

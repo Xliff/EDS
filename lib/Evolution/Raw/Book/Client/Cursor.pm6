@@ -9,7 +9,7 @@ use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use Evolution::Raw::Structs;
 
-### /usr/include/evolution-data-server/libebook/e-book-client-cursor.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook/e-book-client-cursor.h
 
 sub e_book_client_cursor_get_alphabet (
   EBookClientCursor $cursor,

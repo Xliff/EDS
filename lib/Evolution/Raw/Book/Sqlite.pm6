@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Book::Sqlite;
 
-### /usr/include/evolution-data-server/libedata-book/e-book-sqlite.h
+### /usr/src/evolution-data-server-3.48.0/src/libedata-book/e-book-sqlite.h
 
 sub e_book_sqlite_add_contact (
   EBookSqlite             $ebsql,

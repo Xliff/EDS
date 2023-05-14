@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::PhoneNumber;
 
-### /usr/include/evolution-data-server/libebook-contacts/e-phone-number.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook-contacts/e-phone-number.h
 
 sub e_phone_number_compare (
   EPhoneNumber $first_number,

@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::SMIME;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-smime.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-smime.h
 
 sub e_source_smime_dup_encryption_certificate (ESourceSMIME $extension)
   returns Str

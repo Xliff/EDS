@@ -71,7 +71,7 @@ class Evolution::Source::Offline is Evolution::Source::Extension {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-offline.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-offline.h
 
 sub e_source_offline_get_stay_synchronized (ESourceOffline $extension)
   returns uint32

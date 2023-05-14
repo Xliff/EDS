@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::MailSubmission;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-mail-submission.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mail-submission.h
 
 sub e_source_mail_submission_dup_sent_folder (
 	ESourceMailSubmission $extension

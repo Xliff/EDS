@@ -9,7 +9,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::OAuth2::Services;
 
-### /usr/include/evolution-data-server/libeds/e-oauth2-services.h
+### /usr/src/evolution-data-server-3.48.0/src/libeds/e-oauth2-services.h
 
 sub e_oauth2_services_add (EOAuth2Services $services, EOAuth2Service $service)
   is native(eds)

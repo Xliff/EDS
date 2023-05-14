@@ -9,7 +9,7 @@ use LibXML::Raw;
 
 unit package Evolution::Raw::XML::Document;
 
-### /usr/include/evolution-data-server/libedataserver/e-xml-document.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-xml-document.h
 
 sub e_xml_document_add_attribute (
   EXmlDocument $xml,

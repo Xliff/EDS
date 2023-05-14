@@ -1356,7 +1356,7 @@ our enum EContactFieldEnum is export (
   E_CONTACT_LAST_LABEL_ID      => 15  #= E_CONTACT_ADDRESS_LABEL_OTHER
 );
 
-### /usr/include/evolution-data-server/ebackend/e-backend-enums.h
+### /usr/src/evolution-data-server-3.48.0/src/ebackend/e-backend-enums.h
 
 constant EAuthenticationSessionResult is export := guint32;
 our enum EAuthenticationSessionResultEnum is export <

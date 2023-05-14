@@ -12,7 +12,7 @@ use Evolution::Raw::Enums;
 unit package Evolution::Raw::Source::ServerSide;
 
 
-### /usr/include/evolution-data-server/libebackend/e-server-side-source.h
+### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-server-side-source.h
 
 sub e_server_side_source_get_exported (EServerSideSource $source)
   returns uint32

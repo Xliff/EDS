@@ -71,7 +71,7 @@ class Evolution::Source::Contacts is Evolution::Source::Extension {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-contacts.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-contacts.h
 
 sub e_source_contacts_get_include_me (ESourceContacts $extension)
   returns uint32

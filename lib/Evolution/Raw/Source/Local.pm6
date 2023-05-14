@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Local;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-local.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-local.h
 
 sub e_source_local_dup_custom_file (ESourceLocal $extension)
   returns GFile

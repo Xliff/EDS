@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Alarms;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-alarms.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-alarms.h
 
 sub e_source_alarms_dup_last_notified (ESourceAlarms $extension)
   returns Str

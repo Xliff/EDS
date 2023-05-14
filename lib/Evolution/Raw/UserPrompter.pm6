@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::UserPrompter;
 
-### /usr/include/evolution-data-server/libebackend/e-user-prompter.h
+### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-user-prompter.h
 
 sub e_user_prompter_extension_prompt (
   EUserPrompter    $prompter,

@@ -9,7 +9,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Weather;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-weather.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-weather.h
 
 sub e_source_weather_dup_location (ESourceWeather $extension)
   returns Str

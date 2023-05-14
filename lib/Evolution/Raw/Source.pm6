@@ -13,7 +13,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source;
 
-### /usr/include/evolution-data-server/libedataserver/e-source.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source.h
 
 sub e_source_changed (ESource $source)
   is native(eds)

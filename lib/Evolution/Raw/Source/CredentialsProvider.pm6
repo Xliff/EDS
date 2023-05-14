@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::CredentialsProvider;
 
-### /usr/include/evolution-data-server/libeds/e-source-credentials-provider.h
+### /usr/src/evolution-data-server-3.48.0/src/libeds/e-source-credentials-provider.h
 
 sub e_source_credentials_provider_can_prompt (
   ESourceCredentialsProvider $provider,

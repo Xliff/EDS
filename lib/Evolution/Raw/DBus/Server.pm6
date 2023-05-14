@@ -9,7 +9,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::DBus::Server;
 
-### /usr/include/evolution-data-server/libebackend/e-dbus-server.h
+### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-dbus-server.h
 
 sub e_dbus_server_get_type ()
   returns GType

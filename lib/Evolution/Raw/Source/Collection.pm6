@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Source::Collection;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-collection.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-collection.h
 
 sub e_source_collection_dup_calendar_url (ESourceCollection $extension)
   returns Str

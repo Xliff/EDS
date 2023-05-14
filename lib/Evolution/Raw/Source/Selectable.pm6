@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Selectable;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-selectable.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-selectable.h
 
 sub e_source_selectable_dup_color (ESourceSelectable $extension)
   returns Str

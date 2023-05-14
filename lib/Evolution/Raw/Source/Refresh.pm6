@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Refresh;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-refresh.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-refresh.h
 
 sub e_source_refresh_add_timeout (
 	ESource        $source,

@@ -8,7 +8,7 @@ use Evolution::Raw::Enums;
 
 unit package Evolution::Raw::Book::Query;
 
-### /usr/include/evolution-data-server/libebook-contacts/e-book-query.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook-contacts/e-book-query.h
 
 sub e_book_query_and (gint $nqs, CArray[EBookQuery] $qs, gboolean $unref)
   returns EBookQuery

@@ -82,7 +82,7 @@ class Evolution::SecretStore {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-secret-store.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-secret-store.h
 
 sub e_secret_store_delete_sync (
   Str                     $uid,

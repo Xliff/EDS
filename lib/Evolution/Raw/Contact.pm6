@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Contact;
 
-### /usr/include/evolution-data-server/libebook-contacts/e-contact.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook-contacts/e-contact.h
 
 sub e_contact_address_free (EContactAddress $address)
   is native(ebook-contacts)

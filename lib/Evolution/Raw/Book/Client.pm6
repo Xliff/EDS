@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evoution::Raw::Book::Client;
 
-### /usr/include/evolution-data-server/libebook/e-book-client.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook/e-book-client.h
 
 sub e_book_client_add_contact (
 	EBookClient  $client,
@@ -542,7 +542,7 @@ sub e_book_client_set_self (
   is export
 { * }
 
-### /usr/include/evolution-data-server/libebook-contact/e-book-contacts-utils.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook-contact/e-book-contacts-utils.h
 
 sub e_book_client_error_quark ()
 	returns GQuark

@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Security;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-security.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-security.h
 
 sub e_source_security_dup_method (ESourceSecurity $extension)
   returns Str

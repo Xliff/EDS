@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Camel;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-camel.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-camel.h
 
 sub e_source_camel_configure_service (ESource $source, CamelService $service)
   is native(eds)

@@ -8,7 +8,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::MailIdentity;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-mail-identity.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mail-identity.h
 
 sub e_source_mail_identity_dup_address (
 	ESourceMailIdentity $extension

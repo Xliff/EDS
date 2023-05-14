@@ -7,7 +7,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::VCard;
 
-### /usr/include/evolution-data-server/libebook-contactss/e-vcard.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook-contactss/e-vcard.h
 
 sub e_vcard_add_attribute (EVCard $evc, EVCardAttribute $attr)
   is native(ebook-contacts)

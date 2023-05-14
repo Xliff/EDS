@@ -11,7 +11,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Source::Registry;
 
-### /usr/include/evolution-data-server/libedataserver/e-source-registry.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-registry.h
 
 sub e_source_registry_build_display_tree (
   ESourceRegistry $registry,

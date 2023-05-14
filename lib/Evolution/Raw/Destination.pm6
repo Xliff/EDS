@@ -9,7 +9,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Destination;
 
-### /usr/include/evolution-data-server/libebook/e-destination.h
+### /usr/src/evolution-data-server-3.48.0/src/libebook/e-destination.h
 
 sub e_destination_copy (EDestination $dest)
   returns EDestination

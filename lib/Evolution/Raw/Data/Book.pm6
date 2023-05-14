@@ -10,7 +10,7 @@ use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::Data::Book;
 
-### /usr/include/evolution-data-server/libedata-book/e-data-book.h
+### /usr/src/evolution-data-server-3.48.0/src/libedata-book/e-data-book.h
 
 sub e_data_book_get_connection (EDataBook $book)
   returns GDBusConnection

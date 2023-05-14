@@ -71,7 +71,7 @@ class Evoluton::Source::UOA is Evolution::Source::Extension {
 
 }
 
-### /usr/include/evolution-data-server/libedataserver/e-source-uoa.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-uoa.h
 
 sub e_source_uoa_get_account_id (ESourceUoa $extension)
   returns guint
