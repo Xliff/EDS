@@ -50,6 +50,8 @@ class ECalComponentPropertyBag   is repr<CPointer> is export does GLib::Roles::P
 class ECalComponentRange         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentText          is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECollator                  is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECredentialsPrompter       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECredentialsPrompterImpl   is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EExtensible                is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ENamedParameters           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Service             is repr<CPointer> is export does GLib::Roles::Pointers { }
