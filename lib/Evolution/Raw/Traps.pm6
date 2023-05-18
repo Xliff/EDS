@@ -16,3 +16,4 @@
 ### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook/libebook.h
 ### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook-contacts/libebook-contacts.h
 ### /usr/src/evolution-data-server-3.48.0/src/calendar/libedata-cal/libedata-cal.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-uid.h
