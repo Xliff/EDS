@@ -1427,3 +1427,10 @@ our enum EbSdbCursorStepFlagsEnum is export (
   EBSDB_CURSOR_STEP_MOVE  =>  1,
   EBSDB_CURSOR_STEP_FETCH => (1 +< 1)
 );
+
+constant ECredentialsPrompterPromptFlags is export := guint32;
+our enum ECredentialsPrompterPromptFlagsEnum is export (
+  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_NONE                         => 0,
+  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_ALLOW_SOURCE_SAVE            => 1,
+  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_ALLOW_STORED_CREDENTIALS     => 1 +< 1
+);
