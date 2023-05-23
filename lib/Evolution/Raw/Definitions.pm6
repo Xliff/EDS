@@ -49,6 +49,7 @@ class ECalComponentPrivate       is repr<CPointer> is export does GLib::Roles::P
 class ECalComponentPropertyBag   is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentRange         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentText          is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECertificateWidget         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECollator                  is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECredentialsPrompter       is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECredentialsPrompterImpl   is repr<CPointer> is export does GLib::Roles::Pointers { }
