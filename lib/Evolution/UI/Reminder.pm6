@@ -3,7 +3,7 @@ use v6.c;
 use Method::Also;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::UI::Reminder;
+use Evolution::Raw::UI::Reminders;
 
 use GTK::Widget;
 
@@ -54,8 +54,9 @@ class Evolution::UI::Reminders {
     $o.ref if $ref;
     $o;
   }
-  multi method new (EReminderWatcher() $watcher) {
-    my $e-reminders-widget = e_reminders_widget_new($watcher);
+
+  multi method new {
+    my $e-reminders-widget = e_reminders_widget_new();
 
     $e-reminders-widget ?? self.bless( :$e-reminders-widget ) !! Nil;
   }
@@ -67,8 +68,10 @@ class Evolution::UI::Reminders {
   )
     is also<get-paned>
   {
-    GTK::Widget.CreateObject(
-      e_reminders_widget_get_paned($!eds-rw)
+    returnProperWidget(
+      e_reminders_widget_get_paned($!eds-rw),
+      $raw,
+      $proper
     );
   }
 
@@ -87,8 +90,10 @@ class Evolution::UI::Reminders {
   )
     is also<get-tree-view>
   {
-    GTK::Widget.CreateObject(
-      e_reminders_widget_get_tree_view($!eds-rw)
+    returnProperWidget(
+      e_reminders_widget_get_tree_view($!eds-rw),
+      $raw,
+      $proper
     );
   }
 
