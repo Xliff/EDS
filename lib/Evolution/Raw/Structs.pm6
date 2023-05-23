@@ -15,6 +15,8 @@ use SOUP::Class::Auth;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 
+use GLib::Dataset;
+
 use GLib::Class::Object;
 
 use GLib::Roles::Pointers;
@@ -1270,16 +1272,24 @@ class ESourceWebdavClass is repr<CStruct> does GLib::Roles::Pointers is export {
 }
 
 class EUri is repr<CStruct> does GLib::Roles::Pointers is export {
-	has Str   $!protocol;
-	has Str   $!user    ;
-	has Str   $!authmech;
-	has Str   $!passwd  ;
-	has Str   $!host    ;
-	has gint  $!port    ;
-	has Str   $!path    ;
-	has GData $!params  ;
-	has Str   $!query   ;
-	has Str   $!fragment;
+	has Str   $.protocol is rw;
+	has Str   $.user     is rw;
+	has Str   $.authmech is rw;
+	has Str   $.passwd   is rw;
+	has Str   $.host     is rw;
+	has gint  $.port     is rw;
+	has Str   $.path     is rw;
+	has GData $!params;
+	has Str   $.query    is rw;
+	has Str   $.fragment is rw;
+
+	method params is rw {
+		Proxy.new:
+			FETCH => -> $     { $!params },
+			STORE => -> $, \v { $!params := v };
+	}
+
+	method Map { GLib::Dataset.new($!params).Hash.Map }
 }
 
 class EWebDAVAccessControlEntry is repr<CStruct> does GLib::Roles::Pointers is export {
