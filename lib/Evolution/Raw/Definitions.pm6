@@ -63,6 +63,7 @@ class ERemindersWidget           is repr<CPointer> is export does GLib::Roles::P
 class ETimezoneCache             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EVCardAttribute            is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EVCardAttributeParam       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EWeatherSource             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EWebDAVDiscoverContent     is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EWebDAVDiscoverDialog      is repr<CPointer> is export does GLib::Roles::Pointers { }
 
