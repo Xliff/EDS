@@ -5,6 +5,8 @@ use LibXML::Node;
 use LibXML::XPath::Context;
 use LibXML::XPath::Object;
 
+use ICal::GLib::Timezone;
+
 unit package Evolution::Raw::Subs;
 
 sub create-xml-document ($raw) is export {
@@ -26,4 +28,4 @@ sub create-xml-xpath-object ($raw) is export {
   LibXML::XPath::Object.new( :$raw );
 }
 
-my $DEFAULT-TIMEZONE is export = ICal::GLib::Timezone.get_utc_timezone;
+our $DEFAULT-TIMEZONE is export = ICal::GLib::Timezone.get_utc_timezone;
