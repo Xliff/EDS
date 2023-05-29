@@ -25,3 +25,5 @@ sub create-xml-node ($raw) is export {
 sub create-xml-xpath-object ($raw) is export {
   LibXML::XPath::Object.new( :$raw );
 }
+
+my $DEFAULT-TIMEZONE is export = ICal::GLib::Timezone.get_utc_timezone;
