@@ -6,7 +6,7 @@ use GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Calendar::Component;
+unit package Evolution::Raw::Calendar::Component::Text;
 
 ### /usr/src/evolution-data-server-3.48.0/src/libecal/e-cal-component-text.h
 
