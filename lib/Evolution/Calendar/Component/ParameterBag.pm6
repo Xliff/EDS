@@ -3,7 +3,7 @@ use v6.c;
 use Method::Also;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::Calendar::Component::Alarm::Trigger;
+use Evolution::Raw::Calendar::Component::Alarm::ParameterBag;
 
 use GLib::Roles::Implementor;
 
