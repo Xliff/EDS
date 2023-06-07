@@ -55,6 +55,7 @@ class ECredentialsPrompter       is repr<CPointer> is export does GLib::Roles::P
 class ECredentialsPrompterImpl   is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EExtensible                is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EGDataQuery                is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EGDataSession              is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ENamedParameters           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Service             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Support             is repr<CPointer> is export does GLib::Roles::Pointers { }
