@@ -58,6 +58,7 @@ class EGDataQuery                is repr<CPointer> is export does GLib::Roles::P
 class EGDataSession              is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ENamedParameters           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Service             is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EOAuth2ServiceGoogle       is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EOAuth2Support             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EPhoneNumber               is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EReminderData              is repr<CPointer> is export does GLib::Roles::Pointers { }
