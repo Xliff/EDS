@@ -4,9 +4,11 @@ use NativeCall;
 
 use GLib::Raw::Definitions;
 use GLib::Raw::Enums;
+use GLib::Raw::Structs;
 use GIO::Raw::Definitions;
 use GTK::Raw::Definitions;
 use Evolution::Raw::Definitions;
+use Evolution::Raw::Structs;
 
 unit package Evolution::Raw::UI::Reminders;
 
