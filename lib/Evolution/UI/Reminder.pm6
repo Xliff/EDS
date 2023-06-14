@@ -3,9 +3,10 @@ use v6.c;
 use Method::Also;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::UI::Reminders;
+use Evolution::Raw::UI::Reminder;
 
-use GTK::Widget;
+use GTK::Pane;
+use GTK::TreeView;
 
 use GLib::Roles::Implementor;
 use GLib::Roles::Object;
@@ -55,23 +56,19 @@ class Evolution::UI::Reminders {
     $o;
   }
 
-  multi method new {
-    my $e-reminders-widget = e_reminders_widget_new();
+  multi method new (EReminderWatcher() $watcher) {
+    my $e-reminders-widget = e_reminders_widget_new($watcher);
 
     $e-reminders-widget ?? self.bless( :$e-reminders-widget ) !! Nil;
   }
 
-  method get_paned (
-    :$raw           = False,
-    :quick(:$fast)  = False,
-    :slow(:$proper) = $fast.not
-  )
+  method get_paned ( :$raw = False )
     is also<get-paned>
   {
-    returnProperWidget(
+    returnProperObject(
       e_reminders_widget_get_paned($!eds-rw),
       $raw,
-      $proper
+      |GTK::Pane.getTypePair
     );
   }
 
@@ -83,17 +80,13 @@ class Evolution::UI::Reminders {
     );
   }
 
-  method get_tree_view (
-    :$raw           = False,
-    :quick(:$fast)  = False,
-    :slow(:$proper) = $fast.not
-  )
+  method get_tree_view ( :$raw = False)
     is also<get-tree-view>
   {
-    returnProperWidget(
+    returnProperObject(
       e_reminders_widget_get_tree_view($!eds-rw),
       $raw,
-      $proper
+      |GTK::TreeView.getTypePair
     );
   }
 
