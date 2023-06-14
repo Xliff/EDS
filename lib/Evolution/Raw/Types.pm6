@@ -1,6 +1,7 @@
 use v6;
 
 use GLib::Raw::Exports;
+use JSON::GLib::Raw::Exports;
 use ICal::GLib::Raw::Exports;
 use ATK::Raw::Exports;
 use GIO::Raw::Exports;
@@ -20,6 +21,7 @@ need GLib::Raw::Struct_Subs;
 need GLib::Raw::Traits;
 need GLib::Roles::Implementor;
 need GLib::Roles::Pointers;
+need JSON::GLib::Raw::Definitions;
 need ATK::Raw::Definitions;
 need ATK::Raw::Enums;
 need ATK::Raw::Structs;
@@ -43,6 +45,7 @@ need Evolution::Raw::Subs;
 
 BEGIN {
   glib-re-export($_) for |@glib-exports,
+                         |@jg-exports,
                          |@atk-exports,
                          |@gio-exports,
                          |@soup-exports,
