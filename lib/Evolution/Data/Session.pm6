@@ -10,6 +10,8 @@ use Evolution::Raw::Data::Session;
 use JSON::GLib::Object;
 use SOUP::Session;
 
+use Evolution::Roles::Extens::JSON;
+
 our subset EGDataSessionAncestry is export of Mu
   where EGDataSession | SoupSessionAncestry;
 
@@ -128,7 +130,7 @@ class Evolution::Data::Session::TaskLists is SOUP::Session {
     set_error($error);
 
     my $otl = propReturnObject(
-      ppr($out_tasklist),
+      ppr($out_tasklist) but Evolution::Roles::Extens::JSON::TaskList,
       $raw,
       |JSON::GLib::Object.getTypePair
     );
@@ -179,7 +181,8 @@ class Evolution::Data::Session::TaskLists is SOUP::Session {
     return Nil unless $rv;
 
     my $otl = propReturnObject(
-      ppr($out_inserted_tasklist),
+      ppr($out_inserted_tasklist)
+        but Evolution::Roles::Extens::JSON::TaskList,
       $raw,
       |JSON::GLib::Object.getTypePair
     );
@@ -272,6 +275,7 @@ class Evolution::Data::Session::TaskLists is SOUP::Session {
 
     my $opl = propReturnObject(
       ppr($out_patched_tasklist),
+        but Evolution::Roles::Extends::JSON::TaskList;
       $raw,
       |JSON::GLib::Object.getTypePair
     );
@@ -317,7 +321,8 @@ class Evolution::Data::Session::TaskLists is SOUP::Session {
     return Nil unless $rv;
 
     my $oul = propReturnObject(
-      ppr($out_updated_tasklist),
+      ppr($out_updated_tasklist)
+        but Evolution::Roles::Extends::JSON::TaskList,
       $raw,
       |JSON::GLib::Object.getTypePair
     );
@@ -458,7 +463,7 @@ class Evolution::Data::Session::Tasks is SOUP::Session {
     set_error($error);
 
     my $otl = propReturnObject(
-      ppr($out_task),
+      ppr($out_task) but Evolution::Roles::Extens::JSON::Task,
       $raw,
       |JSON::GLib::Object.getTypePair
     );
@@ -495,7 +500,7 @@ class Evolution::Data::Session::Tasks is SOUP::Session {
   }
   multi method insert_sync (
     Str()                    $title,
-    CArray[JsonObject]       $out_inserted_tasklist,
+    CArray[JsonObject]       $out_inserted_task,
     GCancellable()           $cancellable            = GCancellable,
     CArray[Pointer[GError]]  $error                  = gerror,
                             :$all                    = False,
@@ -505,7 +510,7 @@ class Evolution::Data::Session::Tasks is SOUP::Session {
     my $rv = so e_gdata_session_tasks_insert_sync(
       $!eds-gds,
       $title,
-      $out_inserted_tasklist,
+      $out_inserted_task,
       $cancellable,
       $error
     );
@@ -514,10 +519,12 @@ class Evolution::Data::Session::Tasks is SOUP::Session {
     return Nil unless $rv;
 
     my $otl = propReturnObject(
-      ppr($out_inserted_tasklist),
+      ppr($out_inserted_task) ,
       $raw,
       |JSON::GLib::Object.getTypePair
     );
+
+    $otl = $otl but Evolution::Roles::Extens::JSON::Task unless $raw;
 
     $all.not ?? $rv !! $otl;
   }
@@ -655,6 +662,8 @@ class Evolution::Data::Session::Tasks is SOUP::Session {
       |JSON::GLib::Object.getTypePair
     );
 
+    $opt = $opt but Evolution::Roles::Extens::JSON::Task unless $raw;
+
     $all.not ?? $rv !! $opt;
   }
 
@@ -700,6 +709,8 @@ class Evolution::Data::Session::Tasks is SOUP::Session {
       $raw,
       |JSON::GLib::Object.getTypePair
     );
+
+    $oul = $oul but Evolution::Roles::Extens::JSON::Task unless $raw;
 
     $all.not ?? $rv !! $oul;
   }
