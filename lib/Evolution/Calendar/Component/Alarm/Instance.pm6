@@ -34,9 +34,9 @@ class Evolution::Calendar::Component::Alarm::Instance {
   }
   multi method new (
     Str() $uid,
-    time_t $instance_time,
-    time_t $occur_start,
-    time_t $occur_end
+    Int() $instance_time,
+    Int() $occur_start,
+    Int() $occur_end
   ) {
     my time_t ($i, $s, $e) = ($instance_time, $occur_start, $occur_end);
 
