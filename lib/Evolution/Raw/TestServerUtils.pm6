@@ -9,6 +9,8 @@ use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use Evolution::Raw::Structs;
 
+use GLib::Roles::Pointers;
+
 unit package Evolution::Raw::TestServerUtils;
 
 class ETestService is repr<CUnion> is export {
@@ -17,12 +19,14 @@ class ETestService is repr<CUnion> is export {
   has ECalClient  $.calendar-client;
   has EBook       $.book;
 
-  method getGenericService (\T) {
-    cast(T, $!generic)
+  method getGenericService (\T, $C?) {
+    my $i = cast(T, $!generic);
+    return $i unless $C !=== Nil;
+    $C.new($i);
   }
 }
 
-class ETestServerFixture is repr<CStruct> is export {
+class ETestServerFixture is repr<CStruct> is export does GLib::Roles::Pointers {
   has GMainLoop       $.loop;
   has gpointer        $.dbus;
   has ESourceRegistry $.registry;
@@ -38,7 +42,11 @@ class ETestServerFixture is repr<CStruct> is export {
   }
 }
 
-class ETestServerClosure is repr<CStruct> is export {
+class ETestServerClosure
+  is   repr<CStruct>
+  is   export
+  does GLib::Roles::Pointers
+{
   has ETestServiceType      $.type                  is rw;
   has Pointer               $!customize;
   has ECalClientSourceType  $.calendar-source-type  is rw;
@@ -87,16 +95,16 @@ sub e_test_server_utils_prepare_run (ETestServerFlags $flags)
   is export
 { * }
 
-sub e_test_server_utils_run
+sub e_test_server_utils_run ( gint, CArray[Str] )
   returns gint
-  is native(&e-test-utils)
-  is export
+  is      native(&e-test-utils)
+  is      export
 { * }
 
 sub e_test_server_utils_run_full (ETestServerFlags $flags)
   returns gint
-  is native(&e-test-utils)
-  is export
+  is      native(&e-test-utils)
+  is      export
 { * }
 
 sub e_test_server_utils_setup (
@@ -115,8 +123,8 @@ sub e_test_server_utils_teardown (
   is export
 { * }
 
-sub e_test_server_gshort_size () 
-  returns uint64 # unsigned long 
-  is native(&e-test-utils)
-  is export
-{ * } 
+sub e_test_server_gshort_size ()
+  returns uint64 # unsigned long
+  is      native(&e-test-utils)
+  is      export
+{ * }
