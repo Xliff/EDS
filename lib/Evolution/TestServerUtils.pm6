@@ -1,5 +1,7 @@
 use v6.c;
 
+use NativeCall;
+
 use Evolution::Raw::Types;
 use Evolution::Raw::TestServerUtils;
 
@@ -19,7 +21,7 @@ class Evolution::TestServerUtils {
   }
 
   method run {
-    e_test_server_utils_run();
+    e_test_server_utils_run( 0, CArray[Str] );
   }
 
   method run_full (Int() $flags) {
