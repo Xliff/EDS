@@ -219,57 +219,79 @@ class Evolution::Calendar::TimeUtil {
   }
 
   method to_isodate {
-    TimeUtilS.isodate_from_time_t($!t);
+    my $time = TimeUtilS.isodate_from_time_t($!t);
+
+    self.bless( :$time );
   }
 
   method add_day (Int() $days) {
     my gint $d = $days;
 
-    TimeUtilS.add_day($!t, $d);
+    my $time = TimeUtilS.add_day($!t, $d);
+
+    self.bless( :$time );
   }
 
   method add_day_with_zone (Int() $days, ICalTimezone() $zone) {
     my gint $d = $days;
 
-    TimeUtilS.add_day_with_zone($!t, $d, $zone);
+    my $time = TimeUtilS.add_day_with_zone($!t, $d, $zone);
+
+    self.bless( :$time );
   }
 
   method add_month_with_zone (Int() $months, ICalTimezone() $zone) {
     my gint $m = $months;
 
-    TimeUtilS.add_month_with_zone($!t, $m, $zone);
+    my $time = TimeUtilS.add_month_with_zone($!t, $m, $zone);
+
+    self.bless( :$time );
   }
 
   method add_week (Int() $weeks) {
     my gint $w = $weeks;
 
-    TimeUtilS.add_week($!t, $w);
+    my $time = TimeUtilS.add_week($!t, $w);
+
+    self.bless( :$time );
   }
 
   method add_week_with_zone (Int() $weeks, ICalTimezone() $zone) {
     my gint $w = $weeks;
 
-    TimeUtilS.add_week_with_zone($!t, $w, $zone);
+    my $time = TimeUtilS.add_week_with_zone($!t, $w, $zone);
+
+    self.bless( :$time );
   }
 
   method day_begin {
-    TimeUtilS.day_begin($!t);
+    my $time = TimeUtilS.day_begin($!t);
+
+    self.bless( :$time );
   }
 
   method day_begin_with_zone(ICalTimezone() $zone) {
-    TimeUtilS.day_begin_with_zone($!t, $zone);
+    my $time = TimeUtilS.day_begin_with_zone($!t, $zone);
+
+    self.bless( :$time );
   }
 
   method day_end {
-    TimeUtilS.day_end($!t);
+    my $time = TimeUtilS.day_end($!t);
+
+    self.bless( :$time );
   }
 
   method day_end_with_zone (ICalTimezone() $zone) {
-    TimeUtilS.day_end_with_zone($!t, $zone);
+    my $time = TimeUtilS.day_end_with_zone($!t, $zone);
+
+    self.bless( :$time );
   }
 
   method month_begin_with_zone (ICalTimezone() $zone) {
-    TimeUtilS.month_begin_with_zone($!t, $zone);
+    my $time = TimeUtilS.month_begin_with_zone($!t, $zone);
+
+    self.bless( :$time );
   }
 
   method to_gdate_with_zone (ICalTimezone() $zone) {
@@ -280,11 +302,15 @@ class Evolution::Calendar::TimeUtil {
   }
 
   method week_begin_with_zone (Int() $week_start_day, ICalTimezone() $zone) {
-    TimeUtilS.week_begin_with_zone($!t, $week_start_day, $zone);
+    my $time = TimeUtilS.week_begin_with_zone($!t, $week_start_day, $zone);
+
+    self.bless( :$time );
   }
 
   method year_begin_with_zone (ICalTimezone() $zone) {
-    TimeUtilS.year_begin_with_zone($!t, $zone);
+    my $time = TimeUtilS.year_begin_with_zone($!t, $zone);
+
+    self.bless( :$time );
   }
 
 }
