@@ -1,7 +1,7 @@
 use v6.c;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::Source::MailComposition;
+use Evolution::Raw::Source::Mail::Composition;
 
 use Evolution::Source::Extension;
 

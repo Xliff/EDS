@@ -1,10 +1,12 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 use NativeHelpers::Blob;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::Source::MailSignature;
+use Evolution::Raw::Source::Mail::Signature;
 
 use Evolution::Source::Extension;
 
@@ -36,6 +38,7 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
   }
 
   method Evolution::Raw::Definitions::ESourceMailSignature
+    is also<ESourceMailSignature>
   { $!ess }
 
   method new (
@@ -49,19 +52,19 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
     $o;
   }
 
-  method dup_mime_type {
+  method dup_mime_type is also<dup-mime-type> {
     e_source_mail_signature_dup_mime_type($!ess);
   }
 
-  method get_file {
+  method get_file is also<get-file> {
     e_source_mail_signature_get_file($!ess);
   }
 
-  method get_mime_type {
+  method get_mime_type is also<get-mime-type> {
     e_source_mail_signature_get_mime_type($!ess);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type(
@@ -103,6 +106,7 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
   }
 
   proto method load_finish (|)
+    is also<load-finish>
   { * }
 
   multi method load_finish (
@@ -144,7 +148,9 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
     Int()                   $length,
     GCancellable()          $cancellable,
     CArray[Pointer[GError]] $error        = gerror
-  ) {
+  )
+    is also<load-sync>
+  {
     my gsize $l = $length;
 
     clear_error;
@@ -240,7 +246,9 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
   method replace_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<replace-finish>
+  {
     clear_error;
     my $rv = e_source_mail_signature_replace_finish($!ess, $result, $error);
     set_error($error);
@@ -252,7 +260,9 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
     Int()                   $length,
     GCancellable()          $cancellable  = GCancellable,
     CArray[Pointer[GError]] $error        = gerror
-  ) {
+  )
+    is also<replace-sync>
+  {
     my gsize $l = $length;
 
     e_source_mail_signature_replace_sync(
@@ -264,7 +274,7 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
     );
   }
 
-  method set_mime_type (Str() $mime_type) {
+  method set_mime_type (Str() $mime_type) is also<set-mime-type> {
     e_source_mail_signature_set_mime_type($!ess, $mime_type);
   }
 
@@ -305,7 +315,9 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
   method symlink_finish (
     GAsyncResult()          $result,
     CArray[Pointer[GError]] $error   = gerror
-  ) {
+  )
+    is also<symlink-finish>
+  {
     e_source_mail_signature_symlink_finish($!ess, $result, $error);
   }
 
@@ -313,7 +325,9 @@ class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
     Str()                   $symlink_target,
     GCancellable()          $cancellable,
     CArray[Pointer[GError]] $error           = gerror
-  ) {
+  )
+    is also<symlink-sync>
+  {
     e_source_mail_signature_symlink_sync(
       $!ess,
       $symlink_target,
