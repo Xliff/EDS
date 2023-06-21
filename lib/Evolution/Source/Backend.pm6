@@ -114,47 +114,6 @@ class Evolution::Source::AddressBook is Evolution::Source::Backend {
 
 }
 
-our subset ESourceMailTransportAncestry is export of Mu
-  where ESourceMailTransport | ESourceBackendAncestry;
-
-class Evolution::Source::MailTransportAncestry is Evolution::Source::Backend {
-  has ESourceMailTransport $!emt is implementor;
-
-  submethod BUILD (:$mail-transport) {
-    self.setESourceMailTransport($mail-transport) if $mail-transport;
-  }
-
-  method setESourceMailTransport (ESourceMailTransportAncestry $_) {
-    my $to-parent;
-
-    $!emt = do {
-      when ESourceAddressBook {
-        $to-parent = cast(ESourceBackend, $_);
-        $_;
-      }
-
-      default {
-        $to-parent = $_;
-        cast(ESourceMailTransport, $_);
-      }
-    }
-    self.setESourceBackend($to-parent);
-  }
-
-  method Evolution::Raw::Definitions::ESourceMailTransport
-    is also<ESourceMailTransport>
-  { $!emt }
-
-  multi method new (ESourceMailTransportAncestry $mail-transport, :$ref = True) {
-    return Nil unless $mail-transport;
-
-    my $o = self.bless( :$mail-transport );
-    $o.ref if $ref;
-    $o;
-  }
-
-}
-
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-backend.h
 
 sub e_source_backend_dup_backend_name (ESourceBackend $extension)
