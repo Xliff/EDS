@@ -11,7 +11,7 @@ use GLib::Roles::Implementor;
 our subset ESourceMailTransportAncestry is export of Mu
   where ESourceMailTransport | ESourceBackendAncestry;
 
-class Evolution::Source::MailTransport is Evolution::Source::Backend {
+class Evolution::Source::Mail::Transport is Evolution::Source::Backend {
   has ESourceMailTransport $!eds-mt is implementor;
 
   submethod BUILD ( :$e-source-mailtrans ) {

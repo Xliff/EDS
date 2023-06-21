@@ -8,7 +8,7 @@ use Evolution::Source::Extension;
 our subset ESourceMailCompositionAncestry is export of Mu
   where ESourceMailComposition | ESourceExtensionAncestry;
 
-class Evolution::Source::ESourceMailComposition
+class Evolution::Source::Mail::Composition
   is Evolution::Source::Extension
 {
   has ESourceMailComposition $!esmc;

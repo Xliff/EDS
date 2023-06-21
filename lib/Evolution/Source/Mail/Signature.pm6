@@ -11,7 +11,7 @@ use Evolution::Source::Extension;
 our subset ESourceMailSignatureAncestry is export of Mu
   where ESourceMailSignature | ESourceExtensionAncestry;
 
-class Evolution::Source::MailSignature is Evolution::Source::Extension {
+class Evolution::Source::Mail::Signature is Evolution::Source::Extension {
   has ESourceMailSignature $!ess;
 
   submethod BUILD (:$mail-signature) {

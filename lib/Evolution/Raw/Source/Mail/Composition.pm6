@@ -7,7 +7,7 @@ use Evolution::Raw::Definitions;
 use Evolution::Raw::Enums;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Source::MailComposition;
+unit package Evolution::Raw::Source::Mail::Composition;
 
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mail-composition.h
 

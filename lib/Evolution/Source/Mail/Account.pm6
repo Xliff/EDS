@@ -1,12 +1,12 @@
 use Evolution::Raw::Types;
-use Evolution::Raw::Source::MailAccount;
+use Evolution::Raw::Source::Mail::Account;
 
 use Evolution::Source::Backend;
 
 our subset ESourceMailAccountAncestry is export of Mu
   where ESourceMailAccount | ESourceBackendAncestry;
 
-class Evolution::Source::MailAccount is Evolution::Source::Backend {
+class Evolution::Source::Mail::Account is Evolution::Source::Backend {
   has ESourceMailAccount $!esm;
 
   submethod BUILD (:$mail-account) {

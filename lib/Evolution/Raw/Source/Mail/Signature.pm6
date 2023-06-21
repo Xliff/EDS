@@ -8,7 +8,7 @@ use GIO::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Source::MailSignature;
+unit package Evolution::Raw::Source::Mail::Signature;
 
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mail-signature.h
 

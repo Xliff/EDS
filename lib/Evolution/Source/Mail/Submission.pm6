@@ -3,14 +3,14 @@ use v6.c;
 use NativeCall;
 
 use Evolution::Raw::Types;
-use Evolution::Raw::Source::MailSubmission;
+use Evolution::Raw::Source::Mail::Submission;
 
 use Evolution::Source::Extension;
 
 our subset ESourceMailSubmissionAncestry is export of Mu
   where ESourceMailSubmission | ESourceExtensionAncestry;
 
-class Evolution::Source::MailSubmission is Evolution::Source::Extension {
+class Evolution::Source::Mail::Submission is Evolution::Source::Extension {
   has ESourceMailSubmission $!esms;
 
   submethod BUILD (:$mail-submission) {

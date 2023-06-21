@@ -6,7 +6,7 @@ use GLib::Raw::Definitions;
 use Evolution::Raw::Definitions;
 use Evolution::Raw::Structs;
 
-unit package Evolution::Raw::Source::MailIdentity;
+unit package Evolution::Raw::Source::Mail::Identity;
 
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-source-mail-identity.h
 

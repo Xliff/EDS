@@ -8,7 +8,7 @@ use Evolution::Source::Extension;
 our subset ESourceMailIdentityAncestry is export of Mu
   where ESourceMailIdentity | ESourceExtensionAncestry;
 
-class Evolution::Source::MailIdentity is Evolution::Source::Extension {
+class Evolution::Source::Mail::Identity is Evolution::Source::Extension {
   has ESourceMailIdentity $!esi;
 
   submethod BUILD (:$mail-identity) {
