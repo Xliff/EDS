@@ -18,3 +18,4 @@
 ### /usr/src/evolution-data-server-3.48.0/src/calendar/libedata-cal/libedata-cal.h
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-uid.h
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/libedataserver.h
+### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook-contacts/e-book-contacts-enums.h
