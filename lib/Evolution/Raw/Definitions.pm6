@@ -64,6 +64,7 @@ class EOAuth2Support             is repr<CPointer> is export does GLib::Roles::P
 class EPhoneNumber               is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EReminderData              is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ERemindersWidget           is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ESourceWebDAVNotes         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ETimezoneCache             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EVCardAttribute            is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EVCardAttributeParam       is repr<CPointer> is export does GLib::Roles::Pointers { }
