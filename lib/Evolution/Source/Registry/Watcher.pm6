@@ -22,7 +22,7 @@ class Evolution::Source::Registry::Watcher {
       if $e-registry-watcher
   }
 
-  method setESoourceRegistryWatcher (ESourceRegistryWatcherAncestry $_) {
+  method setESourceRegistryWatcher (ESourceRegistryWatcherAncestry $_) {
     my $to-parent;
 
     $!eds-rw = do {
