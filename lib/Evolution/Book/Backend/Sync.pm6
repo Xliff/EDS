@@ -11,8 +11,48 @@ use Evolution::Contact;
 
 use GLib::Roles::Implementor;
 
+our subset EBookBackendSyncAncestry is export of Mu
+  where EBookBackendSync | EBookBackendAncestry;
+
 class Evolution::Book::Backend::Sync is Evolution::Book::Backend {
   has EBookBackendSync $!eds-ebbs is implementor;
+
+  submethod BUILD ( :$e-book-backend-sync ) {
+    self.setEBookBackendSync($e-book-backend-sync)
+      if $e-book-backend-sync
+  }
+
+  method setEBookBackendSync (EBookBackendSyncAncestry $_) {
+    my $to-parent;
+
+    $!eds-ebbs = do {
+      when EBookBackendSync {
+        $to-parent = cast(EBookBackend, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(EBookBackendSync, $_);
+      }
+    }
+    self.setEBookBackend($to-parent);
+  }
+
+  method Evolution::Raw::Definitions::EBookBackendSync
+  { $!eds-ebbs }
+
+  multi method new (
+    $e-book-backend-sync where * ~~ EBookBackendSyncAncestry,
+
+    :$ref = True
+  ) {
+    return unless $e-book-backend-sync;
+
+    my $o = self.bless( :$e-book-backend-sync );
+    $o.ref if $ref;
+    $o;
+  }
 
   method contains_email (
     Str()                   $email_address,
