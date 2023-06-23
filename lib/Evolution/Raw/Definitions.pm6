@@ -34,6 +34,7 @@ class EBookBackendSqliteDB       is repr<CPointer> is export does GLib::Roles::P
 class EBookBackendSync           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookQuery                 is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EbSdbCursor                is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EBookSqliteKeys            is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EbSqlCursor                is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarm         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarmInstance is repr<CPointer> is export does GLib::Roles::Pointers { }
