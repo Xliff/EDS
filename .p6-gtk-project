@@ -4,3 +4,4 @@ backups=backup,bitbucket,google-backup
 exec=edsexec
 include-directory=/usr/src/evolution-data-server-3.48.0/src
 lib=eds
+idir-exclude=camel
