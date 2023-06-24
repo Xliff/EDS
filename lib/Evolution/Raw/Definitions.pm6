@@ -73,6 +73,8 @@ class EVCardAttributeParam       is repr<CPointer> is export does GLib::Roles::P
 class EWeatherSource             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EWebDAVDiscoverContent     is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EWebDAVDiscoverDialog      is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EXmlHash                   is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EXmlUtils                  is repr<CPointer> is export does GLib::Roles::Pointers { }
 
 constant CAMEL_FOLDER_TYPE_BIT               is export = 10;
 
