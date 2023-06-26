@@ -12,8 +12,12 @@ my %ecal-adjustments = do {
         lib-append => '-2.0'
       ),
 
-      groovy => my $ulatest = (
+      groovy => (
         version    => v1
+      ).Hash,
+
+      mantic => my $ulatest = (
+        version    => v2
       ).Hash,
 
       latest => $ulatest
@@ -44,8 +48,12 @@ my %ebook-adjustments = do {
         version    => v19
       ).Hash,
 
-      hirsute => my $ulatest = (
+      hirsute => (
         version    => v20
+      ).Hash,
+
+      mantic => my $ulatest = (
+        version    => v21
       ).Hash,
 
       latest => $ulatest
@@ -79,9 +87,15 @@ my %edata-book-adjustments = do {
       version    => v25
     ).Hash,
 
-    ionic => my $ulatest = (
+    ionic => (
       version    => v26
-    ).Hash
+    ).Hash,
+
+    lunatic => my $ulatest = (
+      version    => v27
+    ).Hash,
+
+    latest => $ulatest
   )
 
 }
@@ -97,8 +111,12 @@ my %ebook-contacts-adjustments = do {
         version    => v3
       ).Hash,
 
-      hirsute => my $ulatest = (
+      hirsute => (
         version    => v3
+      ).Hash,
+
+      mantic => my $ulatest = (
+        version    => v4
       ).Hash,
 
       latest => $ulatest,
@@ -127,14 +145,18 @@ my %edataserver-adjustments = do {
 
       focal => (
         version => v24
-      ),
+      ).Hash,
 
       groovy => (
         version => v25
       ).Hash,
 
-      hirsute => my $ulatest = (
+      hirsute => (
         version => v26
+      ).Hash,
+
+      mantic => my $ulatest = (
+        version => v27
       ).Hash,
 
       latest => $ulatest
@@ -154,6 +176,22 @@ my %edataserver-adjustments = do {
   ).Hash;
 }
 
+my %edataserverui-adjustments = do {
+  (
+    Ubuntu => (
+      DEFAULTS => (
+        lib-append => '-1.2'
+      ),
+
+      mantic => my $ulatest = (
+        version => v4
+      ).Hash,
+
+      latest => $ulatest
+    )
+  ).Hash;
+}
+
 my %ebackend-adjustments = do {
   (
     Ubuntu => (
@@ -165,8 +203,12 @@ my %ebackend-adjustments = do {
         version    => v10
       ).Hash,
 
-      hirsute => my $ulatest = (
+      hirsute => (
         version    => v10
+      ).Hash,
+
+      mantic => my $ulatest = (
+        version    => v11
       ).Hash,
 
       latest => $ulatest
@@ -197,8 +239,12 @@ my %edata-cal-adjustments = do {
         version    => v1
       ).Hash,
 
-      hirsute => my $ulatest = (
-        version    => v10
+      hirsute => (
+        version    => v1
+      ).Hash,
+
+      mantic => my $ulatest = (
+        version    => v2
       ).Hash,
 
       latest => $ulatest
@@ -212,6 +258,8 @@ my %unix-library-adjustments = (
   edata-book     => %edata-book-adjustments,
   ebook-contacts => %ebook-contacts-adjustments,
   edataserver    => %edataserver-adjustments,
+  eds            => %edataserver-adjustments,
+  edataserverui  => %edataserverui-adjustments,
   ebackend       => %ebackend-adjustments,
   edata-cal      => %edata-cal-adjustments
 ).Hash;
