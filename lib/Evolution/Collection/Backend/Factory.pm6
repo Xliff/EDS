@@ -72,6 +72,17 @@ class Evolution::Collection::Backend::Factory is Evolution::Backend::Factory {
     );
   }
 
+  method get_type {
+    state ($n, $t);
+
+    unstable_get_type(
+      self.^name,
+      &e_collection_backend_factory_get_type,
+      $n,
+      $t
+    )
+  }
+
 }
 
 
@@ -83,6 +94,12 @@ sub e_collection_backend_factory_prepare_mail (
   ESource                   $mail_identity_source,
   ESource                   $mail_transport_source
 )
+  is      native(ebackend)
+  is      export
+{ * }
+
+sub e_collection_backend_factory_get_type
+  returns GType
   is      native(ebackend)
   is      export
 { * }
