@@ -15,6 +15,7 @@ use Evolution::Data::Book;
 use Evolution::Data::Book::View;
 use Evolution::Data::Book::Cursor;
 
+use GLib::Roles::TypedQueue0;
 use GIO::Roles::ProxyResolver;
 
 our subset EBookBackendAncestry is export of Mu
@@ -127,7 +128,7 @@ class Evolution::Book::Backend is Evolution::Backend {
     return unless $ra;
     return $ra if $queue;
 
-    $ra does GLib::Roles::TypedQueue[
+    $ra does GLib::Roles::TypedQueue0[
       $raw,
       $glist,
       |Evolution::Contact.getTypePair
@@ -188,7 +189,7 @@ class Evolution::Book::Backend is Evolution::Backend {
     return     unless $rv[0];
     return $ra if     $queue;
 
-    $ra does GLib::Roles::TypedQueue[
+    $ra does GLib::Roles::TypedQueue0[
       $raw,
       $glist,
       |Evolution::Contact.getTypePair
@@ -406,7 +407,7 @@ class Evolution::Book::Backend is Evolution::Backend {
     return Nil unless $rv[0];
     return $r  if     $queue;
 
-    $r does GLib::Roles::TypedQueue[
+    $r does GLib::Roles::TypedQueue0[
       $raw,
       $glist,
       |Evolution::Contact.getTypePair
@@ -463,7 +464,7 @@ class Evolution::Book::Backend is Evolution::Backend {
     return     unless $ra;
     return $ra if     $queue;
 
-    $ra does GLib::Roles::TypedQueue[
+    $ra does GLib::Roles::TypedQueue0[
       $raw,
       $glist,
       |Evolution::Contact.getTypePair
@@ -547,7 +548,7 @@ class Evolution::Book::Backend is Evolution::Backend {
     return $rv[1] if     $queue;
 
     # cw: $raw is irrelevant for Str
-    $rv[1] does GLib::Roles::TypedQueue[False, $glist, Str];
+    $rv[1] does GLib::Roles::TypedQueue0[False, $glist, Str];
 
     $q.Array;
   }
@@ -590,7 +591,7 @@ class Evolution::Book::Backend is Evolution::Backend {
     return $rv[1] if     $queue;
 
     # cw: $raw is irrelevant for Str
-    $rv[1] does GLib::Roles::TypedQueue[False, $glist, Str];
+    $rv[1] does GLib::Roles::TypedQueue0[False, $glist, Str];
 
     $q.Array;
   }
