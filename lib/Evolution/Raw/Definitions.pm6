@@ -27,6 +27,7 @@ constant ebook-contacts is export = version-by-distro('ebook-contacts');
 constant edata-cal      is export = version-by-distro('edata-cal');
 constant edata-book     is export = version-by-distro('edata-book');
 constant eds            is export = version-by-distro('edataserver');
+constant edsui          is export = version-by-distro('edataserverui');
 constant ebackend       is export = version-by-distro('ebackend');
 
 class CamelMsgPort               is repr<CPointer> is export does GLib::Roles::Pointers { }
@@ -53,6 +54,7 @@ class ECalComponentPrivate       is repr<CPointer> is export does GLib::Roles::P
 class ECalComponentPropertyBag   is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentRange         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentText          is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECellRendererColor         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECertificateWidget         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECollator                  is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECredentialsPrompter       is repr<CPointer> is export does GLib::Roles::Pointers { }
