@@ -9,7 +9,7 @@ use Evolution::DBus::Server;
 use GLib::Roles::Implementor;
 use Evolution::Roles::Signals::User::Prompter::Server;
 
-class Evolution::User::Prompter::Service
+class Evolution::User::Prompter::Server
   is Evolution::DBus::Server
 {
   also does Evolution::Roles::Signals::User::Prompter::Server;
@@ -43,7 +43,6 @@ class Evolution::User::Prompter::Service
 }
 
 ### /usr/src/evolution-data-server-3.48.0/src/libebackend/e-user-prompter-server.h
-
 sub e_user_prompter_server_new
   returns EUserPrompterServer
   is      native(ebackend)
