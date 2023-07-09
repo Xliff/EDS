@@ -711,7 +711,7 @@ our enum EBookSDBErrorEnum is export <
   E_BOOK_SDB_ERROR_END_OF_LIST
 >;
 
-constant EBookViewStatus is export := g       uint32;
+constant EBookViewStatus is export := guint32;
 our enum EBookViewStatusEnum is export <
   E_BOOK_VIEW_STATUS_OK
   E_BOOK_VIEW_STATUS_TIME_LIMIT_EXCEEDED
@@ -759,6 +759,45 @@ our enum EbSqlLockTypeEnum is export <
   EBSQL_LOCK_READ
   EBSQL_LOCK_WRITE
 >;
+
+constant ECacheError is export:= guint32;
+our enum ECacheErrorEnum is export <
+  E_CACHE_ERROR_ENGINE,
+  E_CACHE_ERROR_CONSTRAINT
+  E_CACHE_ERROR_NOT_FOUND
+  E_CACHE_ERROR_INVALID_QUERY
+  E_CACHE_ERROR_UNSUPPORTED_FIELD
+  E_CACHE_ERROR_UNSUPPORTED_QUERY
+  E_CACHE_ERROR_END_OF_LIST
+  E_CACHE_ERROR_LOAD
+  E_CACHE_ERROR_CORRUPT
+>;
+
+constant ECacheLockType is export := guint32;
+our enum ECacheLockTypeEnum is export <
+  E_CACHE_LOCK_READ
+  E_CACHE_LOCK_WRITE
+>;
+
+constant ECacheUnlockAction is export := guint32;
+enum ECacheUnlockActionEnum is export <
+  E_CACHE_UNLOCK_NONE
+  E_CACHE_UNLOCK_COMMIT
+  E_CACHE_UNLOCK_ROLLBACK
+>;
+
+constant ECacheDeletedFlag is export := guint32;
+our enum ECacheDeletedFlagEnum is export (
+   E_CACHE_EXCLUDE_DELETED  => 0,
+  'E_CACHE_INCLUDE_DELETED'
+);
+
+constant ECacheOfflineFlag is export := gint32;
+our enum ECacheOfflineFlagEnum is export (
+   E_CACHE_OFFLINE_UNKNOWN => -1,
+   E_CACHE_IS_ONLINE       => 0,
+  'E_CACHE_IS_OFFLINE'
+);
 
 constant ECalClientError is export := guint32;
 our enum ECalClientErrorEnum is export <
@@ -1352,6 +1391,19 @@ our enum EWebDAVACLRestrictionsEnum is export (
   E_WEBDAV_ACL_RESTRICTION_REQUIRED_PRINCIPAL => 1 +< 3,
 );
 
+constant EWebDAVResourceSupports is export := guint32;
+our enum EWebDAVResourceSupportsEnum is export (
+  E_WEBDAV_RESOURCE_SUPPORTS_NONE         =>        0,
+  E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS     =>   1 +< 0,
+  E_WEBDAV_RESOURCE_SUPPORTS_EVENTS       =>   1 +< 1,
+  E_WEBDAV_RESOURCE_SUPPORTS_MEMOS        =>   1 +< 2,
+  E_WEBDAV_RESOURCE_SUPPORTS_TASKS        =>   1 +< 3,
+  E_WEBDAV_RESOURCE_SUPPORTS_FREEBUSY     =>   1 +< 4,
+  E_WEBDAV_RESOURCE_SUPPORTS_TIMEZONE     =>   1 +< 5,
+  E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES =>   1 +< 6,
+  E_WEBDAV_RESOURCE_SUPPORTS_LAST         =>   1 +< 6
+);
+
 constant EWebDAVDiscoverSupports is export := guint32;
 our enum EWebDAVDiscoverSupportsEnum is export (
   E_WEBDAV_DISCOVER_SUPPORTS_NONE                   =>                 E_WEBDAV_RESOURCE_SUPPORTS_NONE,
@@ -1361,7 +1413,7 @@ our enum EWebDAVDiscoverSupportsEnum is export (
   E_WEBDAV_DISCOVER_SUPPORTS_TASKS                  =>                E_WEBDAV_RESOURCE_SUPPORTS_TASKS,
   E_WEBDAV_DISCOVER_SUPPORTS_WEBDAV_NOTES           =>         E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES,
   E_WEBDAV_DISCOVER_SUPPORTS_CALENDAR_AUTO_SCHEDULE =>            E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1,
-  E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   =>   ( E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1 ) +< 1,
+  E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   =>   ( E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1 ) +< 1
 );
 
 constant EWebDAVLockScope is export := guint32;
@@ -1414,19 +1466,6 @@ our enum EWebDAVResourceKindEnum is export <
   E_WEBDAV_RESOURCE_KIND_SUBSCRIBED_ICALENDAR
   E_WEBDAV_RESOURCE_KIND_WEBDAV_NOTES
 >;
-
-constant EWebDAVResourceSupports is export := guint32;
-our enum EWebDAVResourceSupportsEnum is export (
-  E_WEBDAV_RESOURCE_SUPPORTS_NONE         =>        0,
-  E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS     =>   1 +< 0,
-  E_WEBDAV_RESOURCE_SUPPORTS_EVENTS       =>   1 +< 1,
-  E_WEBDAV_RESOURCE_SUPPORTS_MEMOS        =>   1 +< 2,
-  E_WEBDAV_RESOURCE_SUPPORTS_TASKS        =>   1 +< 3,
-  E_WEBDAV_RESOURCE_SUPPORTS_FREEBUSY     =>   1 +< 4,
-  E_WEBDAV_RESOURCE_SUPPORTS_TIMEZONE     =>   1 +< 5,
-  E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES =>   1 +< 6,
-  E_WEBDAV_RESOURCE_SUPPORTS_LAST         =>   1 +< 6
-);
 
 constant EXmlHashStatus is export := guint32;
 our enum EXmlHashStatusEnum is export <
