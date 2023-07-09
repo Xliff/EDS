@@ -31,6 +31,7 @@ constant edsui          is export = version-by-distro('edataserverui');
 constant ebackend       is export = version-by-distro('ebackend');
 
 class CamelMsgPort                 is repr<CPointer> is export does GLib::Roles::Pointers { }
+class EBookBackendCache            is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookBackendFile             is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookBackendSqliteDB         is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EBookBackendSummary          is repr<CPointer> is export does GLib::Roles::Pointers { }
