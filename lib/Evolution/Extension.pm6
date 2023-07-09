@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -37,6 +39,7 @@ class Evolution::Extension {
   }
 
   method Evolution::Raw::Structs::EExtension
+    is also<EExtension>
   { $!ee }
 
   method new (EExtensionAncestry $extension, :$ref = True) {
@@ -47,7 +50,7 @@ class Evolution::Extension {
     $o;
   }
 
-  method get_extensible (:$raw = False) {
+  method get_extensible (:$raw = False) is also<get-extensible> {
     my $ex = e_extension_get_extensible($!ee);
 
     # Transfer: none
@@ -57,7 +60,7 @@ class Evolution::Extension {
       Nil;
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_extension_get_type, $n, $t );

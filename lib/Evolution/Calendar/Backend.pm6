@@ -7,12 +7,14 @@ use Evolution::Raw::Calendar::Backend;
 
 use ICal::Raw::Enums;
 use GLib::GList;
+use GLib::GSList;
 use GLib::Queue;
 use Evolution::Backend;
 use Evolution::DataCal;
 use Evolution::DataCal::View;
 use Evolution::Source::Registry;
 
+use GLib::Roles::TypedQueue;
 use GIO::Roles::ProxyResolver;
 use Evolution::Roles::TimezoneCache;
 
@@ -210,7 +212,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
 
     return $q unless $array || $raw.not;
 
-    ( $q but GLib::Roles::TypedQueue[Str] ).Array;
+    ( $q but GLib::Roles::TypedQueue[Str, True] ).Array;
   }
   multi method create_objects_sync (
     Str()                   $calobjs,
@@ -409,7 +411,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
 
     return $q unless $array || $raw.not;
 
-    ( $q but GLib::Roles::TypedQueue[Str] ).Array;
+    ( $q but GLib::Roles::TypedQueue[Str, True] ).Array;
   }
   multi method get_attachment_uris_finish (
     GAsyncResult()          $result,
@@ -457,7 +459,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
 
     return $q unless $array || $raw.not;
 
-    ( $q but GLib::Roles::TypedQueue[Str] ).Array;
+    ( $q but GLib::Roles::TypedQueue[Str, True] ).Array;
   }
   multi method get_attachment_uris_sync (
     Str                     $uid,
@@ -532,23 +534,27 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   { * }
 
   multi method get_free_busy_finish (
-    GAsyncResult()          $result,
-    CArray[Pointer[GError]] $error   = gerror,
-                            :$glist  = False,
-                            :$raw    = False
+    GAsyncResult()           $result,
+    CArray[Pointer[GError]]  $error          = gerror,
+                            :$raw            = False,
+                            :glist(:$gslist) = False,
   ) {
-    (my $ofb = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
-    my $rv   = samewith($result, $ofb, $error, :all);
-
-    return Nil unless $rv[0];
-
-    returnGList($rv[1], $glist, $raw, Str);
+    samewith(
+       $result,
+       newCArray(GSList),
+       $error,
+      :all,
+      :$raw,
+      :$gslist
+    );
   }
   multi method get_free_busy_finish (
-    GAsyncResult()          $result,
-    CArray[Pointer[GSList]] $out_freebusy,
-    CArray[Pointer[GError]] $error         = gerror,
-                            :$all          = False
+    GAsyncResult()           $result,
+    CArray[Pointer[GSList]]  $out_freebusy,
+    CArray[Pointer[GError]]  $error          = gerror,
+                            :$raw            = False,
+                            :$all            = False,
+                            :glist(:$gslist) = False
   ) {
     clear_error;
     my $rv = so e_cal_backend_get_free_busy_finish(
@@ -558,46 +564,51 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $error
     );
     set_error($error);
-    return $rv unless $all;
 
-    ( $rv, ppr($out_freebusy) )
+    my $of = returnGSList(
+      ppr($out_freebusy),
+      $raw,
+      $gslist,
+      Str
+    );
+
+    $all.not ?? $rv !! $of;
   }
 
   proto method get_free_busy_sync (|)
   { * }
 
   multi method get_free_busy_sync (
-                            $start,
-                            $end,
-                            @users,
-    CArray[Pointer[GError]] $error        = gerror,
-                            :$cancellable = GCancellable,
-                            :$glist       = False,
-                            :$raw         = False
+                             $start,
+                             $end,
+                             @users,
+    CArray[Pointer[GError]]  $error          = gerror,
+                            :$cancellable    = GCancellable,
+                            :$raw            = False,
+                            :glist(:$gslist) = False
+
   ) {
-    (my $ofb = CArray[Pointer[GSList]].new)[0] = Pointer[GSList];
-
-    my $rv = samewith(
-      $start,
-      $end,
-      ArrayToCArray(@users, typed => Str),
-      $ofb,
-      $cancellable,
-      :all
+    samewith(
+       $start,
+       $end,
+       ArrayToCArray(@users, typed => Str),
+       newCArray(GSList),
+       $cancellable,
+      :all,
+      :$raw,
+      :$gslist
     );
-
-    return Nil unless $rv[0];
-
-    returnGList($rv[1], $glist, $raw, Str);
   }
   multi method get_free_busy_sync (
     Int()                   $start,
     Int()                   $end,
     CArray[Str]             $users,
     CArray[Pointer[GSList]] $out_freebusy,
-    GCancellable()          $cancellable   = GCancellable,
-    CArray[Pointer[GError]] $error         = gerror,
-                            :$all          = False
+    GCancellable()          $cancellable     = GCancellable,
+    CArray[Pointer[GError]] $error           = gerror,
+                            :$all            = False,
+                            :$raw            = False,
+                            :glist(:$gslist) = False
   ) {
     my time_t ($s, $e) = ($start, $end);
 
@@ -611,9 +622,14 @@ class Evolution::Calendar::Backend is Evolution::Backend {
       $error
     );
 
-    return $rv unless $all;
+    my $of = returnGSList(
+      ppr($out_freebusy),
+      $raw,
+      $gslist,
+      Str
+    );
 
-    ( $rv, ppr($out_freebusy) )
+    $all.not ?? $rv !! $of;
   }
 
   method get_kind {
@@ -753,7 +769,7 @@ class Evolution::Calendar::Backend is Evolution::Backend {
 
     return $q unless $array || $raw.not;
 
-    ( $q but GLib::Roles::TypedQueue[Str] ).Array;
+    ( $q but GLib::Roles::TypedQueue[Str, True] ).Array;
   }
   multi method get_object_list_sync (
     Str()                   $query,
@@ -888,14 +904,12 @@ class Evolution::Calendar::Backend is Evolution::Backend {
   }
 
   method list_views (:$glist = False, :$raw = False) {
-    # cw: Object?
-    returnGList(
-      e_cal_backend_list_views($!ecb),
-      $glist,
-      $raw,
-      EDataCalView,
-      Evolution::DataCal::View
-    );
+    # returnGList(
+    #   e_cal_backend_list_views($!ecb),
+    #   $glist,
+    #   $raw,
+    #   |Evolution::DataCal::View.getTypePair
+    # );
   }
 
   proto method modify_objects (|)

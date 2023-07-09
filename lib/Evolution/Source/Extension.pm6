@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use Evolution::Raw::Types;
 use Evolution::Raw::Source::Extension;
 
@@ -35,6 +37,7 @@ class Evolution::Source::Extension {
   }
 
   method Evolution::Raw::Definitions::ESourceExtension
+    is also<ESourceExtension>
   { $!ese }
 
   multi method new (ESourceExtensionAncestry $extension, :$ref = True) {
@@ -45,7 +48,7 @@ class Evolution::Source::Extension {
     $o;
   }
 
-  method get_source (:$raw = False) {
+  method get_source (:$raw = False) is also<get-source> {
     my $s = e_source_extension_get_source($!ese);
 
     $s ??
@@ -54,21 +57,21 @@ class Evolution::Source::Extension {
       Nil;
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_source_extension_get_type, $n, $t );
   }
 
-  method property_lock {
+  method property_lock is also<property-lock> {
     e_source_extension_property_lock($!ese);
   }
 
-  method property_unlock {
+  method property_unlock is also<property-unlock> {
     e_source_extension_property_unlock($!ese);
   }
 
-  method ref_source (:$raw = False) {
+  method ref_source (:$raw = False) is also<ref-source> {
     my $s = e_source_extension_ref_source($!ese);
 
     $s ??

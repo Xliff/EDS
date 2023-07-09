@@ -10,12 +10,40 @@ our enum VCardVersion is export ('ver2-1', 'ver2_1' => 0, 'ver3', 'ver4');
 
 constant CAMEL_STORE_INFO_FOLDER_TYPE_BIT is export = 10;
 
-constant EOAuth2ServiceNavigationPolicy is export := guint32;
-our enum EOAuth2ServiceNavigationPolicyEnum is export <
-  E_OAUTH2_SERVICE_NAVIGATION_POLICY_DENY
-  E_OAUTH2_SERVICE_NAVIGATION_POLICY_ALLOW
-  E_OAUTH2_SERVICE_NAVIGATION_POLICY_ABORT
+constant camel_search_flags_t is export := guint32;
+our enum camel_search_flags_tEnum is export (
+  CAMEL_SEARCH_MATCH_START   => 1 +< 0,
+  CAMEL_SEARCH_MATCH_END     => 1 +< 1,
+  CAMEL_SEARCH_MATCH_REGEX   => 1 +< 2,
+  CAMEL_SEARCH_MATCH_ICASE   => 1 +< 3,
+  CAMEL_SEARCH_MATCH_NEWLINE => 1 +< 4,
+);
+
+constant camel_search_match_t is export := guint32;
+our enum camel_search_match_tEnum is export <
+  CAMEL_SEARCH_MATCH_EXACT
+  CAMEL_SEARCH_MATCH_CONTAINS
+  CAMEL_SEARCH_MATCH_WORD
+  CAMEL_SEARCH_MATCH_STARTS
+  CAMEL_SEARCH_MATCH_ENDS
+  CAMEL_SEARCH_MATCH_SOUNDEX
 >;
+
+constant camel_search_t is export := guint32;
+our enum camel_search_tEnum is export <
+  CAMEL_SEARCH_TYPE_ASIS
+  CAMEL_SEARCH_TYPE_ENCODED
+  CAMEL_SEARCH_TYPE_ADDRESS
+  CAMEL_SEARCH_TYPE_ADDRESS_ENCODED
+  CAMEL_SEARCH_TYPE_MLIST
+>;
+
+constant camel_search_word_t is export := guint32;
+our enum camel_search_word_tEnum is export (
+  CAMEL_SEARCH_WORD_SIMPLE  => 1,
+  CAMEL_SEARCH_WORD_COMPLEX => 2,
+  CAMEL_SEARCH_WORD_8BIT    => 4,
+);
 
 constant CamelAuthenticationResult is export := guint32;
 our enum CamelAuthenticationResultEnum is export <
@@ -221,7 +249,14 @@ our enum CamelFolderSummaryFlagsEnum is export (
   CAMEL_FOLDER_SUMMARY_IN_MEMORY_ONLY => 1 +< 1,
 );
 
-constant CamelHTMLParserState is export := guint32;
+constant CamelHeaderAddressType is export := guint32;
+our enum CamelHeaderAddressTypeEnum is export <
+  CAMEL_HEADER_ADDRESS_NONE
+  CAMEL_HEADER_ADDRESS_NAME
+  CAMEL_HEADER_ADDRESS_GROUP
+>;
+
+our constant CamelHTMLParserState is export := guint32;
 our enum CamelHTMLParserStateEnum is export <
   CAMEL_HTML_PARSER_DATA
   CAMEL_HTML_PARSER_ENT
@@ -239,13 +274,6 @@ our enum CamelHTMLParserStateEnum is export <
   CAMEL_HTML_PARSER_EOF
 >;
 
-constant CamelHeaderAddressType is export := guint32;
-our enum CamelHeaderAddressTypeEnum is export <
-  CAMEL_HEADER_ADDRESS_NONE
-  CAMEL_HEADER_ADDRESS_NAME
-  CAMEL_HEADER_ADDRESS_GROUP
->;
-
 constant CamelJunkStatus is export := guint32;
 our enum CamelJunkStatusEnum is export <
   CAMEL_JUNK_STATUS_ERROR
@@ -258,12 +286,6 @@ constant CamelLockType is export := guint32;
 our enum CamelLockTypeEnum is export <
   CAMEL_LOCK_READ
   CAMEL_LOCK_WRITE
->;
-
-our constant EbSqlLockType is export := guint32;
-our enum EbSqlLockTypeEnum is export <
-  EBSQL_LOCK_READ
-  EBSQL_LOCK_WRITE
 >;
 
 constant CamelMemPoolFlags is export := guint32;
@@ -396,6 +418,37 @@ our enum CamelRecipientCertificateFlagsEnum is export (
   CAMEL_RECIPIENT_CERTIFICATE_PGP   => 1 +< 1,
 );
 
+constant CamelSaslAnonTraceType is export := guint32;
+our enum CamelSaslAnonTraceTypeEnum is export <
+  CAMEL_SASL_ANON_TRACE_EMAIL
+  CAMEL_SASL_ANON_TRACE_OPAQUE
+  CAMEL_SASL_ANON_TRACE_EMPTY
+>;
+
+constant CamelServiceConnectionStatus is export := guint32;
+our enum CamelServiceConnectionStatusEnum is export <
+  CAMEL_SERVICE_DISCONNECTED
+  CAMEL_SERVICE_CONNECTING
+  CAMEL_SERVICE_CONNECTED
+  CAMEL_SERVICE_DISCONNECTING
+>;
+
+constant CamelServiceError is export := guint32;
+our enum CamelServiceErrorEnum is export <
+  CAMEL_SERVICE_ERROR_INVALID
+  CAMEL_SERVICE_ERROR_URL_INVALID
+  CAMEL_SERVICE_ERROR_UNAVAILABLE
+  CAMEL_SERVICE_ERROR_CANT_AUTHENTICATE
+  CAMEL_SERVICE_ERROR_NOT_CONNECTED
+>;
+
+constant CamelSessionAlertType is export := guint32;
+our enum CamelSessionAlertTypeEnum is export <
+  CAMEL_SESSION_ALERT_INFO
+  CAMEL_SESSION_ALERT_WARNING
+  CAMEL_SESSION_ALERT_ERROR
+>;
+
 constant CamelSExpResultType is export := guint32;
 our enum CamelSExpResultTypeEnum is export <
   CAMEL_SEXP_RES_ARRAY_PTR
@@ -429,37 +482,6 @@ constant CamelSMIMESign is export := guint32;
 our enum CamelSMIMESignEnum is export <
   CAMEL_SMIME_SIGN_CLEARSIGN
   CAMEL_SMIME_SIGN_ENVELOPED
->;
-
-constant CamelSaslAnonTraceType is export := guint32;
-our enum CamelSaslAnonTraceTypeEnum is export <
-  CAMEL_SASL_ANON_TRACE_EMAIL
-  CAMEL_SASL_ANON_TRACE_OPAQUE
-  CAMEL_SASL_ANON_TRACE_EMPTY
->;
-
-constant CamelServiceConnectionStatus is export := guint32;
-our enum CamelServiceConnectionStatusEnum is export <
-  CAMEL_SERVICE_DISCONNECTED
-  CAMEL_SERVICE_CONNECTING
-  CAMEL_SERVICE_CONNECTED
-  CAMEL_SERVICE_DISCONNECTING
->;
-
-constant CamelServiceError is export := guint32;
-our enum CamelServiceErrorEnum is export <
-  CAMEL_SERVICE_ERROR_INVALID
-  CAMEL_SERVICE_ERROR_URL_INVALID
-  CAMEL_SERVICE_ERROR_UNAVAILABLE
-  CAMEL_SERVICE_ERROR_CANT_AUTHENTICATE
-  CAMEL_SERVICE_ERROR_NOT_CONNECTED
->;
-
-constant CamelSessionAlertType is export := guint32;
-our enum CamelSessionAlertTypeEnum is export <
-  CAMEL_SESSION_ALERT_INFO
-  CAMEL_SESSION_ALERT_WARNING
-  CAMEL_SESSION_ALERT_ERROR
 >;
 
 constant CamelSortType is export := guint32;
@@ -510,7 +532,7 @@ constant CamelStoreInfoFlags is export := guint32;
 our enum CamelStoreInfoFlagsEnum is export (
   CAMEL_STORE_INFO_FOLDER_NOSELECT      =>                                 1 +< 0,
   CAMEL_STORE_INFO_FOLDER_NOINFERIORS   =>                                 1 +< 1,
-  CAMEL_STORE_INFO_FOLDER_CHILDREN      =>                                 1 +< 2,
+  CAMEL_STORE_INFO_FOLDER_CHILDREN             =>                                 1 +< 2,
   CAMEL_STORE_INFO_FOLDER_NOCHILDREN    =>                                 1 +< 3,
   CAMEL_STORE_INFO_FOLDER_SUBSCRIBED    =>                                 1 +< 4,
   CAMEL_STORE_INFO_FOLDER_VIRTUAL       =>                                 1 +< 5,
@@ -598,6 +620,184 @@ our enum CamelVTrashFolderTypeEnum is export <
   CAMEL_VTRASH_FOLDER_JUNK
   CAMEL_VTRASH_FOLDER_LAST
 >;
+
+constant EAuthenticationSessionResult is export := guint32;
+our enum EAuthenticationSessionResultEnum is export <
+  E_AUTHENTICATION_SESSION_ERROR
+  E_AUTHENTICATION_SESSION_SUCCESS
+  E_AUTHENTICATION_SESSION_DISMISSED
+>;
+
+constant EBookChangeType is export := guint32;
+our enum EBookChangeTypeEnum is export <
+  E_BOOK_CHANGE_CARD_ADDED
+  E_BOOK_CHANGE_CARD_DELETED
+  E_BOOK_CHANGE_CARD_MODIFIED
+>;
+
+constant EBookClientError is export := guint32;
+our enum EBookClientErrorEnum is export <
+  E_BOOK_CLIENT_ERROR_NO_SUCH_BOOK
+  E_BOOK_CLIENT_ERROR_CONTACT_NOT_FOUND
+  E_BOOK_CLIENT_ERROR_CONTACT_ID_ALREADY_EXISTS
+  E_BOOK_CLIENT_ERROR_NO_SUCH_SOURCE
+  E_BOOK_CLIENT_ERROR_NO_SPACE
+>;
+
+constant EBookClientViewFlags is export := guint32;
+our enum EBookClientViewFlagsEnum is export (
+  E_BOOK_CLIENT_VIEW_FLAGS_NONE           =>        0,
+  E_BOOK_CLIENT_VIEW_FLAGS_NOTIFY_INITIAL => (1 +< 0),
+);
+
+constant EBookCursorOrigin is export := guint32;
+our enum EBookCursorOriginEnum is export <
+  E_BOOK_CURSOR_ORIGIN_CURRENT
+  E_BOOK_CURSOR_ORIGIN_BEGIN
+  E_BOOK_CURSOR_ORIGIN_END
+>;
+
+constant EBookCursorSortType is export := guint32;
+our enum EBookCursorSortTypeEnum is export (
+  E_BOOK_CURSOR_SORT_ASCENDING  => 0,
+  'E_BOOK_CURSOR_SORT_DESCENDING'
+);
+
+constant EBookCursorStepFlags is export := guint32;
+our enum EBookCursorStepFlagsEnum is export (
+  E_BOOK_CURSOR_STEP_MOVE  => (1 +< 0),
+  E_BOOK_CURSOR_STEP_FETCH => (1 +< 1),
+);
+
+constant EBookIndexType is export := guint32;
+our enum EBookIndexTypeEnum is export (
+  E_BOOK_INDEX_PREFIX   => 0,
+  'E_BOOK_INDEX_SUFFIX',
+  'E_BOOK_INDEX_PHONE',
+  'E_BOOK_INDEX_SORT_KEY'
+);
+
+constant EBookOperationFlags is export := guint32;
+our enum EBookOperationFlagsEnum is export (
+  E_BOOK_OPERATION_FLAG_NONE                 =>        0,
+  E_BOOK_OPERATION_FLAG_CONFLICT_FAIL        => (1 +< 0),
+  E_BOOK_OPERATION_FLAG_CONFLICT_USE_NEWER   => (1 +< 1),
+  E_BOOK_OPERATION_FLAG_CONFLICT_KEEP_SERVER => (1 +< 2),
+  E_BOOK_OPERATION_FLAG_CONFLICT_KEEP_LOCAL  =>        0,
+  E_BOOK_OPERATION_FLAG_CONFLICT_WRITE_COPY  => (1 +< 3),
+);
+
+constant EBookQueryTest is export := guint32;
+our enum EBookQueryTestEnum is export (
+  E_BOOK_QUERY_IS                           => 0,
+  'E_BOOK_QUERY_CONTAINS',
+  'E_BOOK_QUERY_BEGINS_WITH',
+  'E_BOOK_QUERY_ENDS_WITH',
+  'E_BOOK_QUERY_EQUALS_PHONE_NUMBER',
+  'E_BOOK_QUERY_EQUALS_NATIONAL_PHONE_NUMBER',
+  'E_BOOK_QUERY_EQUALS_SHORT_PHONE_NUMBER',
+  'E_BOOK_QUERY_REGEX_NORMAL',
+  'E_BOOK_QUERY_REGEX_RAW',
+  'E_BOOK_QUERY_LAST'
+);
+
+constant EBookSDBError is export := guint32;
+our enum EBookSDBErrorEnum is export <
+  E_BOOK_SDB_ERROR_CONSTRAINT
+  E_BOOK_SDB_ERROR_CONTACT_NOT_FOUND
+  E_BOOK_SDB_ERROR_OTHER
+  E_BOOK_SDB_ERROR_NOT_SUPPORTED
+  E_BOOK_SDB_ERROR_INVALID_QUERY
+  E_BOOK_SDB_ERROR_END_OF_LIST
+>;
+
+constant EBookViewStatus is export := guint32;
+our enum EBookViewStatusEnum is export <
+  E_BOOK_VIEW_STATUS_OK
+  E_BOOK_VIEW_STATUS_TIME_LIMIT_EXCEEDED
+  E_BOOK_VIEW_STATUS_SIZE_LIMIT_EXCEEDED
+  E_BOOK_VIEW_ERROR_INVALID_QUERY
+  E_BOOK_VIEW_ERROR_QUERY_REFUSED
+  E_BOOK_VIEW_ERROR_OTHER_ERROR
+>;
+
+constant EbSdbCursorOrigin is export := guint32;
+our enum EbSdbCursorOriginEnum is export (
+   'EBSDB_CURSOR_ORIGIN_CURRENT' => 0,
+   'EBSDB_CURSOR_ORIGIN_BEGIN',
+   'EBSDB_CURSOR_ORIGIN_END'
+);
+
+constant EbSdbCursorStepFlags is export := guint32;
+our enum EbSdbCursorStepFlagsEnum is export (
+  EBSDB_CURSOR_STEP_MOVE  =>  1,
+  EBSDB_CURSOR_STEP_FETCH => (1 +< 1)
+);
+
+constant EbSqlChangeType is export := guint32;
+our enum EbSqlChangeTypeEnum is export <
+  EBSQL_CHANGE_CONTACT_ADDED
+  EBSQL_CHANGE_LOCALE_CHANGED
+  EBSQL_CHANGE_LAST
+>;
+
+constant EbSqlCursorOrigin is export := guint32;
+our enum EbSqlCursorOriginEnum is export <
+  EBSQL_CURSOR_ORIGIN_CURRENT
+  EBSQL_CURSOR_ORIGIN_BEGIN
+  EBSQL_CURSOR_ORIGIN_END
+>;
+
+constant EbSqlCursorStepFlags is export := guint32;
+our enum EbSqlCursorStepFlagsEnum is export (
+  EBSQL_CURSOR_STEP_MOVE  => (1 +< 0),
+  EBSQL_CURSOR_STEP_FETCH => (1 +< 1),
+);
+
+constant EbSqlLockType is export := guint32;
+our enum EbSqlLockTypeEnum is export <
+  EBSQL_LOCK_READ
+  EBSQL_LOCK_WRITE
+>;
+
+constant ECacheError is export:= guint32;
+our enum ECacheErrorEnum is export <
+  E_CACHE_ERROR_ENGINE,
+  E_CACHE_ERROR_CONSTRAINT
+  E_CACHE_ERROR_NOT_FOUND
+  E_CACHE_ERROR_INVALID_QUERY
+  E_CACHE_ERROR_UNSUPPORTED_FIELD
+  E_CACHE_ERROR_UNSUPPORTED_QUERY
+  E_CACHE_ERROR_END_OF_LIST
+  E_CACHE_ERROR_LOAD
+  E_CACHE_ERROR_CORRUPT
+>;
+
+constant ECacheLockType is export := guint32;
+our enum ECacheLockTypeEnum is export <
+  E_CACHE_LOCK_READ
+  E_CACHE_LOCK_WRITE
+>;
+
+constant ECacheUnlockAction is export := guint32;
+enum ECacheUnlockActionEnum is export <
+  E_CACHE_UNLOCK_NONE
+  E_CACHE_UNLOCK_COMMIT
+  E_CACHE_UNLOCK_ROLLBACK
+>;
+
+constant ECacheDeletedFlag is export := guint32;
+our enum ECacheDeletedFlagEnum is export (
+   E_CACHE_EXCLUDE_DELETED  => 0,
+  'E_CACHE_INCLUDE_DELETED'
+);
+
+constant ECacheOfflineFlag is export := gint32;
+our enum ECacheOfflineFlagEnum is export (
+   E_CACHE_OFFLINE_UNKNOWN => -1,
+   E_CACHE_IS_ONLINE       => 0,
+  'E_CACHE_IS_OFFLINE'
+);
 
 constant ECalClientError is export := guint32;
 our enum ECalClientErrorEnum is export <
@@ -750,462 +950,6 @@ our enum EConflictResolutionEnum is export (
   'E_CONFLICT_RESOLUTION_WRITE_COPY'
 );
 
-constant EMdnResponsePolicy is export := guint32;
-our enum EMdnResponsePolicyEnum is export <
-  E_MDN_RESPONSE_POLICY_NEVER
-  E_MDN_RESPONSE_POLICY_ALWAYS
-  E_MDN_RESPONSE_POLICY_ASK
->;
-
-constant EProxyMethod is export := guint32;
-our enum EProxyMethodEnum is export <
-  E_PROXY_METHOD_DEFAULT
-  E_PROXY_METHOD_MANUAL
-  E_PROXY_METHOD_AUTO
-  E_PROXY_METHOD_NONE
->;
-
-constant EReminderWatcherDescribeFlags is export := guint32;
-our enum EReminderWatcherDescribeFlagsEnum is export (
-  E_REMINDER_WATCHER_DESCRIBE_FLAG_NONE   =>        0,
-  E_REMINDER_WATCHER_DESCRIBE_FLAG_MARKUP => (1 +< 1),
-);
-
-constant ESExpResultType is export := guint32;
-our enum ESExpResultTypeEnum is export (
-  ESEXP_RES_ARRAY_PTR   => 0,
-  'ESEXP_RES_INT',
-  'ESEXP_RES_STRING',
-  'ESEXP_RES_BOOL',
-  'ESEXP_RES_TIME',
-  'ESEXP_RES_UNDEFINED'
-);
-
-constant ESExpTermType is export := guint32;
-our enum ESExpTermTypeEnum is export (
-  ESEXP_TERM_INT       => 0,
-  'ESEXP_TERM_BOOL',
-  'ESEXP_TERM_STRING',
-  'ESEXP_TERM_TIME',
-  'ESEXP_TERM_FUNC',
-  'ESEXP_TERM_IFUNC',
-  'ESEXP_TERM_VAR'
-);
-
-constant ESourceAuthenticationResult is export := gint32;
-our enum ESourceAuthenticationResultEnum is export (
-  E_SOURCE_AUTHENTICATION_UNKNOWN              => -1,
-  'E_SOURCE_AUTHENTICATION_ERROR',
-  'E_SOURCE_AUTHENTICATION_ERROR_SSL_FAILED',
-  'E_SOURCE_AUTHENTICATION_ACCEPTED',
-  'E_SOURCE_AUTHENTICATION_REJECTED',
-  'E_SOURCE_AUTHENTICATION_REQUIRED'
-);
-
-constant ESourceConnectionStatus is export := guint32;
-our enum ESourceConnectionStatusEnum is export <
-  E_SOURCE_CONNECTION_STATUS_DISCONNECTED
-  E_SOURCE_CONNECTION_STATUS_AWAITING_CREDENTIALS
-  E_SOURCE_CONNECTION_STATUS_SSL_FAILED
-  E_SOURCE_CONNECTION_STATUS_CONNECTING
-  E_SOURCE_CONNECTION_STATUS_CONNECTED
->;
-
-constant ESourceCredentialsReason is export := guint32;
-our enum ESourceCredentialsReasonEnum is export <
-  E_SOURCE_CREDENTIALS_REASON_UNKNOWN
-  E_SOURCE_CREDENTIALS_REASON_REQUIRED
-  E_SOURCE_CREDENTIALS_REASON_REJECTED
-  E_SOURCE_CREDENTIALS_REASON_SSL_FAILED
-  E_SOURCE_CREDENTIALS_REASON_ERROR
->;
-
-constant ESourceLDAPAuthentication is export := guint32;
-our enum ESourceLDAPAuthenticationEnum is export <
-  E_SOURCE_LDAP_AUTHENTICATION_NONE
-  E_SOURCE_LDAP_AUTHENTICATION_EMAIL
-  E_SOURCE_LDAP_AUTHENTICATION_BINDDN
->;
-
-constant ESourceLDAPScope is export := guint32;
-our enum ESourceLDAPScopeEnum is export <
-  E_SOURCE_LDAP_SCOPE_ONELEVEL
-  E_SOURCE_LDAP_SCOPE_SUBTREE
->;
-
-constant ESourceLDAPSecurity is export := guint32;
-our enum ESourceLDAPSecurityEnum is export <
-  E_SOURCE_LDAP_SECURITY_NONE
-  E_SOURCE_LDAP_SECURITY_LDAPS
-  E_SOURCE_LDAP_SECURITY_STARTTLS
->;
-
-constant ESourceMailCompositionReplyStyle is export := guint32;
-our enum ESourceMailCompositionReplyStyleEnum is export (
-  E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_DEFAULT         => 0,
-  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_QUOTED',
-  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_DO_NOT_QUOTE',
-  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_ATTACH',
-  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_OUTLOOK'
-);
-
-constant ESourceWeatherUnits is export := guint32;
-our enum ESourceWeatherUnitsEnum is export (
-  E_SOURCE_WEATHER_UNITS_FAHRENHEIT => 0,
-  'E_SOURCE_WEATHER_UNITS_CENTIGRADE',
-  'E_SOURCE_WEATHER_UNITS_KELVIN'
-);
-
-constant EThreeState is export := guint32;
-our enum EThreeStateEnum is export (
-  E_THREE_STATE_OFF          => 0,
-  'E_THREE_STATE_ON',
-  'E_THREE_STATE_INCONSISTENT'
-);
-
-constant ETimeParseStatus is export := guint32;
-our enum ETimeParseStatusEnum is export <
-  E_TIME_PARSE_OK
-  E_TIME_PARSE_NONE
-  E_TIME_PARSE_INVALID
->;
-
-constant ETrustPromptResponse is export := gint32;
-our enum ETrustPromptResponseEnum is export (
-  E_TRUST_PROMPT_RESPONSE_UNKNOWN            => -1,
-  E_TRUST_PROMPT_RESPONSE_REJECT             =>  0,
-  E_TRUST_PROMPT_RESPONSE_ACCEPT             =>  1,
-  E_TRUST_PROMPT_RESPONSE_ACCEPT_TEMPORARILY =>  2,
-  E_TRUST_PROMPT_RESPONSE_REJECT_TEMPORARILY =>  3,
-);
-
-constant EWebDAVACEFlag is export := guint32;
-our enum EWebDAVACEFlagEnum is export (
-  E_WEBDAV_ACE_FLAG_UNKNOWN   =>      0,
-  E_WEBDAV_ACE_FLAG_GRANT     => 1 +< 0,
-  E_WEBDAV_ACE_FLAG_DENY      => 1 +< 1,
-  E_WEBDAV_ACE_FLAG_INVERT    => 1 +< 2,
-  E_WEBDAV_ACE_FLAG_PROTECTED => 1 +< 3,
-  E_WEBDAV_ACE_FLAG_INHERITED => 1 +< 4,
-);
-
-constant EWebDAVACEPrincipalKind is export := guint32;
-our enum EWebDAVACEPrincipalKindEnum is export (
-  E_WEBDAV_ACE_PRINCIPAL_UNKNOWN         => 0,
-  'E_WEBDAV_ACE_PRINCIPAL_HREF',
-  'E_WEBDAV_ACE_PRINCIPAL_ALL',
-  'E_WEBDAV_ACE_PRINCIPAL_AUTHENTICATED',
-  'E_WEBDAV_ACE_PRINCIPAL_UNAUTHENTICATED',
-  'E_WEBDAV_ACE_PRINCIPAL_PROPERTY',
-  'E_WEBDAV_ACE_PRINCIPAL_SELF',
-  'E_WEBDAV_ACE_PRINCIPAL_OWNER'
-);
-
-constant EWebDAVACLRestrictions is export := guint32;
-our enum EWebDAVACLRestrictionsEnum is export (
-  E_WEBDAV_ACL_RESTRICTION_NONE               =>      0,
-  E_WEBDAV_ACL_RESTRICTION_GRANT_ONLY         => 1 +< 0,
-  E_WEBDAV_ACL_RESTRICTION_NO_INVERT          => 1 +< 1,
-  E_WEBDAV_ACL_RESTRICTION_DENY_BEFORE_GRANT  => 1 +< 2,
-  E_WEBDAV_ACL_RESTRICTION_REQUIRED_PRINCIPAL => 1 +< 3,
-);
-
-constant EWebDAVResourceSupports is export := guint32;
-our enum EWebDAVResourceSupportsEnum is export (
-  E_WEBDAV_RESOURCE_SUPPORTS_NONE         =>                                       0,
-  E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS     =>                                  1 +< 0,
-  E_WEBDAV_RESOURCE_SUPPORTS_EVENTS       =>                                  1 +< 1,
-  E_WEBDAV_RESOURCE_SUPPORTS_MEMOS        =>                                  1 +< 2,
-  E_WEBDAV_RESOURCE_SUPPORTS_TASKS        =>                                  1 +< 3,
-  E_WEBDAV_RESOURCE_SUPPORTS_FREEBUSY     =>                                  1 +< 4,
-  E_WEBDAV_RESOURCE_SUPPORTS_TIMEZONE     =>                                  1 +< 5,
-  E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES =>                                  1 +< 6,
-  E_WEBDAV_RESOURCE_SUPPORTS_LAST         =>                                  1 +< 6
-);
-
-constant EWebDAVDiscoverSupports is export := guint32;
-our enum EWebDAVDiscoverSupportsEnum is export (
-  E_WEBDAV_DISCOVER_SUPPORTS_NONE                   =>                        E_WEBDAV_RESOURCE_SUPPORTS_NONE,
-  E_WEBDAV_DISCOVER_SUPPORTS_CONTACTS               =>                    E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS,
-  E_WEBDAV_DISCOVER_SUPPORTS_EVENTS                 =>                      E_WEBDAV_RESOURCE_SUPPORTS_EVENTS,
-  E_WEBDAV_DISCOVER_SUPPORTS_MEMOS                  =>                       E_WEBDAV_RESOURCE_SUPPORTS_MEMOS,
-  E_WEBDAV_DISCOVER_SUPPORTS_TASKS                  =>                       E_WEBDAV_RESOURCE_SUPPORTS_TASKS,
-  E_WEBDAV_DISCOVER_SUPPORTS_WEBDAV_NOTES           =>                E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES,
-  E_WEBDAV_DISCOVER_SUPPORTS_CALENDAR_AUTO_SCHEDULE =>                   E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1,
-  E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   =>          ( E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1 ) +< 1,
-);
-
-constant EWebDAVListFlags := guint32;
-our enum EWebDAVListFlagsEnum is export (
-  E_WEBDAV_LIST_ALL               => 0x00FFFFFF,
-  E_WEBDAV_LIST_NONE              => 0,
-  E_WEBDAV_LIST_SUPPORTS          => 1,
-  E_WEBDAV_LIST_ETAG              => 1 +< 1,
-  E_WEBDAV_LIST_DISPLAY_NAME      => 1 +< 2,
-  E_WEBDAV_LIST_CONTENT_TYPE      => 1 +< 3,
-  E_WEBDAV_LIST_CONTENT_LENGTH    => 1 +< 4,
-  E_WEBDAV_LIST_CREATION_DATE     => 1 +< 5,
-  E_WEBDAV_LIST_LAST_MODIFIED     => 1 +< 6,
-  E_WEBDAV_LIST_DESCRIPTION       => 1 +< 7,
-  E_WEBDAV_LIST_COLOR             => 1 +< 8,
-  E_WEBDAV_LIST_ORDER             => 1 +< 9,
-  E_WEBDAV_LIST_ONLY_CALENDAR     => 1 +< 28,
-  E_WEBDAV_LIST_ONLY_ADDRESSBOOK  => 1 +< 29
-);
-
-constant EWebDAVLockScope is export := guint32;
-our enum EWebDAVLockScopeEnum is export <
-  E_WEBDAV_LOCK_EXCLUSIVE
-  E_WEBDAV_LOCK_SHARED
->;
-
-constant EWebDAVPrivilegeHint is export := guint32;
-our enum EWebDAVPrivilegeHintEnum is export (
-  E_WEBDAV_PRIVILEGE_HINT_UNKNOWN                         => 0,
-  'E_WEBDAV_PRIVILEGE_HINT_READ',
-  'E_WEBDAV_PRIVILEGE_HINT_WRITE',
-  'E_WEBDAV_PRIVILEGE_HINT_WRITE_PROPERTIES',
-  'E_WEBDAV_PRIVILEGE_HINT_WRITE_CONTENT',
-  'E_WEBDAV_PRIVILEGE_HINT_UNLOCK',
-  'E_WEBDAV_PRIVILEGE_HINT_READ_ACL',
-  'E_WEBDAV_PRIVILEGE_HINT_WRITE_ACL',
-  'E_WEBDAV_PRIVILEGE_HINT_READ_CURRENT_USER_PRIVILEGE_SET',
-  'E_WEBDAV_PRIVILEGE_HINT_BIND',
-  'E_WEBDAV_PRIVILEGE_HINT_UNBIND',
-  'E_WEBDAV_PRIVILEGE_HINT_ALL',
-  'E_WEBDAV_PRIVILEGE_HINT_CALDAV_READ_FREE_BUSY'
-);
-
-constant EWebDAVPrivilegeKind is export := guint32;
-our enum EWebDAVPrivilegeKindEnum is export (
-  E_WEBDAV_PRIVILEGE_KIND_UNKNOWN   => 0,
-  'E_WEBDAV_PRIVILEGE_KIND_ABSTRACT',
-  'E_WEBDAV_PRIVILEGE_KIND_AGGREGATE',
-  'E_WEBDAV_PRIVILEGE_KIND_COMMON'
-);
-
-constant EWebDAVPropertyChangeKind is export := guint32;
-our enum EWebDAVPropertyChangeKindEnum is export <
-  E_WEBDAV_PROPERTY_SET
-  E_WEBDAV_PROPERTY_REMOVE
->;
-
-constant EWebDAVResourceKind is export := guint32;
-our enum EWebDAVResourceKindEnum is export <
-  E_WEBDAV_RESOURCE_KIND_UNKNOWN
-  E_WEBDAV_RESOURCE_KIND_ADDRESSBOOK
-  E_WEBDAV_RESOURCE_KIND_CALENDAR
-  E_WEBDAV_RESOURCE_KIND_PRINCIPAL
-  E_WEBDAV_RESOURCE_KIND_COLLECTION
-  E_WEBDAV_RESOURCE_KIND_RESOURCE
-  E_WEBDAV_RESOURCE_KIND_SUBSCRIBED_ICALENDAR
-  E_WEBDAV_RESOURCE_KIND_WEBDAV_NOTES
->;
-
-constant EXmlHashStatus is export := guint32;
-our enum EXmlHashStatusEnum is export <
-  E_XMLHASH_STATUS_SAME
-  E_XMLHASH_STATUS_DIFFERENT
-  E_XMLHASH_STATUS_NOT_FOUND
->;
-
-constant EXmlHashType is export := guint32;
-our enum EXmlHashTypeEnum is export <
-  E_XML_HASH_TYPE_OBJECT_UID
-  E_XML_HASH_TYPE_PROPERTY
->;
-
-constant camel_search_flags_t is export := guint32;
-our enum camel_search_flags_tEnum is export (
-  CAMEL_SEARCH_MATCH_START   => 1 +< 0,
-  CAMEL_SEARCH_MATCH_END     => 1 +< 1,
-  CAMEL_SEARCH_MATCH_REGEX   => 1 +< 2,
-  CAMEL_SEARCH_MATCH_ICASE   => 1 +< 3,
-  CAMEL_SEARCH_MATCH_NEWLINE => 1 +< 4,
-);
-
-constant camel_search_match_t is export := guint32;
-our enum camel_search_match_tEnum is export <
-  CAMEL_SEARCH_MATCH_EXACT
-  CAMEL_SEARCH_MATCH_CONTAINS
-  CAMEL_SEARCH_MATCH_WORD
-  CAMEL_SEARCH_MATCH_STARTS
-  CAMEL_SEARCH_MATCH_ENDS
-  CAMEL_SEARCH_MATCH_SOUNDEX
->;
-
-constant camel_search_t is export := guint32;
-our enum camel_search_tEnum is export <
-  CAMEL_SEARCH_TYPE_ASIS
-  CAMEL_SEARCH_TYPE_ENCODED
-  CAMEL_SEARCH_TYPE_ADDRESS
-  CAMEL_SEARCH_TYPE_ADDRESS_ENCODED
-  CAMEL_SEARCH_TYPE_MLIST
->;
-
-constant camel_search_word_t is export := guint32;
-our enum camel_search_word_tEnum is export (
-  CAMEL_SEARCH_WORD_SIMPLE  => 1,
-  CAMEL_SEARCH_WORD_COMPLEX => 2,
-  CAMEL_SEARCH_WORD_8BIT    => 4,
-);
-
-constant EBookChangeType is export := guint32;
-our enum EBookChangeTypeEnum is export <
-  E_BOOK_CHANGE_CARD_ADDED
-  E_BOOK_CHANGE_CARD_DELETED
-  E_BOOK_CHANGE_CARD_MODIFIED
->;
-
-constant EBookClientError is export := guint32;
-our enum EBookClientErrorEnum is export <
-  E_BOOK_CLIENT_ERROR_NO_SUCH_BOOK
-  E_BOOK_CLIENT_ERROR_CONTACT_NOT_FOUND
-  E_BOOK_CLIENT_ERROR_CONTACT_ID_ALREADY_EXISTS
-  E_BOOK_CLIENT_ERROR_NO_SUCH_SOURCE
-  E_BOOK_CLIENT_ERROR_NO_SPACE
->;
-
-constant EBookClientViewFlags is export := guint32;
-our enum EBookClientViewFlagsEnum is export (
-  E_BOOK_CLIENT_VIEW_FLAGS_NONE           =>        0,
-  E_BOOK_CLIENT_VIEW_FLAGS_NOTIFY_INITIAL => (1 +< 0),
-);
-
-constant EBookCursorOrigin is export := guint32;
-our enum EBookCursorOriginEnum is export <
-  E_BOOK_CURSOR_ORIGIN_CURRENT
-  E_BOOK_CURSOR_ORIGIN_BEGIN
-  E_BOOK_CURSOR_ORIGIN_END
->;
-
-constant EbSqlCursorOrigin is export := guint32;
-our enum EbSqlCursorOriginEnum is export <
-  EBSQL_CURSOR_ORIGIN_CURRENT
-  EBSQL_CURSOR_ORIGIN_BEGIN
-  EBSQL_CURSOR_ORIGIN_END
->;
-
-constant EBookCursorSortType is export := guint32;
-our enum EBookCursorSortTypeEnum is export (
-  E_BOOK_CURSOR_SORT_ASCENDING  => 0,
-  'E_BOOK_CURSOR_SORT_DESCENDING'
-);
-
-constant EBookCursorStepFlags is export := guint32;
-our enum EBookCursorStepFlagsEnum is export (
-  E_BOOK_CURSOR_STEP_MOVE  => (1 +< 0),
-  E_BOOK_CURSOR_STEP_FETCH => (1 +< 1),
-);
-
-constant EbSqlChangeType is export := guint32;
-our enum EbSqlChangeTypeEnum is export <
-  EBSQL_CHANGE_CONTACT_ADDED
-  EBSQL_CHANGE_LOCALE_CHANGED
-  EBSQL_CHANGE_LAST
->;
-
-constant EbSqlCursorStepFlags is export := guint32;
-our enum EbSqlCursorStepFlagsEnum is export (
-  EBSQL_CURSOR_STEP_MOVE  => (1 +< 0),
-  EBSQL_CURSOR_STEP_FETCH => (1 +< 1),
-);
-
-constant EbSqlUnlockAction is export := guint32;
-enum  EbSqlUnlockActionEnum is export <
-  EBSQL_UNLOCK_NONE
-  EBSQL_UNLOCK_COMMIT
-  EBSQL_UNLOCK_ROLLBACK
->;
-
-constant EBookIndexType is export := guint32;
-our enum EBookIndexTypeEnum is export (
-  E_BOOK_INDEX_PREFIX   => 0,
-  'E_BOOK_INDEX_SUFFIX',
-  'E_BOOK_INDEX_PHONE',
-  'E_BOOK_INDEX_SORT_KEY'
-);
-
-constant EBookOperationFlags is export := guint32;
-our enum EBookOperationFlagsEnum is export (
-  E_BOOK_OPERATION_FLAG_NONE                 =>        0,
-  E_BOOK_OPERATION_FLAG_CONFLICT_FAIL        => (1 +< 0),
-  E_BOOK_OPERATION_FLAG_CONFLICT_USE_NEWER   => (1 +< 1),
-  E_BOOK_OPERATION_FLAG_CONFLICT_KEEP_SERVER => (1 +< 2),
-  E_BOOK_OPERATION_FLAG_CONFLICT_KEEP_LOCAL  =>        0,
-  E_BOOK_OPERATION_FLAG_CONFLICT_WRITE_COPY  => (1 +< 3),
-);
-
-constant EBookQueryTest is export := guint32;
-our enum EBookQueryTestEnum is export (
-  E_BOOK_QUERY_IS                           => 0,
-  'E_BOOK_QUERY_CONTAINS',
-  'E_BOOK_QUERY_BEGINS_WITH',
-  'E_BOOK_QUERY_ENDS_WITH',
-  'E_BOOK_QUERY_EQUALS_PHONE_NUMBER',
-  'E_BOOK_QUERY_EQUALS_NATIONAL_PHONE_NUMBER',
-  'E_BOOK_QUERY_EQUALS_SHORT_PHONE_NUMBER',
-  'E_BOOK_QUERY_REGEX_NORMAL',
-  'E_BOOK_QUERY_REGEX_RAW',
-  'E_BOOK_QUERY_LAST'
-);
-
-constant EBookViewStatus is export := guint32;
-our enum EBookViewStatusEnum is export <
-  E_BOOK_VIEW_STATUS_OK
-  E_BOOK_VIEW_STATUS_TIME_LIMIT_EXCEEDED
-  E_BOOK_VIEW_STATUS_SIZE_LIMIT_EXCEEDED
-  E_BOOK_VIEW_ERROR_INVALID_QUERY
-  E_BOOK_VIEW_ERROR_QUERY_REFUSED
-  E_BOOK_VIEW_ERROR_OTHER_ERROR
->;
-
-constant EContactPhotoType is export := guint32;
-our enum EContactPhotoTypeEnum is export <
-  E_CONTACT_PHOTO_TYPE_INLINED
-  E_CONTACT_PHOTO_TYPE_URI
->;
-
-constant EPhoneNumberCountrySource is export := guint32;
-our enum EPhoneNumberCountrySourceEnum is export (
-  E_PHONE_NUMBER_COUNTRY_FROM_FQTN    =>  1,
-  E_PHONE_NUMBER_COUNTRY_FROM_IDD     =>  5,
-  E_PHONE_NUMBER_COUNTRY_FROM_DEFAULT => 20,
-);
-
-constant EPhoneNumberError is export := guint32;
-our enum EPhoneNumberErrorEnum is export <
-  E_PHONE_NUMBER_ERROR_NOT_IMPLEMENTED
-  E_PHONE_NUMBER_ERROR_UNKNOWN
-  E_PHONE_NUMBER_ERROR_NOT_A_NUMBER
-  E_PHONE_NUMBER_ERROR_INVALID_COUNTRY_CODE
-  E_PHONE_NUMBER_ERROR_TOO_SHORT_AFTER_IDD
-  E_PHONE_NUMBER_ERROR_TOO_SHORT
-  E_PHONE_NUMBER_ERROR_TOO_LONG
->;
-
-constant EPhoneNumberFormat is export := guint32;
-our enum EPhoneNumberFormatEnum is export <
-  E_PHONE_NUMBER_FORMAT_E164
-  E_PHONE_NUMBER_FORMAT_INTERNATIONAL
-  E_PHONE_NUMBER_FORMAT_NATIONAL
-  E_PHONE_NUMBER_FORMAT_RFC3966
->;
-
-constant EPhoneNumberMatch is export := guint32;
-our enum EPhoneNumberMatchEnum is export (
-  'E_PHONE_NUMBER_MATCH_NONE',
-  'E_PHONE_NUMBER_MATCH_EXACT',
-  E_PHONE_NUMBER_MATCH_NATIONAL => 1024,
-  E_PHONE_NUMBER_MATCH_SHORT    => 2048,
-);
-
-constant EVCardFormat is export := guint32;
-our enum EVCardFormatEnum is export <
-  EVC_FORMAT_VCARD_21
-  EVC_FORMAT_VCARD_30
->;
-
 constant EContactField is export := guint32;
 our enum EContactFieldEnum is export (
   E_CONTACT_UID => 1,
@@ -1356,20 +1100,62 @@ our enum EContactFieldEnum is export (
   E_CONTACT_LAST_LABEL_ID      => 15  #= E_CONTACT_ADDRESS_LABEL_OTHER
 );
 
-### /usr/src/evolution-data-server-3.48.0/src/ebackend/e-backend-enums.h
+constant EWebDAVListFlags := guint32;
+our enum EWebDAVListFlagsEnum is export (
+  E_WEBDAV_LIST_ALL               => 0x00FFFFFF,
+  E_WEBDAV_LIST_NONE              => 0,
+  E_WEBDAV_LIST_SUPPORTS          => 1,
+  E_WEBDAV_LIST_ETAG              => 1 +< 1,
+  E_WEBDAV_LIST_DISPLAY_NAME      => 1 +< 2,
+  E_WEBDAV_LIST_CONTENT_TYPE      => 1 +< 3,
+  E_WEBDAV_LIST_CONTENT_LENGTH    => 1 +< 4,
+  E_WEBDAV_LIST_CREATION_DATE     => 1 +< 5,
+  E_WEBDAV_LIST_LAST_MODIFIED     => 1 +< 6,
+  E_WEBDAV_LIST_DESCRIPTION       => 1 +< 7,
+  E_WEBDAV_LIST_COLOR             => 1 +< 8,
+  E_WEBDAV_LIST_ORDER             => 1 +< 9,
+  E_WEBDAV_LIST_ONLY_CALENDAR     => 1 +< 28,
+  E_WEBDAV_LIST_ONLY_ADDRESSBOOK  => 1 +< 29
+);
 
-constant EAuthenticationSessionResult is export := guint32;
-our enum EAuthenticationSessionResultEnum is export <
-  E_AUTHENTICATION_SESSION_ERROR
-  E_AUTHENTICATION_SESSION_SUCCESS
-  E_AUTHENTICATION_SESSION_DISMISSED
+constant EContactPhotoType is export := guint32;
+our enum EContactPhotoTypeEnum is export <
+  E_CONTACT_PHOTO_TYPE_INLINED
+  E_CONTACT_PHOTO_TYPE_URI
 >;
+
+constant ECredentialsPrompterPromptFlags is export := guint32;
+our enum ECredentialsPrompterPromptFlagsEnum is export (
+  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_NONE                         => 0,
+  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_ALLOW_SOURCE_SAVE            => 1,
+  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_ALLOW_STORED_CREDENTIALS     => 1 +< 1
+);
 
 constant EDBusServerExitCode is export := guint32;
 our enum EDBusServerExitCodeEnum is export <
   E_DBUS_SERVER_EXIT_NONE
   E_DBUS_SERVER_EXIT_NORMAL
   E_DBUS_SERVER_EXIT_RELOAD
+>;
+
+constant EGDataTaskStatus is export := guint32;
+our enum EGDataTaskStatusEnum is export <
+  E_GDATA_TASK_STATUS_UNKNOWN
+  E_GDATA_TASK_STATUS_NEEDS_ACTION
+  E_GDATA_TASK_STATUS_COMPLETE
+>;
+constant EMdnResponsePolicy is export := guint32;
+our enum EMdnResponsePolicyEnum is export <
+  E_MDN_RESPONSE_POLICY_NEVER
+  E_MDN_RESPONSE_POLICY_ALWAYS
+  E_MDN_RESPONSE_POLICY_ASK
+>;
+
+constant EOAuth2ServiceNavigationPolicy is export := guint32;
+our enum EOAuth2ServiceNavigationPolicyEnum is export <
+  E_OAUTH2_SERVICE_NAVIGATION_POLICY_DENY
+  E_OAUTH2_SERVICE_NAVIGATION_POLICY_ALLOW
+  E_OAUTH2_SERVICE_NAVIGATION_POLICY_ABORT
 >;
 
 constant EOfflineState is export := gint32;
@@ -1381,6 +1167,139 @@ our enum EOfflineStateEnum is export (
   'E_OFFLINE_STATE_LOCALLY_DELETED'
 );
 
+constant EPhoneNumberCountrySource is export := guint32;
+our enum EPhoneNumberCountrySourceEnum is export (
+  E_PHONE_NUMBER_COUNTRY_FROM_FQTN    =>  1,
+  E_PHONE_NUMBER_COUNTRY_FROM_IDD     =>  5,
+  E_PHONE_NUMBER_COUNTRY_FROM_DEFAULT => 20,
+);
+
+constant EPhoneNumberError is export := guint32;
+our enum EPhoneNumberErrorEnum is export <
+  E_PHONE_NUMBER_ERROR_NOT_IMPLEMENTED
+  E_PHONE_NUMBER_ERROR_UNKNOWN
+  E_PHONE_NUMBER_ERROR_NOT_A_NUMBER
+  E_PHONE_NUMBER_ERROR_INVALID_COUNTRY_CODE
+  E_PHONE_NUMBER_ERROR_TOO_SHORT_AFTER_IDD
+  E_PHONE_NUMBER_ERROR_TOO_SHORT
+  E_PHONE_NUMBER_ERROR_TOO_LONG
+>;
+
+constant EPhoneNumberFormat is export := guint32;
+our enum EPhoneNumberFormatEnum is export <
+  E_PHONE_NUMBER_FORMAT_E164
+  E_PHONE_NUMBER_FORMAT_INTERNATIONAL
+  E_PHONE_NUMBER_FORMAT_NATIONAL
+  E_PHONE_NUMBER_FORMAT_RFC3966
+>;
+
+constant EPhoneNumberMatch is export := guint32;
+our enum EPhoneNumberMatchEnum is export (
+  'E_PHONE_NUMBER_MATCH_NONE',
+  'E_PHONE_NUMBER_MATCH_EXACT',
+  E_PHONE_NUMBER_MATCH_NATIONAL => 1024,
+  E_PHONE_NUMBER_MATCH_SHORT    => 2048,
+);
+
+constant EProxyMethod is export := guint32;
+our enum EProxyMethodEnum is export <
+  E_PROXY_METHOD_DEFAULT
+  E_PROXY_METHOD_MANUAL
+  E_PROXY_METHOD_AUTO
+  E_PROXY_METHOD_NONE
+>;
+
+constant EReminderWatcherDescribeFlags is export := guint32;
+our enum EReminderWatcherDescribeFlagsEnum is export (
+  E_REMINDER_WATCHER_DESCRIBE_FLAG_NONE   =>        0,
+  E_REMINDER_WATCHER_DESCRIBE_FLAG_MARKUP => (1 +< 1),
+);
+
+constant ESExpResultType is export := guint32;
+our enum ESExpResultTypeEnum is export (
+  ESEXP_RES_ARRAY_PTR   => 0,
+  'ESEXP_RES_INT',
+  'ESEXP_RES_STRING',
+  'ESEXP_RES_BOOL',
+  'ESEXP_RES_TIME',
+  'ESEXP_RES_UNDEFINED'
+);
+
+constant ESExpTermType is export := guint32;
+our enum ESExpTermTypeEnum is export (
+  ESEXP_TERM_INT       => 0,
+  'ESEXP_TERM_BOOL',
+  'ESEXP_TERM_STRING',
+  'ESEXP_TERM_TIME',
+  'ESEXP_TERM_FUNC',
+  'ESEXP_TERM_IFUNC',
+  'ESEXP_TERM_VAR'
+);
+
+constant ESourceAuthenticationResult is export := gint32;
+our enum ESourceAuthenticationResultEnum is export (
+  E_SOURCE_AUTHENTICATION_UNKNOWN              => -1,
+  'E_SOURCE_AUTHENTICATION_ERROR',
+  'E_SOURCE_AUTHENTICATION_ERROR_SSL_FAILED',
+  'E_SOURCE_AUTHENTICATION_ACCEPTED',
+  'E_SOURCE_AUTHENTICATION_REJECTED',
+  'E_SOURCE_AUTHENTICATION_REQUIRED'
+);
+
+constant ESourceConnectionStatus is export := guint32;
+our enum ESourceConnectionStatusEnum is export <
+  E_SOURCE_CONNECTION_STATUS_DISCONNECTED
+  E_SOURCE_CONNECTION_STATUS_AWAITING_CREDENTIALS
+  E_SOURCE_CONNECTION_STATUS_SSL_FAILED
+  E_SOURCE_CONNECTION_STATUS_CONNECTING
+  E_SOURCE_CONNECTION_STATUS_CONNECTED
+>;
+
+constant ESourceCredentialsReason is export := guint32;
+our enum ESourceCredentialsReasonEnum is export <
+  E_SOURCE_CREDENTIALS_REASON_UNKNOWN
+  E_SOURCE_CREDENTIALS_REASON_REQUIRED
+  E_SOURCE_CREDENTIALS_REASON_REJECTED
+  E_SOURCE_CREDENTIALS_REASON_SSL_FAILED
+  E_SOURCE_CREDENTIALS_REASON_ERROR
+>;
+
+constant ESourceLDAPAuthentication is export := guint32;
+our enum ESourceLDAPAuthenticationEnum is export <
+  E_SOURCE_LDAP_AUTHENTICATION_NONE
+  E_SOURCE_LDAP_AUTHENTICATION_EMAIL
+  E_SOURCE_LDAP_AUTHENTICATION_BINDDN
+>;
+
+constant ESourceLDAPScope is export := guint32;
+our enum ESourceLDAPScopeEnum is export <
+  E_SOURCE_LDAP_SCOPE_ONELEVEL
+  E_SOURCE_LDAP_SCOPE_SUBTREE
+>;
+
+constant EbSqlUnlockAction is export := guint32;
+enum  EbSqlUnlockActionEnum is export <
+  EBSQL_UNLOCK_NONE
+  EBSQL_UNLOCK_COMMIT
+  EBSQL_UNLOCK_ROLLBACK
+>;
+
+constant ESourceLDAPSecurity is export := guint32;
+our enum ESourceLDAPSecurityEnum is export <
+  E_SOURCE_LDAP_SECURITY_NONE
+  E_SOURCE_LDAP_SECURITY_LDAPS
+  E_SOURCE_LDAP_SECURITY_STARTTLS
+>;
+
+constant ESourceMailCompositionReplyStyle is export := guint32;
+our enum ESourceMailCompositionReplyStyleEnum is export (
+  E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_DEFAULT         => 0,
+  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_QUOTED',
+  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_DO_NOT_QUOTE',
+  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_ATTACH',
+  'E_SOURCE_MAIL_COMPOSITION_REPLY_STYLE_OUTLOOK'
+);
+
 constant ESourcePermissionFlags is export := guint32;
 our enum ESourcePermissionFlagsEnum is export (
   E_SOURCE_PERMISSION_NONE      =>      0,
@@ -1388,7 +1307,12 @@ our enum ESourcePermissionFlagsEnum is export (
   E_SOURCE_PERMISSION_REMOVABLE => 1 +< 1,
 );
 
-# /usr/src/evolution-data-server-3.38.1/tests/test-server-utils/e-test-server-utils.h
+constant ESourceWeatherUnits is export := guint32;
+our enum ESourceWeatherUnitsEnum is export (
+  E_SOURCE_WEATHER_UNITS_FAHRENHEIT => 0,
+  'E_SOURCE_WEATHER_UNITS_CENTIGRADE',
+  'E_SOURCE_WEATHER_UNITS_KELVIN'
+);
 
 constant ETestServerFlags is export := guint32;
 our enum ETestServerFlagsEnum is export (
@@ -1405,39 +1329,153 @@ our enum ETestServiceTypeEnum is export (
 );
 
 
-constant EBookSDBError is export := guint32;
-our enum EBookSDBErrorEnum is export <
-  E_BOOK_SDB_ERROR_CONSTRAINT
-  E_BOOK_SDB_ERROR_CONTACT_NOT_FOUND
-  E_BOOK_SDB_ERROR_OTHER
-  E_BOOK_SDB_ERROR_NOT_SUPPORTED
-  E_BOOK_SDB_ERROR_INVALID_QUERY
-  E_BOOK_SDB_ERROR_END_OF_LIST
+constant EThreeState is export := guint32;
+our enum EThreeStateEnum is export (
+  E_THREE_STATE_OFF          => 0,
+  'E_THREE_STATE_ON',
+  'E_THREE_STATE_INCONSISTENT'
+);
+
+constant ETimeParseStatus is export := guint32;
+our enum ETimeParseStatusEnum is export <
+  E_TIME_PARSE_OK
+  E_TIME_PARSE_NONE
+  E_TIME_PARSE_INVALID
 >;
 
-constant EbSdbCursorOrigin is export := guint32;
-our enum EbSdbCursorOriginEnum is export (
-   'EBSDB_CURSOR_ORIGIN_CURRENT' => 0,
-   'EBSDB_CURSOR_ORIGIN_BEGIN',
-   'EBSDB_CURSOR_ORIGIN_END'
+constant ETrustPromptResponse is export := gint32;
+our enum ETrustPromptResponseEnum is export (
+  E_TRUST_PROMPT_RESPONSE_UNKNOWN            => -1,
+  E_TRUST_PROMPT_RESPONSE_REJECT             =>  0,
+  E_TRUST_PROMPT_RESPONSE_ACCEPT             =>  1,
+  E_TRUST_PROMPT_RESPONSE_ACCEPT_TEMPORARILY =>  2,
+  E_TRUST_PROMPT_RESPONSE_REJECT_TEMPORARILY =>  3,
 );
 
-constant EbSdbCursorStepFlags is export := guint32;
-our enum EbSdbCursorStepFlagsEnum is export (
-  EBSDB_CURSOR_STEP_MOVE  =>  1,
-  EBSDB_CURSOR_STEP_FETCH => (1 +< 1)
+constant EVCardFormat is export := guint32;
+our enum EVCardFormatEnum is export <
+  EVC_FORMAT_VCARD_21
+  EVC_FORMAT_VCARD_30
+>;
+
+constant EWebDAVACEFlag is export := guint32;
+our enum EWebDAVACEFlagEnum is export (
+  E_WEBDAV_ACE_FLAG_UNKNOWN   =>      0,
+  E_WEBDAV_ACE_FLAG_GRANT     => 1 +< 0,
+  E_WEBDAV_ACE_FLAG_DENY      => 1 +< 1,
+  E_WEBDAV_ACE_FLAG_INVERT    => 1 +< 2,
+  E_WEBDAV_ACE_FLAG_PROTECTED => 1 +< 3,
+  E_WEBDAV_ACE_FLAG_INHERITED => 1 +< 4,
 );
 
-constant ECredentialsPrompterPromptFlags is export := guint32;
-our enum ECredentialsPrompterPromptFlagsEnum is export (
-  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_NONE                         => 0,
-  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_ALLOW_SOURCE_SAVE            => 1,
-  E_CREDENTIALS_PROMPTER_PROMPT_FLAG_ALLOW_STORED_CREDENTIALS     => 1 +< 1
+### /usr/src/evolution-data-server-3.48.0/src/ebackend/e-backend-enums.h
+
+constant EWebDAVACEPrincipalKind is export := guint32;
+our enum EWebDAVACEPrincipalKindEnum is export (
+  E_WEBDAV_ACE_PRINCIPAL_UNKNOWN         => 0,
+  'E_WEBDAV_ACE_PRINCIPAL_HREF',
+  'E_WEBDAV_ACE_PRINCIPAL_ALL',
+  'E_WEBDAV_ACE_PRINCIPAL_AUTHENTICATED',
+  'E_WEBDAV_ACE_PRINCIPAL_UNAUTHENTICATED',
+  'E_WEBDAV_ACE_PRINCIPAL_PROPERTY',
+  'E_WEBDAV_ACE_PRINCIPAL_SELF',
+  'E_WEBDAV_ACE_PRINCIPAL_OWNER'
 );
 
-constant EGDataTaskStatus is export := guint32;
-our enum EGDataTaskStatusEnum is export <
-  E_GDATA_TASK_STATUS_UNKNOWN
-  E_GDATA_TASK_STATUS_NEEDS_ACTION
-  E_GDATA_TASK_STATUS_COMPLETE
+constant EWebDAVACLRestrictions is export := guint32;
+our enum EWebDAVACLRestrictionsEnum is export (
+  E_WEBDAV_ACL_RESTRICTION_NONE               =>      0,
+  E_WEBDAV_ACL_RESTRICTION_GRANT_ONLY         => 1 +< 0,
+  E_WEBDAV_ACL_RESTRICTION_NO_INVERT          => 1 +< 1,
+  E_WEBDAV_ACL_RESTRICTION_DENY_BEFORE_GRANT  => 1 +< 2,
+  E_WEBDAV_ACL_RESTRICTION_REQUIRED_PRINCIPAL => 1 +< 3,
+);
+
+constant EWebDAVResourceSupports is export := guint32;
+our enum EWebDAVResourceSupportsEnum is export (
+  E_WEBDAV_RESOURCE_SUPPORTS_NONE         =>        0,
+  E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS     =>   1 +< 0,
+  E_WEBDAV_RESOURCE_SUPPORTS_EVENTS       =>   1 +< 1,
+  E_WEBDAV_RESOURCE_SUPPORTS_MEMOS        =>   1 +< 2,
+  E_WEBDAV_RESOURCE_SUPPORTS_TASKS        =>   1 +< 3,
+  E_WEBDAV_RESOURCE_SUPPORTS_FREEBUSY     =>   1 +< 4,
+  E_WEBDAV_RESOURCE_SUPPORTS_TIMEZONE     =>   1 +< 5,
+  E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES =>   1 +< 6,
+  E_WEBDAV_RESOURCE_SUPPORTS_LAST         =>   1 +< 6
+);
+
+constant EWebDAVDiscoverSupports is export := guint32;
+our enum EWebDAVDiscoverSupportsEnum is export (
+  E_WEBDAV_DISCOVER_SUPPORTS_NONE                   =>                 E_WEBDAV_RESOURCE_SUPPORTS_NONE,
+  E_WEBDAV_DISCOVER_SUPPORTS_CONTACTS               =>             E_WEBDAV_RESOURCE_SUPPORTS_CONTACTS,
+  E_WEBDAV_DISCOVER_SUPPORTS_EVENTS                 =>               E_WEBDAV_RESOURCE_SUPPORTS_EVENTS,
+  E_WEBDAV_DISCOVER_SUPPORTS_MEMOS                  =>                E_WEBDAV_RESOURCE_SUPPORTS_MEMOS,
+  E_WEBDAV_DISCOVER_SUPPORTS_TASKS                  =>                E_WEBDAV_RESOURCE_SUPPORTS_TASKS,
+  E_WEBDAV_DISCOVER_SUPPORTS_WEBDAV_NOTES           =>         E_WEBDAV_RESOURCE_SUPPORTS_WEBDAV_NOTES,
+  E_WEBDAV_DISCOVER_SUPPORTS_CALENDAR_AUTO_SCHEDULE =>            E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1,
+  E_WEBDAV_DISCOVER_SUPPORTS_SUBSCRIBED_ICALENDAR   =>   ( E_WEBDAV_RESOURCE_SUPPORTS_LAST +< 1 ) +< 1
+);
+
+constant EWebDAVLockScope is export := guint32;
+our enum EWebDAVLockScopeEnum is export <
+  E_WEBDAV_LOCK_EXCLUSIVE
+  E_WEBDAV_LOCK_SHARED
+>;
+
+# /usr/src/evolution-data-server-3.38.1/tests/test-server-utils/e-test-server-utils.h
+
+constant EWebDAVPrivilegeHint is export := guint32;
+our enum EWebDAVPrivilegeHintEnum is export (
+  E_WEBDAV_PRIVILEGE_HINT_UNKNOWN                         => 0,
+  'E_WEBDAV_PRIVILEGE_HINT_READ',
+  'E_WEBDAV_PRIVILEGE_HINT_WRITE',
+  'E_WEBDAV_PRIVILEGE_HINT_WRITE_PROPERTIES',
+  'E_WEBDAV_PRIVILEGE_HINT_WRITE_CONTENT',
+  'E_WEBDAV_PRIVILEGE_HINT_UNLOCK',
+  'E_WEBDAV_PRIVILEGE_HINT_READ_ACL',
+  'E_WEBDAV_PRIVILEGE_HINT_WRITE_ACL',
+  'E_WEBDAV_PRIVILEGE_HINT_READ_CURRENT_USER_PRIVILEGE_SET',
+  'E_WEBDAV_PRIVILEGE_HINT_BIND',
+  'E_WEBDAV_PRIVILEGE_HINT_UNBIND',
+  'E_WEBDAV_PRIVILEGE_HINT_ALL',
+  'E_WEBDAV_PRIVILEGE_HINT_CALDAV_READ_FREE_BUSY'
+);
+
+constant EWebDAVPrivilegeKind is export := guint32;
+our enum EWebDAVPrivilegeKindEnum is export (
+  E_WEBDAV_PRIVILEGE_KIND_UNKNOWN   => 0,
+  'E_WEBDAV_PRIVILEGE_KIND_ABSTRACT',
+  'E_WEBDAV_PRIVILEGE_KIND_AGGREGATE',
+  'E_WEBDAV_PRIVILEGE_KIND_COMMON'
+);
+
+constant EWebDAVPropertyChangeKind is export := guint32;
+our enum EWebDAVPropertyChangeKindEnum is export <
+  E_WEBDAV_PROPERTY_SET
+  E_WEBDAV_PROPERTY_REMOVE
+>;
+
+constant EWebDAVResourceKind is export := guint32;
+our enum EWebDAVResourceKindEnum is export <
+  E_WEBDAV_RESOURCE_KIND_UNKNOWN
+  E_WEBDAV_RESOURCE_KIND_ADDRESSBOOK
+  E_WEBDAV_RESOURCE_KIND_CALENDAR
+  E_WEBDAV_RESOURCE_KIND_PRINCIPAL
+  E_WEBDAV_RESOURCE_KIND_COLLECTION
+  E_WEBDAV_RESOURCE_KIND_RESOURCE
+  E_WEBDAV_RESOURCE_KIND_SUBSCRIBED_ICALENDAR
+  E_WEBDAV_RESOURCE_KIND_WEBDAV_NOTES
+>;
+
+constant EXmlHashStatus is export := guint32;
+our enum EXmlHashStatusEnum is export <
+  E_XMLHASH_STATUS_SAME
+  E_XMLHASH_STATUS_DIFFERENT
+  E_XMLHASH_STATUS_NOT_FOUND
+>;
+
+constant EXmlHashType is export := guint32;
+our enum EXmlHashTypeEnum is export <
+  E_XML_HASH_TYPE_OBJECT_UID
+  E_XML_HASH_TYPE_PROPERTY
 >;

@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use Evolution::Raw::Types;
 use Evolution::Raw::DBus::Server;
 
@@ -34,7 +36,8 @@ class Evolution::DBus::Server {
     self!setObject($to-parent);
   }
 
-  method Evolution::Raw::Definitions::EDBusServer
+  method Evolution::Raw::Structs::EDBusServer
+    is also<EDBusServer>
   { $!eds }
 
   method new (EDBusServerAncestry $dbus-server, :$ref = True) {
@@ -45,7 +48,7 @@ class Evolution::DBus::Server {
     $o;
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_dbus_server_get_type, $n, $t );
@@ -55,7 +58,7 @@ class Evolution::DBus::Server {
     e_dbus_server_hold($!eds);
   }
 
-  method load_modules {
+  method load_modules is also<load-modules> {
     e_dbus_server_load_modules($!eds);
   }
 

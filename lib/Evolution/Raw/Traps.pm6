@@ -18,3 +18,11 @@
 ### /usr/src/evolution-data-server-3.48.0/src/calendar/libedata-cal/libedata-cal.h
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-uid.h
 ### /usr/src/evolution-data-server-3.48.0/src/libedataserver/libedataserver.h
+### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook-contacts/e-book-contacts-enums.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-list.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-iterator.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-list-iterator.h
+### /usr/src/evolution-data-server-3.48.0/src/libedataserver/e-extension.h
+### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook/e-error.h
+### /usr/src/evolution-data-server-3.48.0/src/addressbook/libedata-book/ximian-vcard.h
+### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook/e-book-view.h

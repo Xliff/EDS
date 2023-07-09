@@ -10,7 +10,7 @@ use Evolution::Raw::Data::Session;
 use JSON::GLib::Object;
 use SOUP::Session;
 
-use Evolution::Roles::Extends::JSON;
+use Evolution::Roles::Extens::JSON;
 
 our subset EGDataSessionAncestry is export of Mu
   where EGDataSession | SoupSessionAncestry;
@@ -274,8 +274,8 @@ class Evolution::Data::Session::TaskLists is SOUP::Session {
     return Nil unless $rv;
 
     my $opl = propReturnObject(
-      ppr($out_patched_tasklist) but
-        Evolution::Roles::Extends::JSON::TaskList,
+      ppr($out_patched_tasklist),
+        but Evolution::Roles::Extends::JSON::TaskList;
       $raw,
       |JSON::GLib::Object.getTypePair
     );

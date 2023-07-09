@@ -1,6 +1,7 @@
 use v6.c;
 
 use NativeCall;
+use Method::Also;
 
 use GLib::Compat::Definitions;
 use GLib::Raw::Definitions;
@@ -1947,6 +1948,57 @@ class EbSdbSearchData is repr<CStruct> does GLib::Roles::Pointers is export {
 			FETCH => -> $           { $!bdata      },
 			STORE => -> $, Str() \v { $!bdata := v };
   }
+}
+
+class ECacheOfflineChange is repr<CStruct> is export {
+	has Str           $!uid;
+	has Str           $!revision;
+	has Str           $!object;
+	has EOfflineState $.state is rw;
+
+	method uid is rw {
+		Proxy.new:
+			FETCH => -> $     { $!uid },
+			STORE => -> $, \v { $!uid := v };
+	}
+
+  method revision is rw {
+		Proxy.new:
+			FETCH => -> $     { $!revision },
+			STORE => -> $, \v { $!revision := v };
+	}
+
+  method object is rw {
+		Proxy.new:
+			FETCH => -> $     { $!object },
+			STORE => -> $, \v { $!object := v };
+	}
+}
+
+class ECacheColumnInfo is repr<CStruct> is export {
+	has Str           $!name;
+	has Str           $!type;
+	has Str           $!index_name;
+	has EOfflineState $.state is rw;
+
+	method name is rw {
+		Proxy.new:
+			FETCH => -> $     { $!name },
+			STORE => -> $, \v { $!name := v };
+	}
+
+  method type is rw {
+		Proxy.new:
+			FETCH => -> $     { $!type },
+			STORE => -> $, \v { $!type := v };
+	}
+
+  method index_name is also<index-name> is rw {
+		Proxy.new:
+			FETCH => -> $     { $!index_name },
+			STORE => -> $, \v { $!index_name := v };
+	}
+
 }
 
 BEGIN {
