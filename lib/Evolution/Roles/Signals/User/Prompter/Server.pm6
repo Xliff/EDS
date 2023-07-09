@@ -47,7 +47,8 @@ sub g-connect-prompt(
             Str,
             Str,
             gboolean,
-            CArray[Str]
+            CArray[Str],
+            gpointer
           ),
   Pointer $data,
   uint32  $flags
