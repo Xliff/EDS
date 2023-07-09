@@ -40,6 +40,7 @@ class EbSdbCursor                  is repr<CPointer> is export does GLib::Roles:
 class EBookSqliteKeys              is repr<CPointer> is export does GLib::Roles::Pointers { }
 class EbSqlCursor                  is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECacheColumnValues           is repr<CPointer> is export does GLib::Roles::Pointers { }
+class ECacheKeys                   is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarm           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalBackendWeather           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class ECalComponentAlarmInstance   is repr<CPointer> is export does GLib::Roles::Pointers { }
