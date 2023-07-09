@@ -1034,7 +1034,7 @@ class Evolution::Cache::Offline::Change {
 
   method Evolution::Raw::Structs::ECacheOfflineChange
     is also<ECacheOfflineChange>
-  { $!eds-oc>
+  { $!eds-oc }
 
   multi method new (ECacheOfflineChange $e-offline-change) {
     $e-offline-change ?? self.bless( :$e-offline-change ) !! Nil;
