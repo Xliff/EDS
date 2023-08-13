@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
 use Evolution::Raw::Types;
@@ -9,20 +11,60 @@ use GLib::GList;
 
 use GLib::Roles::Object;
 
+our subset EDataBookCursorAncestry is export of Mu
+  where EDataBookCursor | GObject;
+
 class Evolution::Data::Book::Cursor {
   also does GLib::Roles::Object;
 
-  has EDataBookCursor $edbc is implementor;
+  has EDataBookCursor $!edbc is implementor;
 
-  method contact_added (EContact() $contact) {
+  submethod BUILD ( :$e-data-book-cursor ) {
+    self.setEDataBookCursor($e-data-book-cursor) if $e-data-book-cursor
+  }
+
+  method setEDataBookCursor (EDataBookCursorAncestry $_) {
+    my $to-parent;
+
+    $!edbc = do {
+      when EDataBookCursor {
+        $to-parent = cast(GObject, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(EDataBookCursor, $_);
+      }
+    }
+    self!setObject($to-parent);
+  }
+
+  method Evolution::Raw::Definitions::EDataBookCursor
+    is also<EDataBookCursor>
+  { $!edbc }
+
+  multi method new (
+     $e-data-book-cursor where * ~~ EDataBookCursorAncestry,
+
+    :$ref = True
+  ) {
+    return unless $e-data-book-cursor;
+
+    my $o = self.bless( :$e-data-book-cursor );
+    $o.ref if $ref;
+    $o;
+  }
+
+  method contact_added (EContact() $contact) is also<contact-added> {
     e_data_book_cursor_contact_added($!edbc, $contact);
   }
 
-  method contact_removed (EContact() $contact) {
+  method contact_removed (EContact() $contact) is also<contact-removed> {
     e_data_book_cursor_contact_removed($!edbc, $contact);
   }
 
-  method get_backend ( :$raw = False ) {
+  method get_backend ( :$raw = False ) is also<get-backend> {
     propReturnObject(
       e_data_book_cursor_get_backend($!edbc),
       $raw,
@@ -30,21 +72,22 @@ class Evolution::Data::Book::Cursor {
     );
   }
 
-  method get_position {
+  method get_position is also<get-position> {
     e_data_book_cursor_get_position($!edbc);
   }
 
-  method get_total {
+  method get_total is also<get-total> {
     e_data_book_cursor_get_total($!edbc);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &e_data_book_cursor_get_type, $n, $t );
   }
 
   proto method load_locale (|)
+    is also<load-locale>
   { * }
 
   multi method load_locale (
@@ -87,7 +130,9 @@ class Evolution::Data::Book::Cursor {
     GDBusConnection()       $connection,
     Str()                   $object_path,
     CArray[Pointer[GError]] $error         = gerror
-  ) {
+  )
+    is also<register-gdbus-object>
+  {
     clear_error;
     my $rv = e_data_book_cursor_register_gdbus_object(
       $!edbc,
@@ -105,7 +150,9 @@ class Evolution::Data::Book::Cursor {
     Str()                   $locale,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<set-alphabetic-index>
+  {
     my gint $i = $index;
 
     clear_error;
@@ -124,7 +171,9 @@ class Evolution::Data::Book::Cursor {
     Str()                   $sexp,
     GCancellable()          $cancellable = GCancellable,
     CArray[Pointer[GError]] $error       = gerror
-  ) {
+  )
+    is also<set-sexp>
+  {
     clear_error;
     my $rv = e_data_book_cursor_set_sexp($!edbc, $sexp, $cancellable, $error);
     set_error($error);
