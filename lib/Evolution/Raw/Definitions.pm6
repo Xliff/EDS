@@ -2,6 +2,8 @@ use v6.c;
 
 use NativeCall;
 
+use GLib::Raw::Debug;
+use GLib::Raw::Distro;
 use GLib::Raw::Definitions;
 use Evolution::Raw::Distro;
 
