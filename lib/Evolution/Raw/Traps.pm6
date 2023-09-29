@@ -26,3 +26,4 @@
 ### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook/e-error.h
 ### /usr/src/evolution-data-server-3.48.0/src/addressbook/libedata-book/ximian-vcard.h
 ### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook/e-book-view.h
+### /usr/src/evolution-data-server-3.48.0/src/addressbook/libebook/e-book.h
