@@ -1975,6 +1975,72 @@ class ECacheOfflineChange is repr<CStruct> is export {
 	}
 }
 
+class ECalCacheOfflineChange is repr<CStruct> is export {
+  has Str           $!uid;
+  has Str           $!rid;
+  has Str           $!revision;
+  has Str           $!object;
+  has EOfflineState $.state      is rw;
+
+	method uid is rw {
+		Proxy.new:
+			FETCH => -> $     { $!uid },
+			STORE => -> $, \v { $!uid := v };
+	}
+
+  method rid is rw {
+		Proxy.new:
+			FETCH => -> $     { $!rid },
+			STORE => -> $, \v { $!rid := v };
+	}
+
+  method revision is rw {
+		Proxy.new:
+			FETCH => -> $     { $!revision },
+			STORE => -> $, \v { $!revision := v };
+	}
+
+  method object is rw {
+		Proxy.new:
+			FETCH => -> $     { $!object },
+			STORE => -> $, \v { $!object := v };
+	}
+
+}
+
+class ECalCacheSearchData is repr<CStruct> is export {
+  has Str $!uid;
+  has Str $!rid;
+  has Str $!object;
+	has Str $!extra;
+
+	method uid is rw {
+		Proxy.new:
+			FETCH => -> $     { $!uid },
+			STORE => -> $, \v { $!uid := v };
+	}
+
+  method rid is rw {
+		Proxy.new:
+			FETCH => -> $     { $!rid },
+			STORE => -> $, \v { $!rid := v };
+	}
+
+  method object is rw {
+		Proxy.new:
+			FETCH => -> $     { $!object },
+			STORE => -> $, \v { $!object := v };
+	}
+
+	method extra is rw {
+		Proxy.new:
+			FETCH => -> $     { $!extra },
+			STORE => -> $, \v { $!extra := v };
+	}
+
+}
+
+
 class ECacheColumnInfo is repr<CStruct> is export {
 	has Str           $!name;
 	has Str           $!type;
